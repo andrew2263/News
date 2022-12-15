@@ -1,0 +1,35 @@
+section {
+  margin: 40px;
+  padding: 20px 40px;
+  background-color: #f0f0f0;
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+ul {
+  padding-left: 0;
+}
+
+.news__content-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.news__img-wrapper {
+  width: 260px;
+  margin-right: 40px;
+}
+
+.news__img-wrapper img {
+  width: 260px;
+}
+
+.news__brief-text {
+  font-size: 18px;
+  line-height: 24px;
+  padding-right: 40px;
+}

@@ -1,0 +1,33 @@
+.header {
+  padding: 40px;
+}
+
+.nav {
+  background-color: #f0f0f0;
+}
+
+.header-list {
+  padding-left: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.header-item {
+  padding: 20px;
+}
+
+.header-item button {
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: 700;
+  color: #410445;
+
+  cursor: pointer;
+}
+
+.header-item button:hover {
+  opacity: 0.8;
+  color: #741564;
+}
