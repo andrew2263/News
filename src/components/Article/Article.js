@@ -6,19 +6,14 @@ import { CONTENT } from '../NewsContent/content';
 import './Article.module.css';
 
 const Article = props => {
-  const getItem = () => {
-    for (var i = 0; i < CONTENT.length; i++) {
-      if (CONTENT[i].key === props.articleKey) {
-        return CONTENT[i];
-      }
-    }
-    return CONTENT[0];
-  }
+  const item = CONTENT[CONTENT.findIndex(el => {
+    return el.key === props.articleKey;
+  })];
 
   return (
     <section>
-      <ArticleContent content={ getItem() } />
-      <Comments />
+      <ArticleContent content={ item } />
+      <Comments commentKey={ props.articleKey } />
     </section>
   );
 }

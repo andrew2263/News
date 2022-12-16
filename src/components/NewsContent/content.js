@@ -933,3 +933,29 @@ export const CONTENT = [
     ]
   }
 ];
+
+export const COMMENTS = CONTENT.map(item => {
+  return {
+    key: item.key,
+    comments: [
+      {
+        id: 0,
+        name: 'User1',
+        text: 'Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment Test comment ',
+        date: new Date('2022-12-13T13:44')
+      },
+      {
+        id: 1,
+        name: 'User2',
+        text: 'Хорошая новость.',
+        date: new Date('2022-12-13T15:38')
+      },
+      {
+        id: 2,
+        name: 'User3',
+        text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cupiditate voluptatum maxime odio illum dolor ipsum magnam, doloremque recusandae maiores corporis!',
+        date: new Date('2022-12-13T17:51')
+      }
+    ]
+  };
+});
