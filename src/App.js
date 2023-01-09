@@ -1,26 +1,48 @@
-import Header from './components/Header/Header';
+import Layout from './components/Layout/Layout';
 import Article from './components/Article/Article';
 import NewsContent from './components/NewsContent/NewsContent';
-import React, { useState } from 'react';
+import React, { Suspense } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import styles from './App.module.css';
 
 function App() {
-  const [cathegory, setCathegory] = useState('po');
-  const [isArticle, setIsArticle] = useState(false);
-  const [articleKey, setArticleKey] = useState('');
-
-  const changeCathegoryHandler = (cathegory) => {
-    setCathegory(cathegory);
-    setIsArticle(false);
-  };
-
-  const showArticleHandler = (key) => {
-    setArticleKey(key);
-    setIsArticle(true);
-  }
-
   return (
+    <Layout>
+      <Switch>
+        <Route path="/" exact>
+          <Redirect to="/index" />
+        </Route>
+        <Route path="/index" exact>
+          <NewsContent cathegory="all" />
+        </Route>
+        <Route path="/politics" exact>
+          <NewsContent cathegory="politics" />
+        </Route>
+        <Route path="/economy" exact>
+          <NewsContent cathegory="economy" />
+        </Route>
+        <Route path="/world" exact>
+          <NewsContent cathegory="world" />
+        </Route>
+        <Route path="/sport" exact>
+          <NewsContent cathegory="sport" />
+        </Route>
+        <Route path="/politics/:newsId">
+          <Article />
+        </Route>
+        <Route path="/economy/:newsId">
+          <Article />
+        </Route>
+        <Route path="/world/:newsId">
+          <Article />
+        </Route>
+        <Route path="/sport/:newsId">
+          <Article />
+        </Route>
+      </Switch>
+    </Layout>
+    /*
     <React.Fragment>
       <div className={ styles.container }>
         <Header onChange={ changeCathegoryHandler } />
@@ -30,6 +52,7 @@ function App() {
         </main>
       </div>
     </React.Fragment>
+    */
   );
 }
 

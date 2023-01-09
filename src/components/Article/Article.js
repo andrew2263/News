@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { useParams } from 'react-router-dom';
 
 import Comments from '../Comments/Comments';
 import ArticleContent from './ArticleContent';
@@ -6,19 +7,19 @@ import { CONTENT } from '../NewsContent/content';
 import './Article.module.css';
 
 const Article = props => {
+  const params = useParams();
+  const { newsId } = params;
+
   const item = CONTENT[CONTENT.findIndex(el => {
-    return el.key === props.articleKey;
+    return el.key === newsId;
   })];
 
   return (
-    <section>
+    <React.Fragment>
       <ArticleContent content={ item } />
-      <Comments commentKey={ props.articleKey } />
-    </section>
+      <Comments commentKey={ newsId } />
+    </React.Fragment>
   );
 }
 
 export default Article;
-
-/*
-<ArticleContent content={ item } />*/

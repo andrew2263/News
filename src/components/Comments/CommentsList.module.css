@@ -1,0 +1,14 @@
+.comment {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #bbb;
+}
+
+.nameDate {
+  display: flex;
+  justify-content: space-between;
+}
+
+.date {
+  color: #777;
+}

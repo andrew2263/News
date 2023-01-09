@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import './Comments.module.css';
+import styles from './Comments.module.css';
 import NewComment from './NewComment';
 import CommentsList from './CommentsList';
 import { COMMENTS } from '../NewsContent/content';
@@ -21,8 +21,6 @@ const Comments = props => {
   } else {
     lastId = -1;
   }
-  
-  console.log(COMMENTS[commentIndex].comments);
 
   const addCommentHandler = comment => {
     COMMENTS[commentIndex].comments.push(comment);
@@ -33,11 +31,8 @@ const Comments = props => {
 
   const removeCommentHandler = (id) => {
     const removedCommentIndex = commentsList.findIndex(elem => {
-      console.log(elem.id);
-      console.log(id);
       return elem.id === +id;
     });
-    console.log(removedCommentIndex);
     COMMENTS[commentIndex].comments.splice(removedCommentIndex, 1);
     setCommentsList(prevCommentsList => {
       const newCommentsList = [...prevCommentsList];
@@ -48,18 +43,20 @@ const Comments = props => {
 
   return (
     <section>
-      <h3>Комментарии</h3>
-      { commentsList.length ? <CommentsList
-        commentData={ commentsList }
-        onRemoveComment = { removeCommentHandler }
-      /> : '' }
-      { !commentsList.length && <p>
-        Комментариев пока нет.
-      </p> }
-      <NewComment
-        id={ lastId + 1 }
-        onAddComment={ addCommentHandler }
-      />
+      <article>
+        <h3>Комментарии</h3>
+        { commentsList.length ? <CommentsList
+          commentData={ commentsList }
+          onRemoveComment = { removeCommentHandler }
+        /> : '' }
+        { !commentsList.length && <p>
+          Комментариев пока нет.
+        </p> }
+        <NewComment
+          id={ lastId + 1 }
+          onAddComment={ addCommentHandler }
+        />
+      </article>
     </section>
   );
 };

@@ -1,7 +1,5 @@
 section {
   margin: 40px;
-  padding: 20px 40px;
-  background-color: #f0f0f0;
 }
 
 h1 {
@@ -9,27 +7,31 @@ h1 {
   margin-bottom: 30px;
 }
 
+.content {
+  padding: 20px 40px;
+  background-color: #f0f0f0;
+}
+
+.priorityContent {
+  margin-bottom: 80px;
+}
+
 ul {
   padding-left: 0;
+  background-color: #f0f0f0;
 }
 
-.news__content-info {
+.firstPriority {
+  margin-bottom: 50px;
+}
+
+.secondPriority {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
+  margin-bottom: 50px;
 }
 
-.news__img-wrapper {
-  width: 260px;
-  margin-right: 40px;
-}
-
-.news__img-wrapper img {
-  width: 260px;
-}
-
-.news__brief-text {
-  font-size: 18px;
-  line-height: 24px;
-  padding-right: 40px;
+.secondPriority:last-child {
+  margin-bottom: 0;
 }

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-import './NewComment.module.css';
+import styles from './NewComment.module.css';
 
 const NewComment = props => {
   const nameInputRef = useRef();
@@ -29,14 +29,22 @@ const NewComment = props => {
 
   return (
     <form onSubmit={ submitHandler }>
-      <label htmlFor="name">Введите имя</label>
-      <input id="name" type="text" ref={ nameInputRef } />
-      <textarea cols="100" rows="5" 
+      <div className={ styles.name }>
+        <label htmlFor="name">Введите имя</label>
+        <input id="name" type="text" ref={ nameInputRef } />
+      </div>
+      <textarea className={ styles.text }
         placeholder="Ведите комментарий"
         ref={ textInputRef }
       />
-      <button type="submit">Отправить комментарий</button>
-      <button type="button" onClick={ onBtnCleanHAndler }>Очистить</button>
+      <div>
+        <button type="submit" className={ styles.submitButton }>
+          Отправить комментарий
+        </button>
+        <button type="button" onClick={ onBtnCleanHAndler }>
+          Очистить
+        </button>
+      </div>
     </form>
   )
 }
