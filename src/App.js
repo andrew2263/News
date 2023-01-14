@@ -1,12 +1,43 @@
 import Layout from './components/Layout/Layout';
 import Article from './components/Article/Article';
 import NewsContent from './components/NewsContent/NewsContent';
-import React, { Suspense } from 'react';
+import NewArticle from './components/NewArticle/NewArticle';
+import React, { useState, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import { CONTENT } from './content';
 import styles from './App.module.css';
 
 function App() {
+  const sortDateDesc = (el1, el2) => el2.date - el1.date;
+
+  const NEWS_CONTENT = CONTENT.sort(sortDateDesc);
+
+  const addArticleHandler = (article) => {
+    if (article.priority === 2 || article.priority === 3) {
+      const arrPriority = NEWS_CONTENT
+        .filter(elem => elem.priority === article.priority)
+        .sort(sortDateDesc);
+      const lowerPriorityArticle = arrPriority[article.priority];
+      const lowerPriorityArticleIndex = NEWS_CONTENT.findIndex(elem => {
+        return elem.key === lowerPriorityArticle.key;
+      });
+      NEWS_CONTENT[lowerPriorityArticleIndex].priority = 4;
+    }
+
+    if (article.priority === 1) {
+      const lowerPriorityArticle = NEWS_CONTENT.filter(elem => elem.priority === 1)[0];
+      const lowerPriorityArticleIndex = NEWS_CONTENT.findIndex(elem => {
+        return elem.key === lowerPriorityArticle.key;
+      });
+      NEWS_CONTENT[lowerPriorityArticleIndex].priority = 4;
+    }
+
+    NEWS_CONTENT.push(article);
+    NEWS_CONTENT.sort(sortDateDesc);
+    console.log(NEWS_CONTENT);
+  };
+
   return (
     <Layout>
       <Switch>
@@ -14,45 +45,37 @@ function App() {
           <Redirect to="/index" />
         </Route>
         <Route path="/index" exact>
-          <NewsContent cathegory="all" />
+          <NewsContent cathegory="all" content={ NEWS_CONTENT } />
         </Route>
         <Route path="/politics" exact>
-          <NewsContent cathegory="politics" />
+          <NewsContent cathegory="politics" content={ NEWS_CONTENT } />
         </Route>
-        <Route path="/economy" exact>
-          <NewsContent cathegory="economy" />
+        <Route path="/economics" exact>
+          <NewsContent cathegory="economics" content={ NEWS_CONTENT } />
         </Route>
         <Route path="/world" exact>
-          <NewsContent cathegory="world" />
+          <NewsContent cathegory="world" content={ NEWS_CONTENT } />
         </Route>
         <Route path="/sport" exact>
-          <NewsContent cathegory="sport" />
+          <NewsContent cathegory="sport" content={ NEWS_CONTENT } />
         </Route>
         <Route path="/politics/:newsId">
-          <Article />
+          <Article content={ NEWS_CONTENT } />
         </Route>
-        <Route path="/economy/:newsId">
-          <Article />
+        <Route path="/economics/:newsId">
+          <Article content={ NEWS_CONTENT } />
         </Route>
         <Route path="/world/:newsId">
-          <Article />
+          <Article content={ NEWS_CONTENT } />
         </Route>
         <Route path="/sport/:newsId">
-          <Article />
+          <Article content={ NEWS_CONTENT } />
+        </Route>
+        <Route path="/newArticle">
+          <NewArticle addNewArticle={ addArticleHandler } />
         </Route>
       </Switch>
     </Layout>
-    /*
-    <React.Fragment>
-      <div className={ styles.container }>
-        <Header onChange={ changeCathegoryHandler } />
-        <main>
-          { !isArticle && <NewsContent cathegory={ cathegory } onShowArticle={ showArticleHandler } /> }
-          { isArticle && <Article articleKey={ articleKey } /> }
-        </main>
-      </div>
-    </React.Fragment>
-    */
   );
 }
 

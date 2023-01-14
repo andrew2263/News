@@ -1,0 +1,55 @@
+.control {
+  margin: 10px 0;
+}
+
+.control label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.control input, textarea {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.control input {
+  height: 20px;
+}
+
+.control textarea {
+  resize: none;
+}
+
+.brief {
+  height: 50px;
+  white-space: nowrap;
+}
+
+.articleText {
+  height: 170px;
+}
+
+.select {
+  margin: 10px 0;
+}
+
+.select label {
+  margin-right: 15px;
+}
+
+.submitButton {
+  margin: 10px 0;
+  padding: 10px 30px;
+  border: none;
+  background-color: #505590;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.submitButton:hover {
+  opacity: 0.6;
+  transition: all 0.5s;
+}
+

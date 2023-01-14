@@ -3,9 +3,16 @@ import React, { useState } from 'react';
 import styles from './Comments.module.css';
 import NewComment from './NewComment';
 import CommentsList from './CommentsList';
-import { COMMENTS } from '../NewsContent/content';
+import { COMMENTS } from '../../content';
 
 const Comments = props => {
+  if (!COMMENTS.some(item => item.key === props.commentKey)) {
+    COMMENTS.push({
+      key: props.commentKey,
+      comments: []
+    });
+  }
+
   const commentIndex = COMMENTS.findIndex(elem => {
     return elem.key === props.commentKey;
   });

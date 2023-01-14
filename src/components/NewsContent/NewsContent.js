@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { CONTENT } from './content';
 import styles from './NewsContent.module.css';
 import BasicItem from './BasicItem';
 import FirstPriorityItem from './FirstPriorityItem';
@@ -12,8 +11,7 @@ export const newsImg = (images) => images.map(image => {
   );
 });
 
-const NewsContent = (props) => {
-  
+const NewsContent = (props) => {  
   let newsList;
 
   const isAll = props.cathegory === 'all';
@@ -35,16 +33,16 @@ const NewsContent = (props) => {
   }
 
   if (!isAll) {
-    newsList = mapItems(CONTENT.filter(item => item.cathegory === props.cathegory), BasicItem);
+    newsList = mapItems(props.content.filter(item => item.cathegory === props.cathegory), BasicItem);
   }
 
   if (isAll) {
-    newsList = mapItems(CONTENT, BasicItem);
+    newsList = mapItems(props.content, BasicItem);
   }
 
   const headings = {
     'politics': 'Политика',
-    'economy': 'Экономика',
+    'economics': 'Экономика',
     'world': 'В мире',
     'sport': 'Спорт'
   };
@@ -59,17 +57,17 @@ const NewsContent = (props) => {
         <div className={ `${ styles.content } ${ styles.priorityContent }` }>
           <ul className={ styles.firstPriority }>
             {
-              mapItems(CONTENT.filter(item => item.priority === 1), FirstPriorityItem)
+              mapItems(props.content.filter(item => item.priority === 1), FirstPriorityItem)
             }
           </ul>
           <ul className={ styles.secondPriority }>
             {
-              mapItems(CONTENT.filter(item => item.priority === 2), SecondPriorityItem)
+              mapItems(props.content.filter(item => item.priority === 2), SecondPriorityItem)
             }
           </ul>
           <ul className={ styles.secondPriority }>
             {
-              mapItems(CONTENT.filter(item => item.priority === 3), SecondPriorityItem)
+              mapItems(props.content.filter(item => item.priority === 3), SecondPriorityItem)
             }
           </ul>
         </div>

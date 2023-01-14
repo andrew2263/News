@@ -23,7 +23,7 @@ const Header = (props) => {
             </NavLink>
           </li>
           <li className={ styles['header-item'] }>
-            <NavLink to="/economy">
+            <NavLink to="/economics">
               Экономика
             </NavLink>
           </li>
@@ -38,6 +38,9 @@ const Header = (props) => {
             </NavLink>
           </li>
         </ul>
+        <NavLink to="/newArticle">
+          Добавить новость
+        </NavLink>
       </nav>
     </header>
   );

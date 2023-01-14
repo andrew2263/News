@@ -1,56 +1,56 @@
-import spanuImg from '../../img/spanu.jpg';
-import slusarImg from '../../img/slusar.jpg';
-import popescuImg from '../../img/popescu.jpg';
-import popescu2 from '../../img/popescu2.webp';
-import popescu3 from '../../img/popescu3.webp';
-import dragalinImg from '../../img/dragalin.jpg';
-import sisImg from '../../img/sis.jpg';
-import usaGasImg from '../../img/usa_gas.jpg';
-import saakashviliImg from '../../img/saakashvili.jpg';
-import uaBbcImg from '../../img/ua_bbc.jpg';
+import spanuImg from './img/spanu.jpg';
+import slusarImg from './img/slusar.jpg';
+import popescuImg from './img/popescu.jpg';
+import popescu2 from './img/popescu2.webp';
+import popescu3 from './img/popescu3.webp';
+import dragalinImg from './img/dragalin.jpg';
+import sisImg from './img/sis.jpg';
+import usaGasImg from './img/usa_gas.jpg';
+import saakashviliImg from './img/saakashvili.jpg';
+import uaBbcImg from './img/ua_bbc.jpg';
 
 //po1
-import rocketsRf from '../../img/rockets_rf.jpg';
-import magnitskiyLaw from '../../img/magnitskiy_law.jpg';
-import gavrilitaEu from '../../img/gavrilita_eu.jpg';
-import cebanBascan from '../../img/ceban-bascan.jpg';
-import sor from '../../img/sor.jpg';
-import russiaInfluence from '../../img/russia_influence.jpg';
-import euSng from '../../img/eu_sng.jpg';
+import rocketsRf from './img/rockets_rf.jpg';
+import magnitskiyLaw from './img/magnitskiy_law.jpg';
+import gavrilitaEu from './img/gavrilita_eu.jpg';
+import cebanBascan from './img/ceban-bascan.jpg';
+import sor from './img/sor.jpg';
+import russiaInfluence from './img/russia_influence.jpg';
+import euSng from './img/eu_sng.jpg';
 
 //economics
-import wheat from '../../img/wheat.jpg';
-import energy from '../../img/energia.jpg';
-import cebanGas from '../../img/ceban_gas.jpg';
-import minfin from '../../img/minfin.jpg';
-import spanuTreatment from '../../img/spanu_treatment.jpg';
-import alaibaSweden from '../../img/alaiba_sweden.jpg';
-import alaibaSweden2 from '../../img/alaiba2.webp';
-import alaibaSweden3 from '../../img/alaiba3.webp';
-import ionita from '../../img/ionita.jpg';
-import ionitaDiagram from '../../img/ionita_diagram.webp';
+import wheat from './img/wheat.jpg';
+import energy from './img/energia.jpg';
+import cebanGas from './img/ceban_gas.jpg';
+import minfin from './img/minfin.jpg';
+import spanuTreatment from './img/spanu_treatment.jpg';
+import alaibaSweden from './img/alaiba_sweden.jpg';
+import alaibaSweden2 from './img/alaiba2.webp';
+import alaibaSweden3 from './img/alaiba3.webp';
+import ionita from './img/ionita.jpg';
+import ionitaDiagram from './img/ionita_diagram.webp';
 
 //world
-import navalny from '../../img/navalny.jpg';
-import tiktok from '../../img/tiktok.jpg';
-import qatarAir from '../../img/qatar_air.jpg';
-import turkeyTax from '../../img/turkey_tax.jpg';
-import romaniaImfl from '../../img/romania_infl.jpg';
-import smigal from '../../img/smigal.jpg';
-import zelensky from '../../img/zelensky.jpg';
-import bidenCouples from '../../img/biden_couples.jpg';
-import belarusNotWest from '../../img/belarus_not_west.jpg';
-import podolyakMask from '../../img/podolyak_mask.jpg';
+import navalny from './img/navalny.jpg';
+import tiktok from './img/tiktok.jpg';
+import qatarAir from './img/qatar_air.jpg';
+import turkeyTax from './img/turkey_tax.jpg';
+import romaniaImfl from './img/romania_infl.jpg';
+import smigal from './img/smigal.jpg';
+import zelensky from './img/zelensky.jpg';
+import bidenCouples from './img/biden_couples.jpg';
+import belarusNotWest from './img/belarus_not_west.jpg';
+import podolyakMask from './img/podolyak_mask.jpg';
 
 //sport
-import messi from '../../img/messi.jpg';
-import arghentinaTeam from '../../img/arghentina_team.jpg'
-import arghentinaTeam2 from '../../img/arghentina_team2.webp';
-import arghentinaTeam3 from '../../img/arghentina_team3.webp';
-import footballChisinau from '../../img/chisinau_football.jpg';
-import ronaldu from '../../img/ronaldu.jpg';
-import rubicon from '../../img/rubicon.webp';
-import arghentinaCroatia from '../../img/croatia_arghentina.jpg';
+import messi from './img/messi.jpg';
+import arghentinaTeam from './img/arghentina_team.jpg'
+import arghentinaTeam2 from './img/arghentina_team2.webp';
+import arghentinaTeam3 from './img/arghentina_team3.webp';
+import footballChisinau from './img/chisinau_football.jpg';
+import ronaldu from './img/ronaldu.jpg';
+import rubicon from './img/rubicon.webp';
+import arghentinaCroatia from './img/croatia_arghentina.jpg';
 
 
 
@@ -431,7 +431,7 @@ export const CONTENT = [
   {
     key: 'wheat-14122022-1144',
     priority: 4,
-    cathegory: 'economy',
+    cathegory: 'economics',
     date: new Date('2022-12-14T11:44:00'),
     heading: 'Эксперты: Для восполнения потерь нужно импортировать более 50 тыс. тонн пшеницы и кукурузы',
     briefText: 'Республика Молдова еще долго будет ощущать негативные последствия небывалой засухи, которая подкосила урожай нынешним летом.',
@@ -454,7 +454,7 @@ export const CONTENT = [
   {
     key: 'energy-14122022-1124',
     priority: 4,
-    cathegory: 'economy',
+    cathegory: 'economics',
     date: new Date('2022-12-14T11:24:00'),
     heading: '«Энергоком»: Опубликованы лишь самые важные данные контракта с МГРЭС',
     briefText: 'Обнародованы основные положения контракта на поставку электроэнергии с Молдавской ГРЭС, однако публикация всего документа невозможна, поскольку это противоречило бы правилам и соглашениям, применяемым на международном уровне.',
@@ -479,7 +479,7 @@ export const CONTENT = [
   {
     key: 'gas-14122022-0954',
     priority: 4,
-    cathegory: 'economy',
+    cathegory: 'economics',
     date: new Date('2022-12-14T09:54:00'),
     heading: 'Чебан: Если „Энергоком” закупит газ по рыночной цене, тариф может вырасти до 35 леев',
     briefText: 'Предпосылок для снижения тарифа на газ пока нет. Об этом говорит председатель Совета директоров АО „Молдовагаз” Вадим Чебан, согласно которому, если „Энергоком” закупит газ по рыночной цене, тариф может вырасти до 35 леев.',
@@ -502,7 +502,7 @@ export const CONTENT = [
   {
     key: 'mifin-14122022-0927',
     priority: 4,
-    cathegory: 'economy',
+    cathegory: 'economics',
     date: new Date('2022-12-14T09:27:00'),
     heading: 'Глава Минфина: Мы ожидаем снижения и стабилизации инфляции в 2023 году',
     briefText: 'Основной задачей бюджетно-налоговой политики на 2023 год является стимулирование местного бизнеса.',
@@ -523,7 +523,7 @@ export const CONTENT = [
   {
     key: 'spanu-14122022-0620',
     priority: 4,
-    cathegory: 'economy',
+    cathegory: 'economics',
     date: new Date('2022-12-14T06:20:00'),
     heading: 'Спыну: Договор с МГРЭС не дает нам никаких гарантий, но сейчас у нас есть свет',
     briefText: 'Подписанный с МГРЭС договор на поставку электроэнергии не дает нам никаких гарантий, «но на данный момент у нас есть свет».',
@@ -551,7 +551,7 @@ export const CONTENT = [
   {
     key: 'alaiba-13122022-1918',
     priority: 4,
-    cathegory: 'economy',
+    cathegory: 'economics',
     date: new Date('2022-12-13T19:18:00'),
     heading: 'Алайба обсудил со шведскими партнерами продвижение экологических технологий',
     briefText: 'Министр экономики Думитру Алайба обсудил во вторник с экспертами Шведского агентства международного развития (SIDA) продвижение в Молдове экологических технологий производства.',
@@ -577,7 +577,7 @@ export const CONTENT = [
   {
     key: 'ionita-13122022-1727',
     priority: 4,
-    cathegory: 'economy',
+    cathegory: 'economics',
     date: new Date('2022-12-13T17:27:00'),
     heading: 'Ионицэ: В следующем году Молдова выплатит 5,5 млрд леев процентов по кредитам',
     briefText: 'Около 5,5 млрд леев из бюджета пойдут только на выплату процентов по кредитам. Об этом написал экономический эксперт Вячеслав Ионицэ.',
