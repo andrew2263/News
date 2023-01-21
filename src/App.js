@@ -2,7 +2,7 @@ import Layout from './components/Layout/Layout';
 import Article from './components/Article/Article';
 import NewsContent from './components/NewsContent/NewsContent';
 import NewArticle from './components/NewArticle/NewArticle';
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { CONTENT } from './content';
@@ -13,29 +13,32 @@ function App() {
 
   const NEWS_CONTENT = CONTENT.sort(sortDateDesc);
 
+  const [content, setContent] = useState(NEWS_CONTENT);
+
   const addArticleHandler = (article) => {
-    if (article.priority === 2 || article.priority === 3) {
-      const arrPriority = NEWS_CONTENT
+    const lastPriorityItem = {
+      '1': 0,
+      '2': 2,
+      '3': 3
+    };
+
+    if (article.priority !== 4 && typeof article.priority === 'number') {
+      const arrPriority = content
         .filter(elem => elem.priority === article.priority)
         .sort(sortDateDesc);
-      const lowerPriorityArticle = arrPriority[article.priority];
-      const lowerPriorityArticleIndex = NEWS_CONTENT.findIndex(elem => {
+      const lowerPriorityArticle = arrPriority[lastPriorityItem[article.priority.toString()]];
+      const lowerPriorityArticleIndex = content.findIndex(elem => {
         return elem.key === lowerPriorityArticle.key;
       });
-      NEWS_CONTENT[lowerPriorityArticleIndex].priority = 4;
+      const copyContent = Object.assign([], content);
+      copyContent[lowerPriorityArticleIndex].priority = 4;
+      setContent(copyContent);
     }
 
-    if (article.priority === 1) {
-      const lowerPriorityArticle = NEWS_CONTENT.filter(elem => elem.priority === 1)[0];
-      const lowerPriorityArticleIndex = NEWS_CONTENT.findIndex(elem => {
-        return elem.key === lowerPriorityArticle.key;
-      });
-      NEWS_CONTENT[lowerPriorityArticleIndex].priority = 4;
-    }
-
-    NEWS_CONTENT.push(article);
-    NEWS_CONTENT.sort(sortDateDesc);
-    console.log(NEWS_CONTENT);
+    setContent(prevContent => {
+      return [...prevContent, article].sort(sortDateDesc);
+    })
+    console.log(content);
   };
 
   return (
@@ -45,31 +48,31 @@ function App() {
           <Redirect to="/index" />
         </Route>
         <Route path="/index" exact>
-          <NewsContent cathegory="all" content={ NEWS_CONTENT } />
+          <NewsContent cathegory="all" content={ content } />
         </Route>
         <Route path="/politics" exact>
-          <NewsContent cathegory="politics" content={ NEWS_CONTENT } />
+          <NewsContent cathegory="politics" content={ content } />
         </Route>
         <Route path="/economics" exact>
-          <NewsContent cathegory="economics" content={ NEWS_CONTENT } />
+          <NewsContent cathegory="economics" content={ content } />
         </Route>
         <Route path="/world" exact>
-          <NewsContent cathegory="world" content={ NEWS_CONTENT } />
+          <NewsContent cathegory="world" content={ content } />
         </Route>
         <Route path="/sport" exact>
-          <NewsContent cathegory="sport" content={ NEWS_CONTENT } />
+          <NewsContent cathegory="sport" content={ content } />
         </Route>
         <Route path="/politics/:newsId">
-          <Article content={ NEWS_CONTENT } />
+          <Article content={ content } />
         </Route>
         <Route path="/economics/:newsId">
-          <Article content={ NEWS_CONTENT } />
+          <Article content={ content } />
         </Route>
         <Route path="/world/:newsId">
-          <Article content={ NEWS_CONTENT } />
+          <Article content={ content } />
         </Route>
         <Route path="/sport/:newsId">
-          <Article content={ NEWS_CONTENT } />
+          <Article content={ content } />
         </Route>
         <Route path="/newArticle">
           <NewArticle addNewArticle={ addArticleHandler } />
