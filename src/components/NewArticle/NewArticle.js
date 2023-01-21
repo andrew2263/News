@@ -3,200 +3,27 @@ import React, { useState, useRef, useReducer, useEffect } from 'react';
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
+import useInput from '../../hooks/use-input';
 import styles from './NewArticle.module.css';
 
-const keyReducer = (state, action) => {
-  if (action.type === 'USER_INPUT') {
-    return {
-      value: action.val,
-      isValid: /^[a-z0-9-_]+$/.test(action.val)
-        && action.val.toString().length >= 5
-        && action.val.toString().length <= 50,
-      isTouched: state.isTouched
-    };
-  }
-  if (action.type === 'INPUT_BLUR') {
-    return {
-      value: state.value,
-      isValid: /^[a-z0-9-_]+$/.test(state.value)
-        && state.value.toString().length >= 5
-        && state.value.toString().length <= 50,
-      isTouched: true
-    };
-  }
-  if (action.type === 'RESET') {
-    return {
-      value: '',
-      isTouched: false,
-      isValid: undefined
-    }
-  }
-  return { value: '', isValid: false, isTouched: true };
+const isKey = value => {
+  return /^[a-z0-9-_]+$/.test(value) &&
+    value.toString().length >= 5 &&
+    value.toString().length <= 50
 };
 
-const headingReducer = (state, action) => {
-  if (action.type === 'USER_INPUT') {
-    return {
-      value: action.val,
-      isValid: /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”]+$/.test(action.val)
-        && action.val.toString().length >= 50
-        && action.val.toString().length <= 100,
-      isTouched: state.isTouched
-    };
-  }
-  if (action.type === 'INPUT_BLUR') {
-    return {
-      value: state.value,
-      isValid: /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”]+$/.test(state.value)
-        && state.value.toString().length >= 50
-        && state.value.toString().length <= 100,
-      isTouched: true
-    };
-  }
-  if (action.type === 'RESET') {
-    return {
-      value: '',
-      isTouched: false,
-      isValid: undefined
-    }
-  }
-  return { value: '', isValid: false, isTouched: true };
+const isLineText = (value, minLength, maxLength) => {
+  return /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”\n]+$/.test(value) &&
+    value.toString().length >= minLength &&
+    value.toString().length <= maxLength;
 };
 
-const briefTextReducer = (state, action) => {
-  if (action.type === 'USER_INPUT') {
-    return {
-      value: action.val,
-      isValid: /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”]+$/.test(action.val)
-        && action.val.toString().length >= 120
-        && action.val.toString().length <= 250,
-      isTouched: state.isTouched
-    };
-  }
-  if (action.type === 'INPUT_BLUR') {
-    return {
-      value: state.value,
-      isValid: /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”]+$/.test(state.value)
-        && state.value.toString().length >= 120
-        && state.value.toString().length <= 250,
-      isTouched: true
-    }
-  }
-  if (action.type === 'RESET') {
-    return {
-      value: '',
-      isTouched: false,
-      isValid: undefined
-    }
-  }
-  return { value: '', isValid: false, isTouched: true };
+const isText = (value, maxLength) => {
+  return /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”\n]+$/.test(value) &&
+    value.toString().length >= maxLength
 };
 
-const textReducer = (state, action) => {
-  if (action.type === 'USER_INPUT') {
-    return {
-      value: action.val,
-      isValid: /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”\n]+$/.test(action.val)
-        && action.val.toString().length >= 300,
-      isTouched: state.isTouched
-    };
-  }
-  if (action.type === 'INPUT_BLUR') {
-    return {
-      value: state.value,
-      isValid: /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”\n]+$/.test(state.value)
-        && state.value.toString().length >= 300,
-      isTouched: true
-    }
-  }
-  if (action.type === 'RESET') {
-    return {
-      value: '',
-      isTouched: false,
-      isValid: undefined
-    }
-  }
-  return { value: '', isValid: false, isTouched: true };
-};
-
-const fileDescriptionReducer = (state, action) => {
-  if (action.type === 'USER_INPUT') {
-    return {
-      value: action.val,
-      isValid: /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”\n]+$/.test(action.val)
-        && action.val.toString().length >= 50
-        && action.val.toString().length <= 200,
-      isTouched: state.isTouched
-    };
-  }
-  if (action.type === 'INPUT_BLUR') {
-    return {
-      value: state.value,
-      isValid: /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”\n]+$/.test(state.value)
-        && state.value.toString().length >= 50
-        && state.value.toString().length <= 200,
-      isTouched: true
-    }
-  }
-  if (action.type === 'RESET') {
-    return {
-      value: '',
-      isTouched: false,
-      isValid: undefined
-    }
-  }
-  return { value: '', isValid: false, isTouched: true };
-};
-
-const cathegoryReducer = (state, action) => {
-  if (action.type === 'USER_INPUT') {
-    return {
-      value: action.val,
-      isValid: action.val !== '',
-      isTouched: state.isTouched
-    }
-  }
-  if (action.type === 'INPUT_BLUR') {
-    return {
-      value: state.value,
-      isValid: state.value !== '',
-      isTouched: true
-    }
-  }
-  if (action.type === 'RESET') {
-    return {
-      value: '',
-      isTouched: false,
-      isValid: undefined
-    }
-  }
-  return { value: '', isValid: false, isTouched: true };
-};
-
-const priorityReducer = (state, action) => {
-  if (action.type === 'USER_INPUT') {
-    return {
-      value: action.val,
-      isValid: action.val !== '',
-      isTouched: state.isTouched
-    }
-  }
-  if (action.type === 'INPUT_BLUR') {
-    return {
-      value: state.value,
-      isValid: state.value !== '',
-      isTouched: true
-    }
-  }
-  if (action.type === 'RESET') {
-    return {
-      value: '',
-      isTouched: false,
-      isValid: undefined
-    }
-  }
-  return { value: '', isValid: false, isTouched: true };
-};
+const isNotEmpty = value => value !== '';
 
 const filesReducer = (state, action) => {
   const fileTypes = ['image/png', 'image/jpeg', 'image/webp'];
@@ -232,53 +59,74 @@ const filesReducer = (state, action) => {
     }
   }
   return { value: '', files: '', isValid: false, isTouched: true };
-}
-
+};
 
 const NewArticle = props => {
   const [formIsValid, setFormIsValid] = useState(false);
 
-  const [keyState, dispatchKey] = useReducer(keyReducer, {
-    value: '',
-    isValid: undefined,
-    isTouched: false
-  });
+  const {
+    value: enteredKey,
+    isValid: keyIsValid,
+    hasError: keyHasError,
+    valueChangeHandler: keyChangeHandler,
+    inputBlurHandler: validateKeyHandler,
+    reset: resetKeyHandler
+  } = useInput(isKey);
 
-  const [headingState, dispatchHeading] = useReducer(headingReducer, {
-    value: '',
-    isValid: undefined,
-    isTouched: false
-  });
+  const {
+    value: enteredHeading,
+    isValid: headingIsValid,
+    hasError: headingHasError,
+    valueChangeHandler: headingChangeHandler,
+    inputBlurHandler: validateHeadingHandler,
+    reset: resetHeadingHandler
+  } = useInput(isLineText, 50, 100);
 
-  const [briefTextState, dispatchBriefText] = useReducer(briefTextReducer, {
-    value: '',
-    isValid: undefined,
-    isTouched: false
-  });
+  const {
+    value: enteredBriefText,
+    isValid: briefTextIsValid,
+    hasError: briefTextHasError,
+    valueChangeHandler: briefTextChangeHandler,
+    inputBlurHandler: validateBriefTextHandler,
+    reset: resetBriefTextHandler
+  } = useInput(isLineText, 120, 250);
 
-  const [textState, dispatchText] = useReducer(textReducer, {
-    value: '',
-    isValid: undefined,
-    isTouched: false
-  });
+  const {
+    value: enteredText,
+    isValid: textIsValid,
+    hasError: textHasError,
+    valueChangeHandler: textChangeHandler,
+    inputBlurHandler: validateTextHandler,
+    reset: resettextHandler
+  } = useInput(isText, 300);
 
-  const [fileDescriptionState, dispatchFileDescription] = useReducer(fileDescriptionReducer, {
-    value: '',
-    isValid: undefined,
-    isTouched: false
-  });
+  const {
+    value: selectedCathegory,
+    isValid: cathegoryIsValid,
+    hasError: cathegoryHasError,
+    valueChangeHandler: cathegoryChangeHandler,
+    inputBlurHandler: validateCathegoryHandler,
+    reset: resetCathegoryHandler
+  } = useInput(isNotEmpty);
 
-  const [cathegoryState, dispatchCathegory] = useReducer(cathegoryReducer, {
-    value: '',
-    isValid: undefined,
-    isTouched: false
-  });
+  const {
+    value: selectedPriority,
+    isValid: priorityIsValid,
+    hasError: priorityHasError,
+    valueChangeHandler: priorityChangeHandler,
+    inputBlurHandler: validatePriorityHandler,
+    reset: resetPriorityHandler
+  } = useInput(isNotEmpty);
 
-  const [priorityState, dispatchPriority] = useReducer(priorityReducer, {
-    value: '',
-    isValid: undefined,
-    isTouched: false
-  });
+  const {
+    value: enteredFileDescription,
+    isValid: fileDescriptionIsValid,
+    hasError: fileDescriptionHasError,
+    valueChangeHandler: fileDescriptionChangeHandler,
+    inputBlurHandler: validateFileDescriptionHandler,
+    reset: resetFileDescriptionHandler
+  } = useInput(isLineText, 50, 200);
+
 
   const [filesState, dispatchFiles] = useReducer(filesReducer, {
     value: '',
@@ -296,90 +144,6 @@ const NewArticle = props => {
   const filesRef = useRef();
   const filesDescriptionRef = useRef();
 
-  const keyChangeHandler = event => {
-    dispatchKey({ type: 'USER_INPUT', val: event.target.value });
-  };
-
-  const validateKeyHandler = () => {
-    dispatchKey({ type: 'INPUT_BLUR' });
-  };
-
-  const resetKeyHandler = () => {
-    dispatchKey({ type: 'RESET' });
-  };
-
-  const headingChangeHandler = event => {
-    dispatchHeading({ type: 'USER_INPUT', val: event.target.value });
-  };
-
-  const validateHeadingHandler = event => {
-    dispatchHeading({ type: 'INPUT_BLUR' });
-  };
-
-  const resetHeadingHandler = () => {
-    dispatchHeading({ type: 'RESET' });
-  };
-
-  const briefTextChangeHandler = event => {
-    dispatchBriefText({ type: 'USER_INPUT', val: event.target.value });
-  };
-
-  const validateBriefTextHandler = event => {
-    dispatchBriefText({ type: 'INPUT_BLUR' });
-  };
-
-  const resetBriefTextHandler = () => {
-    dispatchBriefText({ type: 'RESET' });
-  };
-
-  const textChangeHandler = event => {
-    dispatchText({ type: 'USER_INPUT', val: event.target.value });
-  };
-
-  const validateTextHandler = event => {
-    dispatchText({ type: 'INPUT_BLUR' });
-  };
-
-  const resettextHandler = () => {
-    dispatchText({ type: 'RESET' });
-  };
-
-  const fileDescriptionChangeHandler = event => {
-    dispatchFileDescription({ type: 'USER_INPUT', val: event.target.value });
-  };
-
-  const validateFileDescriptionHandler = event => {
-    dispatchFileDescription({ type: 'INPUT_BLUR' });
-  };
-
-  const resetFileDescriptionHandler = () => {
-    dispatchFileDescription({ type: 'RESET' });
-  };
-
-  const cathegoryChangeHandler = event => {
-    dispatchCathegory({ type: 'USER_INPUT', val: event.target.value });
-  };
-
-  const validateCathegoryHandler = event => {
-    dispatchCathegory({ type: 'INPUT_BLUR' });
-  };
-
-  const resetCathegoryHandler = () => {
-    dispatchCathegory({ type: 'RESET' });
-  };
-
-  const priorityChangeHandler = event => {
-    dispatchPriority({ type: 'USER_INPUT', val: event.target.value });
-  };
-
-  const validatePriorityHandler = event => {
-    dispatchPriority({ type: 'INPUT_BLUR' });
-  };
-
-  const resetPriorityHandler = () => {
-    dispatchPriority({ type: 'RESET' });
-  };
-
   const filesChangeHandler = event => {
     dispatchFiles({ type: 'USER_INPUT', val: event.target.value, files: event.target.files });
   };
@@ -392,22 +156,7 @@ const NewArticle = props => {
     dispatchFiles({ type: 'RESET' });
   };
 
-  const { isValid: keyIsValid } = keyState;
-  const { isValid: headingIsValid } = headingState;
-  const { isValid: briefTextIsValid } = briefTextState;
-  const { isValid: textIsValid } = textState;
-  const { isValid: fileDescriptionIsValid } = fileDescriptionState;
-  const { isValid: cathegoryIsValid } = cathegoryState;
-  const { isValid: priorityIsValid } = priorityState;
   const { isValid: filesIsValid } = filesState;
-
-  const { isTouched: keyIsTouched } = keyState;
-  const { isTouched: headingIsTouched } = headingState;
-  const { isTouched: briefTextIsTouched } = briefTextState;
-  const { isTouched: textIsTouched } = textState;
-  const { isTouched: fileDescriptionIsTouched } = fileDescriptionState;
-  const { isTouched: cathegoryIsTouched } = cathegoryState;
-  const { isTouched: priorityIsTouched } = priorityState;
   const { isTouched: filesIsTouched } = filesState;
 
   useEffect(() => {
@@ -425,18 +174,7 @@ const NewArticle = props => {
   }, [keyIsValid, headingIsValid, briefTextIsValid, textIsValid, fileDescriptionIsValid, cathegoryIsValid, priorityIsValid, filesIsValid]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-/*
-  const cleanForm = () => {
-    articleKeyRef.current.value = '';
-    articleHeadingRef.current.value = '';
-    articleBriefTextRef.current.ref = '';
-    articleTextRef.current.value = '';
-    articleCathegoryRef.current.value = '';
-    articlePriorityRef.current.value = '';
-    filesRef.current.value = '';
-    filesDescriptionRef.current.value = '';
-  };
-*/
+
   const submitHandler = event => {
     event.preventDefault();
 
@@ -493,7 +231,6 @@ const NewArticle = props => {
         });
 
         props.addNewArticle(newArticle);
-        //cleanForm();
 
         resetKeyHandler();
         resetHeadingHandler();
@@ -533,7 +270,7 @@ const NewArticle = props => {
         <form onSubmit={ submitHandler }>
           <div className={ styles.control }>
             {
-              !keyIsValid && keyIsTouched &&
+              keyHasError &&
               <p className={ styles.invalidInfo }>
                 Ключ может содержать только латинские буквы в нижнем регистре, цифры, символы "-" и "_" без пробелов. Минимальное число символов — 5, максимальное — 50.
               </p>
@@ -543,14 +280,14 @@ const NewArticle = props => {
               type="text"
               id="article_key"
               ref={ articleKeyRef }
-              value={keyState.value}
+              value={enteredKey}
               onChange={keyChangeHandler}
               onBlur={validateKeyHandler}
             />
           </div>
           <div className={ styles.control }>
             {
-              !headingIsValid && headingIsTouched &&
+              headingHasError &&
               <p className={ styles.invalidInfo }>
                 Заголовок может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”.  Минимальное число символов — 50, максимальное — 100.
               </p>
@@ -560,14 +297,14 @@ const NewArticle = props => {
               type="text"
               id="article_heading"
               ref={ articleHeadingRef }
-              value={headingState.value}
+              value={enteredHeading}
               onChange={headingChangeHandler}
               onBlur={validateHeadingHandler}
             />
           </div>
           <div className={ styles.control }>
             {
-              !briefTextIsValid && briefTextIsTouched &&
+              briefTextHasError &&
               <p className={ styles.invalidInfo }>
                 Краткое описание может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 120, максимальное — 250.
               </p>
@@ -577,14 +314,14 @@ const NewArticle = props => {
               className={ styles.brief }
               id="article_brief_text"
               ref={ articleBriefTextRef }
-              value={briefTextState.value}
+              value={enteredBriefText}
               onChange={briefTextChangeHandler}
               onBlur={validateBriefTextHandler}
             />
           </div>
           <div className={ styles.control }>
             {
-              !textIsValid && textIsTouched &&
+              textHasError &&
               <p className={ styles.invalidInfo }>
                 Текст новости может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 300.
               </p>
@@ -594,14 +331,14 @@ const NewArticle = props => {
               className={ styles.articleText }
               id="article_text"
               ref={ articleTextRef }
-              value={textState.value}
+              value={enteredText}
               onChange={textChangeHandler}
               onBlur={validateTextHandler}
             />
           </div>
           <div className={ styles.select }>
             {
-              !cathegoryIsValid && cathegoryIsTouched &&
+              cathegoryHasError &&
               <p className={ styles.invalidInfo }>
                 Выберите категорию новости.
               </p>
@@ -611,7 +348,7 @@ const NewArticle = props => {
               id="cathegory"
               name="cathegory"
               ref={ articleCathegoryRef }
-              value={cathegoryState.value}
+              value={selectedCathegory}
               onChange={cathegoryChangeHandler}
               onBlur={validateCathegoryHandler}
             >
@@ -624,7 +361,7 @@ const NewArticle = props => {
           </div>
           <div className={ styles.select }>
             {
-              !priorityIsValid && priorityIsTouched &&
+              priorityHasError &&
               <p className={ styles.invalidInfo }>
                 Выберите приоритет новости.
               </p>
@@ -634,7 +371,7 @@ const NewArticle = props => {
               id="priority"
               name="priority"
               ref={ articlePriorityRef }
-              value={priorityState.value}
+              value={selectedPriority}
               onChange={priorityChangeHandler}
               onBlur={validatePriorityHandler}
             >
@@ -665,7 +402,7 @@ const NewArticle = props => {
             />
             <div className={ styles.control }>
               {
-                !fileDescriptionIsValid && fileDescriptionIsTouched &&
+                fileDescriptionHasError &&
                 <p className={ styles.invalidInfo }>
                   Описание изображения может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 50, максимальное — 200.
                 </p>
@@ -676,7 +413,7 @@ const NewArticle = props => {
                 id="files_description"
                 ref={ filesDescriptionRef }
                 required
-                value={fileDescriptionState.value}
+                value={enteredFileDescription}
                 onChange={fileDescriptionChangeHandler}
                 onBlur={validateFileDescriptionHandler}
               />
