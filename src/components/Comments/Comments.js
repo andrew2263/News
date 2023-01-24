@@ -7,19 +7,36 @@ import { COMMENTS } from '../../content';
 
 const Comments = props => {
   if (!COMMENTS.some(item => item.key === props.commentKey)) {
-    COMMENTS.push({
+    const newComments = {
       key: props.commentKey,
       comments: []
-    });
+    };
+    COMMENTS.push(newComments);
   }
 
-  const commentIndex = COMMENTS.findIndex(elem => {
-    return elem.key === props.commentKey;
-  });
-
   const commentsReducer = (state, action) => {
+    const commentIndex = state.comments.findIndex(elem => {
+      return elem.key === props.commentKey;
+    });
     const thisArticleComments = state.comments[commentIndex].comments;
-    
+
+    if (action.type === 'INIT') {
+      const newComments = {
+        key: props.commentKey,
+        comments: []
+      };
+      let updatedComments = [...state.comments];
+      let updatedArticleComments = [...state.articleComments];
+
+      if (!state.comments.some(item => item.key === props.commentKey)) {
+        updatedComments = [...updatedComments, newComments];
+        updatedArticleComments = [...updatedArticleComments, newComments];
+      }
+      return {
+        comments: updatedComments,
+        articleComments: updatedArticleComments
+      }
+    }
     if (action.type === 'ADD_COMMENT') {
       const updatedThisArticleComments = [...thisArticleComments, action.comment];
       const updatedComments = [...state.comments];
@@ -47,10 +64,17 @@ const Comments = props => {
   };
 
   const [commentsState, dispatchComments] = useReducer(commentsReducer, {
-    commentIndex: commentIndex,
     comments: COMMENTS,
-    articleComments: [...COMMENTS[commentIndex].comments]
+    articleComments: [
+      ...COMMENTS[
+      COMMENTS.findIndex(elem => elem.key === props.commentKey)]
+      .comments
+    ]
   });
+
+  const initCommentsHandler = () => {
+    dispatchComments({ type: 'INIT' });
+  };
 
   const addCommentHandler = (comment) => {
     dispatchComments({ type: 'ADD_COMMENT', comment: comment });
@@ -59,6 +83,8 @@ const Comments = props => {
   const removeCommentHandler = (id) => {
     dispatchComments({ type: 'REMOVE_COMMENT', id: id })
   };
+
+  //initCommentsHandler();
 
   let lastId;
   const { articleComments: commentsList } = commentsState;
