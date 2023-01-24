@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
+import Context from '../../store/context';
 import styles from './NewsContent.module.css';
 import BasicItem from './BasicItem';
 import FirstPriorityItem from './FirstPriorityItem';
@@ -12,6 +13,8 @@ export const newsImg = (images) => images.map(image => {
 });
 
 const NewsContent = (props) => {  
+  const ctx = useContext(Context);
+
   let newsList;
 
   const isAll = props.cathegory === 'all';
@@ -33,11 +36,11 @@ const NewsContent = (props) => {
   }
 
   if (!isAll) {
-    newsList = mapItems(props.content.filter(item => item.cathegory === props.cathegory), BasicItem);
+    newsList = mapItems(ctx.content.filter(item => item.cathegory === props.cathegory), BasicItem);
   }
 
   if (isAll) {
-    newsList = mapItems(props.content, BasicItem);
+    newsList = mapItems(ctx.content, BasicItem);
   }
 
   const headings = {
@@ -57,17 +60,17 @@ const NewsContent = (props) => {
         <div className={ `${ styles.content } ${ styles.priorityContent }` }>
           <ul className={ styles.firstPriority }>
             {
-              mapItems(props.content.filter(item => item.priority === 1), FirstPriorityItem)
+              mapItems(ctx.content.filter(item => item.priority === 1), FirstPriorityItem)
             }
           </ul>
           <ul className={ styles.secondPriority }>
             {
-              mapItems(props.content.filter(item => item.priority === 2), SecondPriorityItem)
+              mapItems(ctx.content.filter(item => item.priority === 2), SecondPriorityItem)
             }
           </ul>
           <ul className={ styles.secondPriority }>
             {
-              mapItems(props.content.filter(item => item.priority === 3), SecondPriorityItem)
+              mapItems(ctx.content.filter(item => item.priority === 3), SecondPriorityItem)
             }
           </ul>
         </div>

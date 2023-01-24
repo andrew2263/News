@@ -1,11 +1,16 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 
 import styles from './CommentsList.module.css';
 
 const CommentsList = props => {
+  const params = useParams();
+
+  const { newsId } = params;
+
   const deleteHandler = event => {
     event.preventDefault();
-    props.onRemoveComment(event.target.value);
+    props.onRemoveComment(event.target.value, newsId);
   }
 
   return (

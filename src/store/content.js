@@ -1,56 +1,56 @@
-import spanuImg from './img/spanu.jpg';
-import slusarImg from './img/slusar.jpg';
-import popescuImg from './img/popescu.jpg';
-import popescu2 from './img/popescu2.webp';
-import popescu3 from './img/popescu3.webp';
-import dragalinImg from './img/dragalin.jpg';
-import sisImg from './img/sis.jpg';
-import usaGasImg from './img/usa_gas.jpg';
-import saakashviliImg from './img/saakashvili.jpg';
-import uaBbcImg from './img/ua_bbc.jpg';
+import spanuImg from '../img/spanu.jpg';
+import slusarImg from '../img/slusar.jpg';
+import popescuImg from '../img/popescu.jpg';
+import popescu2 from '../img/popescu2.webp';
+import popescu3 from '../img/popescu3.webp';
+import dragalinImg from '../img/dragalin.jpg';
+import sisImg from '../img/sis.jpg';
+import usaGasImg from '../img/usa_gas.jpg';
+import saakashviliImg from '../img/saakashvili.jpg';
+import uaBbcImg from '../img/ua_bbc.jpg';
 
 //po1
-import rocketsRf from './img/rockets_rf.jpg';
-import magnitskiyLaw from './img/magnitskiy_law.jpg';
-import gavrilitaEu from './img/gavrilita_eu.jpg';
-import cebanBascan from './img/ceban-bascan.jpg';
-import sor from './img/sor.jpg';
-import russiaInfluence from './img/russia_influence.jpg';
-import euSng from './img/eu_sng.jpg';
+import rocketsRf from '../img/rockets_rf.jpg';
+import magnitskiyLaw from '../img/magnitskiy_law.jpg';
+import gavrilitaEu from '../img/gavrilita_eu.jpg';
+import cebanBascan from '../img/ceban-bascan.jpg';
+import sor from '../img/sor.jpg';
+import russiaInfluence from '../img/russia_influence.jpg';
+import euSng from '../img/eu_sng.jpg';
 
 //economics
-import wheat from './img/wheat.jpg';
-import energy from './img/energia.jpg';
-import cebanGas from './img/ceban_gas.jpg';
-import minfin from './img/minfin.jpg';
-import spanuTreatment from './img/spanu_treatment.jpg';
-import alaibaSweden from './img/alaiba_sweden.jpg';
-import alaibaSweden2 from './img/alaiba2.webp';
-import alaibaSweden3 from './img/alaiba3.webp';
-import ionita from './img/ionita.jpg';
-import ionitaDiagram from './img/ionita_diagram.webp';
+import wheat from '../img/wheat.jpg';
+import energy from '../img/energia.jpg';
+import cebanGas from '../img/ceban_gas.jpg';
+import minfin from '../img/minfin.jpg';
+import spanuTreatment from '../img/spanu_treatment.jpg';
+import alaibaSweden from '../img/alaiba_sweden.jpg';
+import alaibaSweden2 from '../img/alaiba2.webp';
+import alaibaSweden3 from '../img/alaiba3.webp';
+import ionita from '../img/ionita.jpg';
+import ionitaDiagram from '../img/ionita_diagram.webp';
 
 //world
-import navalny from './img/navalny.jpg';
-import tiktok from './img/tiktok.jpg';
-import qatarAir from './img/qatar_air.jpg';
-import turkeyTax from './img/turkey_tax.jpg';
-import romaniaImfl from './img/romania_infl.jpg';
-import smigal from './img/smigal.jpg';
-import zelensky from './img/zelensky.jpg';
-import bidenCouples from './img/biden_couples.jpg';
-import belarusNotWest from './img/belarus_not_west.jpg';
-import podolyakMask from './img/podolyak_mask.jpg';
+import navalny from '../img/navalny.jpg';
+import tiktok from '../img/tiktok.jpg';
+import qatarAir from '../img/qatar_air.jpg';
+import turkeyTax from '../img/turkey_tax.jpg';
+import romaniaImfl from '../img/romania_infl.jpg';
+import smigal from '../img/smigal.jpg';
+import zelensky from '../img/zelensky.jpg';
+import bidenCouples from '../img/biden_couples.jpg';
+import belarusNotWest from '../img/belarus_not_west.jpg';
+import podolyakMask from '../img/podolyak_mask.jpg';
 
 //sport
-import messi from './img/messi.jpg';
-import arghentinaTeam from './img/arghentina_team.jpg'
-import arghentinaTeam2 from './img/arghentina_team2.webp';
-import arghentinaTeam3 from './img/arghentina_team3.webp';
-import footballChisinau from './img/chisinau_football.jpg';
-import ronaldu from './img/ronaldu.jpg';
-import rubicon from './img/rubicon.webp';
-import arghentinaCroatia from './img/croatia_arghentina.jpg';
+import messi from '../img/messi.jpg';
+import arghentinaTeam from '../img/arghentina_team.jpg'
+import arghentinaTeam2 from '../img/arghentina_team2.webp';
+import arghentinaTeam3 from '../img/arghentina_team3.webp';
+import footballChisinau from '../img/chisinau_football.jpg';
+import ronaldu from '../img/ronaldu.jpg';
+import rubicon from '../img/rubicon.webp';
+import arghentinaCroatia from '../img/croatia_arghentina.jpg';
 
 
 

@@ -1,8 +1,9 @@
-import React, { useState, useRef, useReducer, useEffect } from 'react';
+import React, { useState, useRef, useReducer, useEffect, useContext } from 'react';
 
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
+import Context from '../../store/context';
 import useInput from '../../hooks/use-input';
 import styles from './NewArticle.module.css';
 
@@ -61,6 +62,8 @@ const filesReducer = (state, action) => {
 
 const NewArticle = props => {
   const [formIsValid, setFormIsValid] = useState(false);
+
+  const ctx = useContext(Context);
 
   const {
     value: enteredKey,
@@ -226,7 +229,7 @@ const NewArticle = props => {
           newArticle.images.push(imageData);
         });
 
-        props.addNewArticle(newArticle);
+        ctx.addArticleHandler(newArticle, key);
 
         resetKeyHandler();
         resetHeadingHandler();
