@@ -54,27 +54,10 @@ const Comments = props => {
 
   const addCommentHandler = (comment) => {
     dispatchComments({ type: 'ADD_COMMENT', comment: comment });
-    /*
-    COMMENTS[commentIndex].comments.push(comment);
-    setCommentsList(prevCommentsList => {
-      return [...prevCommentsList, comment];
-    });
-    */
   };
 
   const removeCommentHandler = (id) => {
     dispatchComments({ type: 'REMOVE_COMMENT', id: id })
-/*
-    const removedCommentIndex = commentsList.findIndex(elem => {
-      return elem.id === +id;
-    });
-    COMMENTS[commentIndex].comments.splice(removedCommentIndex, 1);
-    setCommentsList(prevCommentsList => {
-      const newCommentsList = [...prevCommentsList];
-      newCommentsList.splice(removedCommentIndex, 1);
-      return newCommentsList;
-    });
-    */
   };
 
   let lastId;
