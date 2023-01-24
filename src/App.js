@@ -37,8 +37,7 @@ function App() {
 
     setContent(prevContent => {
       return [...prevContent, article].sort(sortDateDesc);
-    })
-    console.log(content);
+    });
   };
 
   return (
