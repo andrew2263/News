@@ -1,6 +1,20 @@
+import React, { useContext } from 'react';
+import { useParams } from 'react-router-dom';
+
+import Context from '../../store/context';
 import styles from './ArticleContent.module.css';
 
-const ArticleContent = props => {
+const ArticleContent = () => {
+  const params = useParams();
+  const { newsId } = params;
+
+  const ctx = useContext(Context);
+
+  const item = ctx.content[ctx.content.findIndex(el => {
+    return el.key === newsId;
+  })];
+
+
   const articleText = (text) => text.map(text => {
     return (
       <p key={Math.random()}>{ text }</p>
@@ -22,16 +36,16 @@ const ArticleContent = props => {
   return (
     <section>
       <article>
-        <h2>{ props.content.heading }</h2>
-        <p>{ props.content.briefText }</p>
+        <h2>{ item.heading }</h2>
+        <p>{ item.briefText }</p>
         <div className={styles['article__img-wrapper']}>
-          { newsImg(props.content.images, 0, 1) }
-          { newsImgText(props.content.images, 0, 1) }
+          { newsImg(item.images, 0, 1) }
+          { newsImgText(item.images, 0, 1) }
         </div>
-        { articleText(props.content.text) }
+        { articleText(item.text) }
         <div className={styles['article__img-wrapper']}>
-          { newsImg(props.content.images, 1) }
-          { newsImgText(props.content.images, 1) }
+          { newsImg(item.images, 1) }
+          { newsImgText(item.images, 1) }
         </div>
       </article>
     </section>

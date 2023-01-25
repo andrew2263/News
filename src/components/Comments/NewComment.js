@@ -1,12 +1,15 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
+import Context from '../../store/context';
 import styles from './NewComment.module.css';
 
 const NewComment = props => {
   const params = useParams();
 
   const { newsId } = params;
+
+  const ctx = useContext(Context);
 
   const nameInputRef = useRef();
   const textInputRef = useRef();
@@ -21,7 +24,7 @@ const NewComment = props => {
       text: enteredText,
       date: new Date()
     };
-    props.onAddComment(comment, newsId);
+    ctx.addCommentHandler(comment, newsId);
     nameInputRef.current.value = '';
     textInputRef.current.value = '';
   };

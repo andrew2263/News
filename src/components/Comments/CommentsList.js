@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 
+import Context from "../../store/context";
 import styles from './CommentsList.module.css';
 
 const CommentsList = props => {
@@ -8,9 +9,11 @@ const CommentsList = props => {
 
   const { newsId } = params;
 
+  const ctx = useContext(Context);
+
   const deleteHandler = event => {
     event.preventDefault();
-    props.onRemoveComment(event.target.value, newsId);
+    ctx.removeCommentHandler(event.target.value, newsId);
   }
 
   return (

@@ -60,7 +60,7 @@ const filesReducer = (state, action) => {
   return { value: '', files: '', isValid: false, isTouched: true };
 };
 
-const NewArticle = props => {
+const NewArticle = () => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   const ctx = useContext(Context);

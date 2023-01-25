@@ -1,14 +1,18 @@
 import React, { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 
 import styles from './Comments.module.css';
 import NewComment from './NewComment';
 import CommentsList from './CommentsList';
 import Context from '../../store/context';
 
-const Comments = props => {
+const Comments = () => {
+  const params = useParams();
+  const { newsId } = params;
+
   const ctx = useContext(Context);
 
-  const commentIndex = ctx.comments.findIndex(elem => elem.key === props.commentKey);
+  const commentIndex = ctx.comments.findIndex(elem => elem.key === newsId);
 
   const commentsList = ctx.comments[commentIndex].comments;
 
@@ -26,14 +30,12 @@ const Comments = props => {
         <h3>Комментарии</h3>
         { commentsList.length ? <CommentsList
           commentData={ commentsList }
-          onRemoveComment = { ctx.removeCommentHandler }
         /> : '' }
         { !commentsList.length && <p>
           Комментариев пока нет.
         </p> }
         <NewComment
           id={ lastId + 1 }
-          onAddComment={ ctx.addCommentHandler }
         />
       </article>
     </section>
