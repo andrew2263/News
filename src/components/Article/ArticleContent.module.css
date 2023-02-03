@@ -1,3 +1,28 @@
 .article__img-wrapper img {
   width: 940px;
 }
+
+.article__date {
+  display: block;
+  color: #666666;
+  font-size: 14px;
+  font-weight: 300;
+  margin-bottom: 25px;
+}
+
+.article__brief-text {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.article__text {
+  font-weight: 500;
+}
+
+.article__img-text {
+  margin-top: 5px;
+  margin-bottom: 25px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #777777;
+}

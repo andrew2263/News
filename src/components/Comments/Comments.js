@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import styles from './Comments.module.css';
+import Container from '../Layout/Container';
 import NewComment from './NewComment';
 import CommentsList from './CommentsList';
 import Context from '../../store/context';
@@ -26,18 +27,20 @@ const Comments = () => {
 
   return (
     <section>
-      <article>
-        <h3>Комментарии</h3>
-        { commentsList.length ? <CommentsList
-          commentData={ commentsList }
-        /> : '' }
-        { !commentsList.length && <p>
-          Комментариев пока нет.
-        </p> }
-        <NewComment
-          id={ lastId + 1 }
-        />
-      </article>
+      <Container>
+        <article>
+          <h3>Комментарии</h3>
+          { commentsList.length ? <CommentsList
+            commentData={ commentsList }
+          /> : '' }
+          { !commentsList.length && <p>
+            Комментариев пока нет.
+          </p> }
+          <NewComment
+            id={ lastId + 1 }
+          />
+        </article>
+      </Container>
     </section>
   );
 };

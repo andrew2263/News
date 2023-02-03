@@ -1,47 +1,65 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+import logo from '../../../logo.png';
+import Container from '../Container';
+
 import styles from './Header.module.css';
 
 const Header = (props) => {
-  const onButtonClick = event => {
-    props.onChange(event.target.value);
-  }
-
   return (
     <header className={ styles.header }>
-      <div>
-        <NavLink to="/index">
-          LOGO
-        </NavLink>
-      </div>
-      <nav className={ styles.nav }>
-        <ul className={ styles['header-list'] }>
-          <li className={ styles['header-item'] }>
-            <NavLink to="/politics">
-              Политика
+      <Container>
+        <div className={ styles['header__top'] }>
+          <button className={ styles['header__info'] }>
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div>
+            <NavLink to="/index">
+              <img src={ logo } alt='Moldova News' />
             </NavLink>
-          </li>
-          <li className={ styles['header-item'] }>
-            <NavLink to="/economics">
-              Экономика
+          </div>
+          <div>
+            Weather
+          </div>
+        </div>
+        <nav className={ styles['header__nav'] }>
+          <ul className={ styles['header__list'] }>
+            <li className={ styles['header__item'] }>
+              <NavLink to="/politics" activeClassName={ styles.active }>
+                Политика
+              </NavLink>
+            </li>
+            <li className={ styles['header__item'] }>
+              <NavLink to="/">
+                Война Россия — Украина
+              </NavLink>
+            </li>
+            <li className={ styles['header__item'] }>
+              <NavLink to="/economics" activeClassName={ styles.active }>
+                Экономика
+              </NavLink>
+            </li>
+            <li className={ styles['header__item'] }>
+              <NavLink to="/world" activeClassName={ styles.active }>
+                В мире
+              </NavLink>
+            </li>
+            <li className={ styles['header__item'] }>
+              <NavLink to="/sport" activeClassName={ styles.active }>
+                Спорт
+              </NavLink>
+            </li>
+          </ul>
+          <div className={ styles['header__add'] }>
+            <NavLink to="/newArticle" activeClassName={ styles.active }>
+              Добавить новость
             </NavLink>
-          </li>
-          <li className={ styles['header-item'] }>
-            <NavLink to="/world">
-              В мире
-            </NavLink>
-          </li>
-          <li className={ styles['header-item'] }>
-            <NavLink to="/sport">
-              Спорт
-            </NavLink>
-          </li>
-        </ul>
-        <NavLink to="/newArticle">
-          Добавить новость
-        </NavLink>
-      </nav>
+          </div>
+        </nav>
+      </Container>
     </header>
   );
 };

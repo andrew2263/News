@@ -9,13 +9,13 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="570"
+   width="100"
    height="100"
-   viewBox="0 0 150.8125 26.458331"
+   viewBox="0 0 26.458333 26.458331"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="logo.svg">
+   sodipodi:docname="logo2.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -25,20 +25,19 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.64"
-     inkscape:cx="262.9423"
-     inkscape:cy="-143.74683"
+     inkscape:zoom="3.6203867"
+     inkscape:cx="33.392031"
+     inkscape:cy="45.038172"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-text-baseline="false"
-     inkscape:window-width="959"
-     inkscape:window-height="1008"
-     inkscape:window-x="948"
-     inkscape:window-y="0"
+     inkscape:window-width="960"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="0"
-     units="px"
-     inkscape:pagecheckerboard="false" />
+     units="px" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -84,18 +83,14 @@
        cx="13.275437"
        cy="283.76489"
        rx="13.275437"
-       ry="13.23511"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       ry="13.23511" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:34.18824005px;line-height:1.25;font-family:'Fugaz One';-inkscape-font-specification:'Fugaz One';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.85470593"
        x="5.5606036"
        y="281.8334"
        id="text1267"
-       transform="scale(0.96609639,1.0350934)"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96"><tspan
+       transform="scale(0.96609639,1.0350934)"><tspan
          sodipodi:role="line"
          id="tspan1265"
          x="5.5606036"
@@ -104,15 +99,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.875px;line-height:1.25;font-family:'Russo One';-inkscape-font-specification:'Russo One';letter-spacing:0px;word-spacing:0px;fill:#f3f8f8;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="30.119699"
-       y="288.51831"
-       id="text824"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96"><tspan
+       x="-35.799824"
+       y="310.2966"
+       id="text824"><tspan
          sodipodi:role="line"
          id="tspan822"
-         x="30.119699"
-         y="288.51831"
+         x="-35.799824"
+         y="310.2966"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.875px;font-family:'Russo One';-inkscape-font-specification:'Russo One';fill:#f3f8f8;fill-opacity:1;stroke-width:0.26458332">Moldova News</tspan></text>
   </g>
 </svg>

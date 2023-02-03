@@ -18,6 +18,8 @@
 
 .control textarea {
   resize: none;
+  font-family: 'Arial', sans-serif;
+  font-size: 14px;
 }
 
 .brief {
@@ -44,8 +46,10 @@
   background-color: #505590;
   color: #fff;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   border-radius: 10px;
+  transition: all 0.5s;
 }
 
 .submitButton:hover {
@@ -61,5 +65,9 @@
 .invalidInfo {
   color: #ff0000;
   font-size: 14px;
+}
+
+.submitMsg {
+  font-size: 18px;
 }
 

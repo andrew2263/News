@@ -2,7 +2,9 @@ import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import Context from "../../store/context";
+import { parseDateMonthString } from "../NewsContent/NewsContent";
 import styles from './CommentsList.module.css';
+import del from '../../img/delete.svg';
 
 const CommentsList = props => {
   const params = useParams();
@@ -22,15 +24,20 @@ const CommentsList = props => {
         return (
           <li key={ comment.id } className={styles.comment}>
             <div className={styles.nameDate}>
-              <p>{ comment.name }</p>
-              <p className={ styles.date }>
-                { comment.date.getDate() }.{ comment.date.getMonth() + 1 }.{ comment.date.getFullYear() } { comment.date.getHours() }:{ comment.date.getMinutes() }
-              </p>
+              <p className={ styles.name }>{ comment.name }</p>
+              <div className={ styles.dateDelete }>
+                <button
+                  className={ styles.delButton }
+                  type="button"
+                  value={ comment.id }
+                  onClick={ deleteHandler }
+                />
+                <p className={ styles.date }>
+                  { parseDateMonthString(comment.date) }
+                </p>
+              </div>
             </div>
             <p>{ comment.text }</p>
-            <button type="button" value={ comment.id } onClick={ deleteHandler }>
-              Удалить комментарий
-            </button>
           </li>
         );
       }) }

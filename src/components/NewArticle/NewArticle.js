@@ -3,6 +3,8 @@ import React, { useState, useRef, useReducer, useEffect, useContext } from 'reac
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
+import Container from '../Layout/Container';
+import Modal from '../UI/Modal';
 import Context from '../../store/context';
 import useInput from '../../hooks/use-input';
 import styles from './NewArticle.module.css';
@@ -173,6 +175,7 @@ const NewArticle = () => {
   }, [keyIsValid, headingIsValid, briefTextIsValid, textIsValid, fileDescriptionIsValid, cathegoryIsValid, priorityIsValid, filesIsValid]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
 
   const submitHandler = event => {
     event.preventDefault();
@@ -240,8 +243,9 @@ const NewArticle = () => {
         resetFilesHandler();
         resetFileDescriptionHandler();
 
-        alert('Форма отправлена!');
+        //alert('Форма отправлена!');
         setIsSubmitting(false);
+        setDidSubmit(true);
       })();
     } else if (!keyIsValid) {
       articleKeyRef.current.focus();
@@ -262,169 +266,186 @@ const NewArticle = () => {
     }
   };
 
+  const modalCloseHandler = () => {
+    setDidSubmit(false);
+  }
+
   return (
-    <section>
-      <article>
-        <h2>Добавить новость</h2>
-        <form onSubmit={ submitHandler }>
-          <div className={ styles.control }>
-            {
-              keyHasError &&
-              <p className={ styles.invalidInfo }>
-                Ключ может содержать только латинские буквы в нижнем регистре, цифры, символы "-" и "_" без пробелов. Минимальное число символов — 5, максимальное — 50.
-              </p>
-            }
-            <label htmlFor="article_key">Ключ</label>
-            <input
-              type="text"
-              id="article_key"
-              ref={ articleKeyRef }
-              value={enteredKey}
-              onChange={keyChangeHandler}
-              onBlur={validateKeyHandler}
-            />
-          </div>
-          <div className={ styles.control }>
-            {
-              headingHasError &&
-              <p className={ styles.invalidInfo }>
-                Заголовок может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”.  Минимальное число символов — 50, максимальное — 100.
-              </p>
-            }
-            <label htmlFor="article_heading">Заголовок</label>
-            <input
-              type="text"
-              id="article_heading"
-              ref={ articleHeadingRef }
-              value={enteredHeading}
-              onChange={headingChangeHandler}
-              onBlur={validateHeadingHandler}
-            />
-          </div>
-          <div className={ styles.control }>
-            {
-              briefTextHasError &&
-              <p className={ styles.invalidInfo }>
-                Краткое описание может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 120, максимальное — 250.
-              </p>
-            }
-            <label htmlFor="article_brief_text">Краткое описание</label>
-            <textarea
-              className={ styles.brief }
-              id="article_brief_text"
-              ref={ articleBriefTextRef }
-              value={enteredBriefText}
-              onChange={briefTextChangeHandler}
-              onBlur={validateBriefTextHandler}
-            />
-          </div>
-          <div className={ styles.control }>
-            {
-              textHasError &&
-              <p className={ styles.invalidInfo }>
-                Текст новости может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 300.
-              </p>
-            }
-            <label htmlFor="article_text">Текст новости</label>
-            <textarea
-              className={ styles.articleText }
-              id="article_text"
-              ref={ articleTextRef }
-              value={enteredText}
-              onChange={textChangeHandler}
-              onBlur={validateTextHandler}
-            />
-          </div>
-          <div className={ styles.select }>
-            {
-              cathegoryHasError &&
-              <p className={ styles.invalidInfo }>
-                Выберите категорию новости.
-              </p>
-            }
-            <label htmlFor="cathegory">Категория</label>
-            <select
-              id="cathegory"
-              name="cathegory"
-              ref={ articleCathegoryRef }
-              value={selectedCathegory}
-              onChange={cathegoryChangeHandler}
-              onBlur={validateCathegoryHandler}
-            >
-              <option value="" hidden disabled>Выберите категорию</option>
-              <option value="politics">Политика</option>
-              <option value="economy">Экономика</option>
-              <option value="world">В мире</option>
-              <option value="sport">Спорт</option>
-            </select>
-          </div>
-          <div className={ styles.select }>
-            {
-              priorityHasError &&
-              <p className={ styles.invalidInfo }>
-                Выберите приоритет новости.
-              </p>
-            }
-            <label htmlFor="priority">Приоритет</label>
-            <select
-              id="priority"
-              name="priority"
-              ref={ articlePriorityRef }
-              value={selectedPriority}
-              onChange={priorityChangeHandler}
-              onBlur={validatePriorityHandler}
-            >
-              <option value="" hidden disabled>Выберите приоритет</option>
-              <option value="4">4</option>
-              <option value="3">3</option>
-              <option value="2">2</option>
-              <option value="1">1</option>
-            </select>
-          </div>
-          <div className={ styles.fileInput }>
-            {
-              !filesIsValid && filesIsTouched &&
-              <p className={ styles.invalidInfo }>
-                Загрузите файлы с расширением .png, .jpg или .webp.
-              </p>
-            }
-            <input
-              name="userfiles"
-              id="userfiles"
-              type="file"
-              multiple
-              accept="image/png, image/jpeg, .webp"
-              ref={ filesRef }
-              value={filesState.value}
-              onChange={filesChangeHandler}
-              onBlur={validateFilesHandler}
-            />
-            <div className={ styles.control }>
-              {
-                fileDescriptionHasError &&
-                <p className={ styles.invalidInfo }>
-                  Описание изображения может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 50, максимальное — 200.
-                </p>
-              }
-              <label htmlFor="files_description">Описание изображения</label>
-              <textarea
-                className={ styles.brief }
-                id="files_description"
-                ref={ filesDescriptionRef }
-                required
-                value={enteredFileDescription}
-                onChange={fileDescriptionChangeHandler}
-                onBlur={validateFileDescriptionHandler}
-              />
-            </div>
-          </div>
-          <button type="submit" className={ styles.submitButton } disabled={ !formIsValid }>
-            Добавить новость
-          </button>
-        </form>
-        { isSubmitting && <p>Форма отправляется...</p> }
-      </article>
-    </section>
+    <React.Fragment>
+      { isSubmitting && (
+        <Modal>
+          <p className={ styles.submitMsg }>Форма отправляется...</p>
+        </Modal>
+      ) }
+      { didSubmit && (
+        <Modal onClose={ modalCloseHandler }>
+          <p className={ styles.submitMsg }>Форма отправлена</p>
+        </Modal>
+      ) }
+      <section>
+        <Container>
+          <article>
+            <h2>Добавить новость</h2>
+            <form onSubmit={ submitHandler }>
+              <div className={ styles.control }>
+                {
+                  keyHasError &&
+                  <p className={ styles.invalidInfo }>
+                    Ключ может содержать только латинские буквы в нижнем регистре, цифры, символы "-" и "_" без пробелов. Минимальное число символов — 5, максимальное — 50.
+                  </p>
+                }
+                <label htmlFor="article_key">Ключ</label>
+                <input
+                  type="text"
+                  id="article_key"
+                  ref={ articleKeyRef }
+                  value={enteredKey}
+                  onChange={keyChangeHandler}
+                  onBlur={validateKeyHandler}
+                />
+              </div>
+              <div className={ styles.control }>
+                {
+                  headingHasError &&
+                  <p className={ styles.invalidInfo }>
+                    Заголовок может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”.  Минимальное число символов — 50, максимальное — 100.
+                  </p>
+                }
+                <label htmlFor="article_heading">Заголовок</label>
+                <input
+                  type="text"
+                  id="article_heading"
+                  ref={ articleHeadingRef }
+                  value={enteredHeading}
+                  onChange={headingChangeHandler}
+                  onBlur={validateHeadingHandler}
+                />
+              </div>
+              <div className={ styles.control }>
+                {
+                  briefTextHasError &&
+                  <p className={ styles.invalidInfo }>
+                    Краткое описание может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 120, максимальное — 250.
+                  </p>
+                }
+                <label htmlFor="article_brief_text">Краткое описание</label>
+                <textarea
+                  className={ styles.brief }
+                  id="article_brief_text"
+                  ref={ articleBriefTextRef }
+                  value={enteredBriefText}
+                  onChange={briefTextChangeHandler}
+                  onBlur={validateBriefTextHandler}
+                />
+              </div>
+              <div className={ styles.control }>
+                {
+                  textHasError &&
+                  <p className={ styles.invalidInfo }>
+                    Текст новости может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 300.
+                  </p>
+                }
+                <label htmlFor="article_text">Текст новости</label>
+                <textarea
+                  className={ styles.articleText }
+                  id="article_text"
+                  ref={ articleTextRef }
+                  value={enteredText}
+                  onChange={textChangeHandler}
+                  onBlur={validateTextHandler}
+                />
+              </div>
+              <div className={ styles.select }>
+                {
+                  cathegoryHasError &&
+                  <p className={ styles.invalidInfo }>
+                    Выберите категорию новости.
+                  </p>
+                }
+                <label htmlFor="cathegory">Категория</label>
+                <select
+                  id="cathegory"
+                  name="cathegory"
+                  ref={ articleCathegoryRef }
+                  value={selectedCathegory}
+                  onChange={cathegoryChangeHandler}
+                  onBlur={validateCathegoryHandler}
+                >
+                  <option value="" hidden disabled>Выберите категорию</option>
+                  <option value="politics">Политика</option>
+                  <option value="economy">Экономика</option>
+                  <option value="world">В мире</option>
+                  <option value="sport">Спорт</option>
+                </select>
+              </div>
+              <div className={ styles.select }>
+                {
+                  priorityHasError &&
+                  <p className={ styles.invalidInfo }>
+                    Выберите приоритет новости.
+                  </p>
+                }
+                <label htmlFor="priority">Приоритет</label>
+                <select
+                  id="priority"
+                  name="priority"
+                  ref={ articlePriorityRef }
+                  value={selectedPriority}
+                  onChange={priorityChangeHandler}
+                  onBlur={validatePriorityHandler}
+                >
+                  <option value="" hidden disabled>Выберите приоритет</option>
+                  <option value="4">4</option>
+                  <option value="3">3</option>
+                  <option value="2">2</option>
+                  <option value="1">1</option>
+                </select>
+              </div>
+              <div className={ styles.fileInput }>
+                {
+                  !filesIsValid && filesIsTouched &&
+                  <p className={ styles.invalidInfo }>
+                    Загрузите файлы с расширением .png, .jpg или .webp.
+                  </p>
+                }
+                <input
+                  name="userfiles"
+                  id="userfiles"
+                  type="file"
+                  multiple
+                  accept="image/png, image/jpeg, .webp"
+                  ref={ filesRef }
+                  value={filesState.value}
+                  onChange={filesChangeHandler}
+                  onBlur={validateFilesHandler}
+                />
+                <div className={ styles.control }>
+                  {
+                    fileDescriptionHasError &&
+                    <p className={ styles.invalidInfo }>
+                      Описание изображения может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 50, максимальное — 200.
+                    </p>
+                  }
+                  <label htmlFor="files_description">Описание изображения</label>
+                  <textarea
+                    className={ styles.brief }
+                    id="files_description"
+                    ref={ filesDescriptionRef }
+                    required
+                    value={enteredFileDescription}
+                    onChange={fileDescriptionChangeHandler}
+                    onBlur={validateFileDescriptionHandler}
+                  />
+                </div>
+              </div>
+              <button type="submit" className={ styles.submitButton } disabled={ !formIsValid }>
+                Добавить новость
+              </button>
+            </form>
+          </article>
+        </Container>
+      </section>
+    </React.Fragment>
   )
 };
 

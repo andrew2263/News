@@ -39,17 +39,23 @@ const NewComment = props => {
     <form onSubmit={ submitHandler }>
       <div className={ styles.name }>
         <label htmlFor="name">Введите имя</label>
-        <input id="name" type="text" ref={ nameInputRef } />
+        <input
+          id="name"
+          type="text"
+          ref={ nameInputRef }
+          required
+        />
       </div>
       <textarea className={ styles.text }
         placeholder="Ведите комментарий"
         ref={ textInputRef }
+        required
       />
       <div>
         <button type="submit" className={ styles.submitButton }>
           Отправить комментарий
         </button>
-        <button type="button" onClick={ onBtnCleanHAndler }>
+        <button type="button" className={ styles.clearButton } onClick={ onBtnCleanHAndler }>
           Очистить
         </button>
       </div>

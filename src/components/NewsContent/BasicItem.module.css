@@ -4,6 +4,15 @@
   justify-content: flex-start;
 }
 
+.news__content-info_visited {
+  opacity: 0.65;
+}
+
+.news__content-heading a {
+  text-decoration: none;
+  color: #000000;
+}
+
 .news__img-wrapper {
   width: 260px;
   margin-right: 40px;
@@ -17,4 +26,12 @@
   font-size: 18px;
   line-height: 24px;
   padding-right: 40px;
+  font-weight: 500;
+}
+
+.news__date {
+  display: block;
+  font-weight: 300;
+  color: #666666;
+  font-size: 14px;
 }

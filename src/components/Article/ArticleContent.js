@@ -2,7 +2,9 @@ import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Context from '../../store/context';
+import Container from '../Layout/Container';
 import styles from './ArticleContent.module.css';
+import { parseDateMonthString } from '../NewsContent/NewsContent';
 
 const ArticleContent = () => {
   const params = useParams();
@@ -17,7 +19,9 @@ const ArticleContent = () => {
 
   const articleText = (text) => text.map(text => {
     return (
-      <p key={Math.random()}>{ text }</p>
+      <p key={Math.random()} className={ styles['article__text'] }>
+        { text }
+      </p>
     );
   });
   
@@ -29,25 +33,34 @@ const ArticleContent = () => {
   
   const newsImgText = (images, start, end) => images.slice(start, end).map(image => {
     return (
-      <p key={Math.random()}>{ image.text }</p>
+      <p key={Math.random()} className={ styles['article__img-text'] }>
+        { image.text }
+      </p>
     )
   });
 
   return (
     <section>
-      <article>
-        <h2>{ item.heading }</h2>
-        <p>{ item.briefText }</p>
-        <div className={styles['article__img-wrapper']}>
-          { newsImg(item.images, 0, 1) }
-          { newsImgText(item.images, 0, 1) }
-        </div>
-        { articleText(item.text) }
-        <div className={styles['article__img-wrapper']}>
-          { newsImg(item.images, 1) }
-          { newsImgText(item.images, 1) }
-        </div>
-      </article>
+      <Container>
+        <article>
+          <h2>{ item.heading }</h2>
+          <p className={ styles['article__brief-text'] }>
+            { item.briefText }
+          </p>
+          <time className={ styles['article__date'] }>
+            { parseDateMonthString(item.date) }
+          </time>
+          <div className={styles['article__img-wrapper']}>
+            { newsImg(item.images, 0, 1) }
+            { newsImgText(item.images, 0, 1) }
+          </div>
+          { articleText(item.text) }
+          <div className={styles['article__img-wrapper']}>
+            { newsImg(item.images, 1) }
+            { newsImgText(item.images, 1) }
+          </div>
+        </article>
+      </Container>
     </section>
   );
 };

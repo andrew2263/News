@@ -6,14 +6,10 @@ import Header from './Header/Header';
 const Layout = props => {
   return (
     <Fragment>
-      <div className={ styles.container }>
-        <Header />
-      </div>
-      <div className={ styles.container }>
-        <main>
-          { props.children }
-        </main>
-      </div>
+      <Header />
+      <main>
+        { props.children }
+      </main>
     </Fragment>
   )
 };

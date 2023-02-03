@@ -9,6 +9,33 @@
   justify-content: space-between;
 }
 
+.name {
+  font-weight: 600;
+}
+
+.dateDelete {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .date {
   color: #777;
+}
+
+.delButton {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  background-image: url(../../img/delete.svg);
+  background-size: cover;
+  margin-right: 25px;
+  transition: all 500ms;
+}
+
+.delButton:hover {
+  opacity: 0.5;
+  transition: all 500ms;
 }

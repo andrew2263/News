@@ -1,14 +1,105 @@
+@font-face {
+  font-family: "Onest";
+  src: url("../src/fonts/WOFF/OnestMedium1602-hint.woff") format("woff");
+  src: url("../src/fonts/TTF/OnestMedium1602-hint.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+  unicode-range: u+0030-0039, u+0400-045f, u+0490-0491, u+04b0-04b1, u+2116;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../src/fonts/WOFF/OnestRegular1602-hint.woff") format("woff");
+  src: url("../src/fonts/TTF/OnestRegular1602-hint.ttf") format("truetype");
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+  unicode-range: u+0030-0039, u+0400-045f, u+0490-0491, u+04b0-04b1, u+2116;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../src/fonts/WOFF/OnestBold1602-hint.woff") format("woff");
+  src: url("../src/fonts/TTF/OnestBold1602-hint.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+  unicode-range: u+0030-0039, u+0400-045f, u+0490-0491, u+04b0-04b1, u+2116;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../src/fonts/WOFF/OnestExtraBold1602-hint.woff") format("woff");
+  src: url("../src/fonts/TTF/OnestExtraBold1602-hint.ttf") format("truetype");
+  font-weight: 800;
+  font-display: swap;
+  font-style: normal;
+  unicode-range: u+0030-0039, u+0400-045f, u+0490-0491, u+04b0-04b1, u+2116;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../src/fonts/WOFF/OnestBlack1602-hint.woff") format("woff");
+  src: url("../src/fonts/TTF/OnestBlack1602-hint.ttf") format("truetype");
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
+  unicode-range: u+0030-0039, u+0400-045f, u+0490-0491, u+04b0-04b1, u+2116;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../src/fonts/WOFF/OnestThin1602-hint.woff") format("woff");
+  src: url("../src/fonts/TTF/OnestThin1602-hint.ttf") format("truetype");
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+  unicode-range: u+0030-0039, u+0400-045f, u+0490-0491, u+04b0-04b1, u+2116;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../src/fonts/WOFF/OnestLight1602-hint.woff") format("woff");
+  src: url("../src/fonts/TTF/OnestLight1602-hint.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+  unicode-range: u+0030-0039, u+0400-045f, u+0490-0491, u+04b0-04b1, u+2116;
+}
+
 body {
   margin: 0;
-  background-color: #ddd;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  min-width: 1180px;
+  font-family: 'Onest', 'Helvetica', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+section {
+  padding: 40px;
+  background-color: #ddd;
+}
+
+article {
+  background-color: #f0f0f0;
+  padding: 20px 40px;
+}
+
+ul {
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
 }
