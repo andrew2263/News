@@ -1,13 +1,14 @@
 .header {
-  padding: 40px;
-  background-color: #111;
+  padding: 40px 0;
+  background-color: #111111;
+  width: 100%;
 }
 
 .header__top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #fff;
+  color: #ffffff;
 }
 
 .header__info {

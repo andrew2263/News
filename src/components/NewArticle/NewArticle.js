@@ -273,12 +273,12 @@ const NewArticle = () => {
   return (
     <React.Fragment>
       { isSubmitting && (
-        <Modal>
+        <Modal type='status'>
           <p className={ styles.submitMsg }>Форма отправляется...</p>
         </Modal>
       ) }
       { didSubmit && (
-        <Modal onClose={ modalCloseHandler }>
+        <Modal type='status' onClose={ modalCloseHandler }>
           <p className={ styles.submitMsg }>Форма отправлена</p>
         </Modal>
       ) }

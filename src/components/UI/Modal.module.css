@@ -10,7 +10,7 @@
   background-color: rgba(0, 0, 0, 0.75);
 }
 
-.modal {
+.modalStatus {
   position: fixed;
   top: 20vh;
   left: 25%;
@@ -18,6 +18,20 @@
   background-color: #eeeeee;
   padding: 20px;
   border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+  animation: slide-down 300ms ease-out forwards;
+}
+
+.modalInfo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-width: 1180px;
+  background-color: #111111;
+  color: #ffffff;
+  padding: 70px 0 40px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 30;
   animation: slide-down 300ms ease-out forwards;

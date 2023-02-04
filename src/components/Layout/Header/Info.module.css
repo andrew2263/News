@@ -1,0 +1,90 @@
+.info__close {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 50px;
+  padding: 0;
+  position: relative;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.info__close span {
+  width: 42px;
+  height: 2px;
+  position: absolute;
+  top: 50%;
+  left: -15%;
+  background-color: #ffffff;
+  display: block;
+}
+
+.info__close span:first-child {
+  transform: rotate(45deg);
+}
+
+.info__close span:last-child {
+  transform: rotate(-45deg);
+}
+
+.info__content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info__rubrics {
+  margin-right: 50px;
+}
+
+.info__rubrics-name {
+  padding-right: 20px;
+  font-size: 18px;
+  font-weight: 400;
+  vertical-align: top;
+}
+
+.info__rubrics ul {
+  background-color: transparent;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.info__item {
+  margin: 0 20px 13px 0;
+}
+
+.info__rubrics a,
+.info__contacts-item a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.info__rubrics a:hover,
+.info__rubrics a:active,
+.info__contacts-item a:hover,
+.info__contacts-item a:active,
+.info__rubrics .active {
+  font-weight: 600;
+}
+
+.info__contacts-serv {
+  display: flex;
+  flex-direction: row;
+}
+
+.info__contacts-item:first-child {
+  margin-right: 40px;
+}
+
+.info__contacts-social ul {
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.info__contacts-social li {
+  margin-right: 20px;
+}

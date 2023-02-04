@@ -9,15 +9,25 @@ const Backdrop = props => {
   );
 };
 
-const ModalOverlay = props => {
+const ModalOverlayStatus = props => {
   return (
-    <div className={ styles.modal }>
+    <div className={ styles.modalStatus }>
       <div className={ styles.content }>
         { props.children }
       </div>
     </div>
   );
 };
+
+const ModalOverlayInfo = props => {
+  return (
+    <div className={ styles.modalInfo }>
+      <div className={ styles.contentInfo }>
+        { props.children }
+      </div>
+    </div>
+  )
+}
 
 const potralElement = document.getElementById('overlays');
 
@@ -27,8 +37,12 @@ const Modal = props => {
       { ReactDOM.createPortal(
         <Backdrop onClose={ props.onClose } />, potralElement
       ) }
-      { ReactDOM.createPortal(
-        <ModalOverlay>{ props.children }</ModalOverlay>,
+      { props.type === 'status' && ReactDOM.createPortal(
+        <ModalOverlayStatus>{ props.children }</ModalOverlayStatus>,
+        potralElement
+      ) }
+      { props.type === 'info' && ReactDOM.createPortal(
+        <ModalOverlayInfo>{ props.children }</ModalOverlayInfo>,
         potralElement
       ) }
     </Fragment>
