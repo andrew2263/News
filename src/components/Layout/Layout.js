@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 
-import styles from './Layout.module.css';
 import Header from './Header/Header';
+import Footer from './Footer/Footer';
 
 const Layout = props => {
   return (
@@ -10,6 +10,7 @@ const Layout = props => {
       <main>
         { props.children }
       </main>
+      <Footer />
     </Fragment>
   )
 };

@@ -1,0 +1,28 @@
+.footer {
+  padding: 40px 0;
+  background-color: #3a2d65;
+  color: #c9bbf8;
+}
+
+.footerWrap a {
+  text-decoration: none;
+  color: #c9bbf8;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.footerWrap a:hover,
+.footerWrap a:active {
+  font-weight: 600;
+  color: #dadaf0;
+}
+
+.footerLogo {
+  margin-bottom: 20px;
+}
+
+.footerWrap {
+  display: flex;
+  font-display: row;
+  justify-content: space-between;
+}

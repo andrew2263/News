@@ -1,6 +1,6 @@
 .header {
   padding: 40px 0;
-  background-color: #111111;
+  background-color: #101040;
   width: 100%;
 }
 
@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #ffffff;
+  color: #e2e2f7;
 }
 
 .header__info {
@@ -27,7 +27,13 @@
   display: block;
   width: 100%;
   height: 2px;
-  background-color: #ffffff;
+  background-color: #e2e2f7;
+  transition: all 0.5s;
+}
+
+.header__info:hover span {
+  height: 4px;
+  transition: all 0.5s;
 }
 
 .header__nav {
@@ -37,20 +43,20 @@
 }
 
 .header__nav ul {
-  background-color: #111;
+  background-color: transparent;
 }
 
 .header__nav a {
   text-decoration: none;
   font-size: 20px;
   font-weight: 500;
-  color: #fff;
+  color: #e2e2f7;
 }
 
 .header__nav a:hover,
 .header__nav a:active,
 .header__nav a.active {
-  color: #ccc;
+  color: #dadaf0;
   font-weight: 700;
 }
 

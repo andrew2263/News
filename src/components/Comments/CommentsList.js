@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import Context from "../../store/context";
 import { parseDateMonthString } from "../NewsContent/NewsContent";
 import styles from './CommentsList.module.css';
-import del from '../../img/delete.svg';
 
 const CommentsList = props => {
   const params = useParams();
@@ -19,7 +18,7 @@ const CommentsList = props => {
   }
 
   return (
-    <ul>
+    <ul className={ styles.commentList }>
       { props.commentData.map(comment => {
         return (
           <li key={ comment.id } className={styles.comment}>

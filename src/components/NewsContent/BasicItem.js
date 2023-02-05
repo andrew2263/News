@@ -7,6 +7,7 @@ import { parseDateMonthString } from './NewsContent';
 const BasicItem = props => {
   return (
     <li
+      className={ styles['news__content-item'] }
       key={ props.id }
     >
       <h2 className={ styles['news__content-heading'] }>

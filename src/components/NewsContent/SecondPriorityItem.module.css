@@ -8,11 +8,6 @@
   opacity: 0.65;
 }
 
-.news__content-info a {
-  text-decoration: none;
-  color: #000000;
-}
-
 .news__content-info_small {
   width: 220px;
 }

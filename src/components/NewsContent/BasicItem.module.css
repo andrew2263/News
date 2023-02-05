@@ -4,13 +4,12 @@
   justify-content: flex-start;
 }
 
-.news__content-info_visited {
-  opacity: 0.65;
+.news__content-heading {
+  margin-top: 0;
 }
 
-.news__content-heading a {
-  text-decoration: none;
-  color: #000000;
+.news__content-info_visited {
+  opacity: 0.65;
 }
 
 .news__img-wrapper {

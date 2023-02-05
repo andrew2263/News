@@ -1,3 +1,8 @@
+.commentList {
+  padding-left: 0;
+  background-color: #f0f0f0;
+}
+
 .comment {
   margin-bottom: 15px;
   padding-bottom: 15px;

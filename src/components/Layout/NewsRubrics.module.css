@@ -1,0 +1,14 @@
+.rubricList {
+  background-color: transparent;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.rubricItem {
+  margin: 0 20px 13px 0;
+}
+
+.rubricItem .active {
+  font-weight: 600;
+  color: #dadaf0;
+}

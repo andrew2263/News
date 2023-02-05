@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
-import styles from './Comments.module.css';
 import Container from '../Layout/Container';
 import NewComment from './NewComment';
 import CommentsList from './CommentsList';

@@ -1,0 +1,9 @@
+.contacts {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.contactsItem:first-child {
+  margin-right: 40px;
+}
