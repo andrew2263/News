@@ -14,7 +14,7 @@ const newsReducer = (state, action) => {
   });
 
   if (action.type === 'ADD_ARTICLE') {
-    const sortDateDesc = (el1, el2) => el2.date - el1.date;
+    
 
     const lastPriorityItem = {
       '1': 0,
@@ -27,8 +27,8 @@ const newsReducer = (state, action) => {
 
     if (article.priority !== 4 && typeof article.priority === 'number') {
       const arrPriority = state.content
-        .filter(elem => elem.priority === article.priority)
-        .sort(sortDateDesc);
+        .filter(elem => elem.priority === article.priority);
+        //.sort(sortDateDesc);
       const lowerPriorityArticle = arrPriority[lastPriorityItem[article.priority.toString()]];
       const lowerPriorityArticleIndex = state.content.findIndex(elem => {
         return elem.key === lowerPriorityArticle.key;
@@ -38,7 +38,8 @@ const newsReducer = (state, action) => {
       updatedContent = [...copyContent];
     }
 
-    updatedContent = [...updatedContent, article].sort(sortDateDesc);
+    updatedContent = [...updatedContent, article];
+    //.sort(sortDateDesc);
 
     const newComments = {
       key: action.key,

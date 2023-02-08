@@ -16,13 +16,13 @@ const isKey = value => {
 };
 
 const isLineText = (value, minLength, maxLength) => {
-  return /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”\n]+$/.test(value) &&
+  return /^[а-яА-ЯёЁa-zăîâĂÎșțȘȚA-Z0-9- .,!?%;:«»„”"()—\n]+$/.test(value) &&
     value.toString().length >= minLength &&
     value.toString().length <= maxLength;
 };
 
 const isText = (value, maxLength) => {
-  return /^[а-яА-ЯёЁa-zA-Z0-9- .,!?%;:«»„”\n]+$/.test(value) &&
+  return /^[а-яА-ЯёЁa-zăîâĂÎșțȘȚA-Z0-9- .,!?%;:«»„”"()—\n]+$/.test(value) &&
     value.toString().length >= maxLength
 };
 
@@ -243,7 +243,6 @@ const NewArticle = () => {
         resetFilesHandler();
         resetFileDescriptionHandler();
 
-        //alert('Форма отправлена!');
         setIsSubmitting(false);
         setDidSubmit(true);
       })();

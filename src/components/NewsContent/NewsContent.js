@@ -15,28 +15,94 @@ export const newsImg = (images) => images.map(image => {
 
 const getZero = time => {
   return time < 10 ? `0${ time }` : time;
-}
+};
 
-export const parseDateMonthString = (date) => {
+const dateWithoutTime = (date) => {
+  const newDate = new Date();
+  newDate.setDate(date.getDate());
+  newDate.setMonth(date.getMonth());
+  newDate.setFullYear(date.getFullYear());
+  newDate.setHours(0, 0, 0, 0);
+  return newDate;
+};
+
+const isToday = (date) => {
+  const today = new Date();
+  if (+dateWithoutTime(date) === +dateWithoutTime(today)) {
+    return true;
+  }
+
+  return false;
+};
+
+const isTomorrow = (date) => {
+  const tomorrow = +dateWithoutTime(new Date()) - 86400000;
+
+  if (+dateWithoutTime(date) === tomorrow) {
+    return true;
+  }
+
+  return false;
+};
+
+export const parseDateMonthString = (date, isTime = true) => {
   const monthToString = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
-  const textDate = `${ date.getDate() } ${ monthToString[date.getMonth()] } ${ date.getFullYear() }`;
+  let textDate;
+
+  if (isToday(date)) {
+    textDate = 'Сегодня';
+  }
+  if (isTomorrow(date)) {
+    textDate = 'Вчера';
+  }
+  if (!isToday(date) && !isTomorrow(date)) {
+    textDate = `${ date.getDate() } ${ monthToString[date.getMonth()] } ${ date.getFullYear() }`;  
+  }
+
   const textTime = `${ getZero(date.getHours()) }:${ getZero(date.getMinutes()) }`;
+
+  if (!isTime) {
+    return `${ textDate }`;
+  }
 
   return `${ textDate } ${ textTime }`;
 };
 
 export const parseDateMonthNumber = (date) => {
-  const textDate = `${ getZero(date.getDate()) }.${ getZero(date.getMonth() + 1) }.${ date.getFullYear() }`;
+  let textDate;
+
+  if (isToday(date)) {
+    textDate = 'Сегодня';
+  }
+  if (isTomorrow(date)) {
+    textDate = 'Вчера';
+  }
+  if (!isToday(date) && !isTomorrow(date)) {
+    textDate = `${ getZero(date.getDate()) }.${ getZero(date.getMonth() + 1) }.${ date.getFullYear() }`;
+  }
+
   const textTime = `${ getZero(date.getHours()) }:${ getZero(date.getMinutes()) }`;
 
   return `${ textDate } ${ textTime }`;
-}
+};
+
+const sortDateDesc = (el1, el2) => el2.date - el1.date;
 
 const NewsContent = (props) => {  
   const ctx = useContext(Context);
 
-  let newsList;
+  const content = ctx.content.sort(sortDateDesc);
+
+  const dates = [];
+  let earliestDate = dateWithoutTime(content[0].date);
+  dates.push(earliestDate);
+  content.forEach(item => {
+    if (+dateWithoutTime(item.date) !== +earliestDate) {
+      earliestDate = dateWithoutTime(item.date);
+      dates.push(earliestDate);
+    }
+  });
 
   const isAll = props.cathegory === 'all';
 
@@ -55,15 +121,28 @@ const NewsContent = (props) => {
         />
       );
     })
-  }
+  };
 
-  if (!isAll) {
-    newsList = mapItems(ctx.content.filter(item => item.cathegory === props.cathegory), BasicItem);
-  }
+  const newsContent = isAll ? content : content.filter(item => item.cathegory === props.cathegory);
 
-  if (isAll) {
-    newsList = mapItems(ctx.content, BasicItem);
-  }
+  let newsList = [];
+
+  dates.forEach(date => {
+    const contentForDate = newsContent.filter(item => +dateWithoutTime(item.date) === +date);
+    if (contentForDate.length) {
+      const newsForDate = (
+        <div key={ +date }>
+          <h3 className={ styles.date }>
+            { parseDateMonthString(date, false) }
+          </h3>
+          <ul>
+            { mapItems(contentForDate, BasicItem) }
+          </ul>
+        </div>
+      );
+      newsList = [...newsList, newsForDate];
+    }
+  });
 
   const headings = {
     'politics': 'Политика',
@@ -83,25 +162,23 @@ const NewsContent = (props) => {
           <div className={ `${ styles.content } ${ styles.priorityContent }` }>
             <ul className={ styles.firstPriority }>
               {
-                mapItems(ctx.content.filter(item => item.priority === 1), FirstPriorityItem)
+                mapItems(content.filter(item => item.priority === 1), FirstPriorityItem)
               }
             </ul>
             <ul className={ styles.secondPriority }>
               {
-                mapItems(ctx.content.filter(item => item.priority === 2), SecondPriorityItem)
+                mapItems(content.filter(item => item.priority === 2), SecondPriorityItem)
               }
             </ul>
             <ul className={ styles.secondPriority }>
               {
-                mapItems(ctx.content.filter(item => item.priority === 3), SecondPriorityItem)
+                mapItems(content.filter(item => item.priority === 3), SecondPriorityItem)
               }
             </ul>
           </div>
         }
         <div className={ styles.content }>
-          <ul>
-            { newsList }
-          </ul>
+          { newsList }
         </div>
       </Container>
     </section>

@@ -5,7 +5,6 @@ import NewArticle from './components/NewArticle/NewArticle';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import NewsProvider from './store/NewsProvider';
-import styles from './App.module.css';
 
 function App() {
   return (
