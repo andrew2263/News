@@ -2,7 +2,6 @@ import React from 'react';
 
 import Comments from '../Comments/Comments';
 import ArticleContent from './ArticleContent';
-import './Article.module.css';
 
 const Article = () => {
   return (

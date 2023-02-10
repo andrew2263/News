@@ -70,3 +70,37 @@
   font-size: 18px;
 }
 
+.modalButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.modalButton {
+  padding: 15px 20px;
+  background-color: #111111;
+  color: #f5f5f5;
+  font-weight: 400;
+  font-size: 18px;
+  border: none;
+  border-radius: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.modalButton:first-child {
+  margin-right: 30px;
+}
+
+.modalButton:hover {
+  opacity: 0.7;
+  font-weight: 500;
+  transition: all 0.5s;
+}
+
+.error {
+  font-size: 18px;
+  font-weight: 500;
+  color: #ff0000;
+}

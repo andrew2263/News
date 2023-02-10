@@ -21,7 +21,7 @@ const Info = props => {
                   Рубрики
                 </td>
                 <td>
-                  <NewsRubrics content='rubrics' />
+                  <NewsRubrics content='rubrics' onClose={ props.onClose } element='info' />
                 </td>
               </tr>
               <tr>
@@ -29,7 +29,7 @@ const Info = props => {
                   Сюжеты
                 </td>
                 <td>
-                  <NewsRubrics content='stories' />
+                  <NewsRubrics content='stories' onClose={ props.onClose } />
                 </td>
               </tr>
             </tbody>

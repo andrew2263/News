@@ -61,3 +61,14 @@ h1 {
   color: #5e5e5e;
   font-size: 24px;
 }
+
+.nonews {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.error {
+  font-size: 18px;
+  font-weight: 500;
+  color: #ff0000;
+}

@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { NavLink } from 'react-router-dom';
+
+import { scrollToTop } from '../../NewsContent/NewsContent';
 import NewsRubrics from '../NewsRubrics';
 import Contacts from '../Contacts';
 import Social from '../Social';
@@ -20,7 +22,7 @@ const Footer = () => {
                   <img src={ logo50 } alt='logo' />
                 </NavLink>
               </div>
-              <NewsRubrics content='rubrics' />
+              <NewsRubrics content='rubrics' onScroll={ scrollToTop } element='footer' />
               <Social />
               <p className={ styles.footerCopyright }>
                 © Moldova News 2021-2023

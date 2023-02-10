@@ -3,6 +3,7 @@ import React, { useState, useRef, useReducer, useEffect, useContext } from 'reac
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
+import { NavLink } from 'react-router-dom';
 import Container from '../Layout/Container';
 import Modal from '../UI/Modal';
 import Context from '../../store/context';
@@ -64,6 +65,10 @@ const filesReducer = (state, action) => {
 
 const NewArticle = () => {
   const [formIsValid, setFormIsValid] = useState(false);
+
+  useEffect(() => {
+    document.title = 'Добавить новость — Moldova News';
+  }, []);
 
   const ctx = useContext(Context);
 
@@ -176,6 +181,25 @@ const NewArticle = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
+
+  const formIsSumbitted = () => {
+    setIsSubmitting(false);
+    setDidSubmit(true);
+    resetKeyHandler();
+    resetHeadingHandler();
+    resetBriefTextHandler();
+    resettextHandler();
+    resetCathegoryHandler();
+    resetPriorityHandler();
+    resetFilesHandler();
+    resetFileDescriptionHandler();
+  };
+
+  const isError = (error) => {
+    setIsSubmitting(false);
+    setErrorMessage(error.message);
+  };
 
   const submitHandler = event => {
     event.preventDefault();
@@ -207,7 +231,7 @@ const NewArticle = () => {
         return urls;
       };
 
-      (async function () {
+      const addArticle = async () => {
         const urls = await uploadFiles();
         
         newArticle.key = key;
@@ -232,20 +256,10 @@ const NewArticle = () => {
           newArticle.images.push(imageData);
         });
 
-        ctx.addArticleHandler(newArticle, key);
+        ctx.addArticleHandler(newArticle, key, formIsSumbitted, isError);
+      };
 
-        resetKeyHandler();
-        resetHeadingHandler();
-        resetBriefTextHandler();
-        resettextHandler();
-        resetCathegoryHandler();
-        resetPriorityHandler();
-        resetFilesHandler();
-        resetFileDescriptionHandler();
-
-        setIsSubmitting(false);
-        setDidSubmit(true);
-      })();
+      addArticle();
     } else if (!keyIsValid) {
       articleKeyRef.current.focus();
     } else if (!headingIsValid) {
@@ -276,9 +290,26 @@ const NewArticle = () => {
           <p className={ styles.submitMsg }>Форма отправляется...</p>
         </Modal>
       ) }
+      {
+        errorMessage && (
+          <Modal type='status'>
+            <p className={ styles.error }>
+              ERROR: { errorMessage }
+            </p>
+          </Modal>
+        )
+      }
       { didSubmit && (
         <Modal type='status' onClose={ modalCloseHandler }>
           <p className={ styles.submitMsg }>Форма отправлена</p>
+          <div className={ styles.modalButtons }>
+            <button className={ styles.modalButton } onClick={ modalCloseHandler }>
+              OK
+            </button>
+            <NavLink className={ styles.modalButton } to='/'>
+              Перейти к новостям
+            </NavLink>
+          </div>
         </Modal>
       ) }
       <section>
@@ -372,7 +403,8 @@ const NewArticle = () => {
                 >
                   <option value="" hidden disabled>Выберите категорию</option>
                   <option value="politics">Политика</option>
-                  <option value="economy">Экономика</option>
+                  <option value="war">Война Россия — Украина</option>
+                  <option value="economics">Экономика</option>
                   <option value="world">В мире</option>
                   <option value="sport">Спорт</option>
                 </select>

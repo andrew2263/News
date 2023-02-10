@@ -20,6 +20,9 @@ function App() {
           <Route path="/politics" exact>
             <NewsContent cathegory="politics" />
           </Route>
+          <Route path="/war" exact>
+            <NewsContent cathegory="war" />
+          </Route>
           <Route path="/economics" exact>
             <NewsContent cathegory="economics" />
           </Route>
@@ -30,6 +33,9 @@ function App() {
             <NewsContent cathegory="sport" />
           </Route>
           <Route path="/politics/:newsId">
+            <Article />
+          </Route>
+          <Route path="/war/:newsId">
             <Article />
           </Route>
           <Route path="/economics/:newsId">

@@ -12,13 +12,13 @@ const FirstPriorityItem = props => {
     >
       <div className={ styles['news__content-info'] }>
         <div className={ styles['news__img-wrapper'] }>
-          <Link to={ `/${ props.cathegory }/${ props.id }` }>
+          <Link to={ `/${ props.cathegory }/${ props.id }` } onClick={ props.scroll }>
             { newsImg(props.images)[0] }
           </Link>
         </div>
         <div className={ styles['news__info'] }>
           <h2>
-            <Link to={ `/${ props.cathegory }/${ props.id }` }>
+            <Link to={ `/${ props.cathegory }/${ props.id }` } onClick={ props.scroll }>
               { props.heading }
             </Link>
           </h2>

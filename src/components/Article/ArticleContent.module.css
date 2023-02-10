@@ -26,3 +26,15 @@
   font-size: 14px;
   color: #777777;
 }
+
+.nonews {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.error {
+  font-size: 18px;
+  font-weight: 500;
+  color: #ff0000;
+}
+

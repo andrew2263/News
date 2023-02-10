@@ -17,7 +17,7 @@ const Header = (props) => {
 
   const closeInfoHandler = () => {
     setIsOpen(false);
-  }
+  };
 
   return (
     <React.Fragment>
@@ -55,7 +55,7 @@ const Header = (props) => {
                 </NavLink>
               </li>
               <li className={ styles['header__item'] }>
-                <NavLink to="/">
+                <NavLink to="/war" activeClassName={ styles.active }>
                   Война Россия — Украина
                 </NavLink>
               </li>

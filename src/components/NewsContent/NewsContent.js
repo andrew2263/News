@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import Context from '../../store/context';
 import styles from './NewsContent.module.css';
@@ -89,13 +89,54 @@ export const parseDateMonthNumber = (date) => {
 
 const sortDateDesc = (el1, el2) => el2.date - el1.date;
 
-const NewsContent = (props) => {  
+export const scrollToTop = () => {
+  window.scrollTo({
+    top: 170,
+    behavior: 'smooth'
+  });
+};
+
+const mapItems = (items, Item) => {
+  return items.map(item => {
+    return (
+      <Item
+        key={ Math.random() }
+        id={ item.key }
+        heading={ item.heading }
+        date={ item.date }
+        images={ item.images }
+        briefText={ item.briefText }
+        cathegory={ item.cathegory }
+        priority={ item.priority }
+        scroll={ scrollToTop }
+      />
+    );
+  })
+};
+
+const headings = {
+  'politics': 'Политика',
+  'economics': 'Экономика',
+  'war': 'Война Россия — Украина',
+  'world': 'В мире',
+  'sport': 'Спорт'
+};
+
+const NewsContent = (props) => {
+  useEffect(() => {
+    document.title = 'Новости Молдовы — Moldova News';
+  }, []);
+
   const ctx = useContext(Context);
 
   const content = ctx.content.sort(sortDateDesc);
 
+  const errorMessage = ctx.errorMessage['loadContent'];
+
+  const isContent = content.length ? true : false;
+
   const dates = [];
-  let earliestDate = dateWithoutTime(content[0].date);
+  let earliestDate = content.length ? dateWithoutTime(new Date(content[0].date)) : '';
   dates.push(earliestDate);
   content.forEach(item => {
     if (+dateWithoutTime(item.date) !== +earliestDate) {
@@ -105,23 +146,6 @@ const NewsContent = (props) => {
   });
 
   const isAll = props.cathegory === 'all';
-
-  const mapItems = (items, Item) => {
-    return items.map(item => {
-      return (
-        <Item
-          key={ Math.random() }
-          id={ item.key }
-          heading={ item.heading }
-          date={ item.date }
-          images={ item.images }
-          briefText={ item.briefText }
-          cathegory={ item.cathegory }
-          priority={ item.priority }
-        />
-      );
-    })
-  };
 
   const newsContent = isAll ? content : content.filter(item => item.cathegory === props.cathegory);
 
@@ -144,44 +168,58 @@ const NewsContent = (props) => {
     }
   });
 
-  const headings = {
-    'politics': 'Политика',
-    'economics': 'Экономика',
-    'world': 'В мире',
-    'sport': 'Спорт'
-  };
-
   return (
-    <section>
-      <Container>
-        <h1 className={ props.cathegory === 'all' ? 'visually-hidden' : '' }>
-          { headings[props.cathegory] }
-        </h1>
-        {
-          isAll &&
-          <div className={ `${ styles.content } ${ styles.priorityContent }` }>
-            <ul className={ styles.firstPriority }>
-              {
-                mapItems(content.filter(item => item.priority === 1), FirstPriorityItem)
-              }
-            </ul>
-            <ul className={ styles.secondPriority }>
-              {
-                mapItems(content.filter(item => item.priority === 2), SecondPriorityItem)
-              }
-            </ul>
-            <ul className={ styles.secondPriority }>
-              {
-                mapItems(content.filter(item => item.priority === 3), SecondPriorityItem)
-              }
-            </ul>
-          </div>
-        }
-        <div className={ styles.content }>
-          { newsList }
-        </div>
-      </Container>
-    </section>
+    <React.Fragment>
+      {
+        !isContent && errorMessage &&
+        <section>
+          <Container>
+            <p className={ styles.error }>
+              ERROR: { errorMessage }
+            </p>
+          </Container>
+        </section>
+      }
+      { !isContent && !errorMessage &&
+        <section>
+          <Container>
+            <p className={ styles.nonews }>Новости загружаются...</p>
+          </Container>
+        </section>
+      }
+      { isContent &&
+        <section>
+          <Container>
+            <h1 className={ props.cathegory === 'all' ? 'visually-hidden' : '' }>
+              { headings[props.cathegory] }
+            </h1>
+            {
+              isAll &&
+              <div className={ `${ styles.content } ${ styles.priorityContent }` }>
+                <ul className={ styles.firstPriority }>
+                  {
+                    mapItems(content.filter(item => item.priority === 1), FirstPriorityItem)
+                  }
+                </ul>
+                <ul className={ styles.secondPriority }>
+                  {
+                    mapItems(content.filter(item => item.priority === 2), SecondPriorityItem)
+                  }
+                </ul>
+                <ul className={ styles.secondPriority }>
+                  {
+                    mapItems(content.filter(item => item.priority === 3), SecondPriorityItem)
+                  }
+                </ul>
+              </div>
+            }
+            <div className={ styles.content }>
+              { newsList }
+            </div>
+          </Container>
+        </section>
+      }
+    </React.Fragment>
   );
 };
 

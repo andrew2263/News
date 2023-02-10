@@ -1,0 +1,10 @@
+.nocomments {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.error {
+  font-size: 18px;
+  font-weight: 500;
+  color: #ff0000;
+}

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Context from '../../store/context';
@@ -12,10 +12,17 @@ const ArticleContent = () => {
 
   const ctx = useContext(Context);
 
-  const item = ctx.content[ctx.content.findIndex(el => {
-    return el.key === newsId;
-  })];
+  const errorMessage = ctx.errorMessage['loadContent'];
 
+  const isContent = ctx.content.length ? true : false;
+
+  const item = isContent ? ctx.content[ctx.content.findIndex(el => {
+    return el.key === newsId;
+  })] : '';
+
+  useEffect(() => {
+    document.title = isContent ? `${ item.heading } — Moldova News` : 'Новости Молдовы — Moldova News';
+  }, [item, isContent]);
 
   const articleText = (text) => text.map(text => {
     return (
@@ -40,28 +47,49 @@ const ArticleContent = () => {
   });
 
   return (
-    <section>
-      <Container>
-        <article>
-          <h2>{ item.heading }</h2>
-          <p className={ styles['article__brief-text'] }>
-            { item.briefText }
-          </p>
-          <time className={ styles['article__date'] }>
-            { parseDateMonthString(item.date) }
-          </time>
-          <div className={styles['article__img-wrapper']}>
-            { newsImg(item.images, 0, 1) }
-            { newsImgText(item.images, 0, 1) }
-          </div>
-          { articleText(item.text) }
-          <div className={styles['article__img-wrapper']}>
-            { newsImg(item.images, 1) }
-            { newsImgText(item.images, 1) }
-          </div>
-        </article>
-      </Container>
-    </section>
+    <React.Fragment>
+      {
+        !isContent && errorMessage &&
+        <section>
+          <Container>
+            <p className={ styles.error }>
+              ERROR: { errorMessage }
+            </p>
+          </Container>
+        </section>
+      }
+      { !isContent && !errorMessage &&
+        <section>
+          <Container>
+            <p className={ styles.nonews }>Новость загружается...</p>
+          </Container>
+        </section>
+      }
+      { isContent &&
+        <section>
+          <Container>
+            <article>
+              <h2>{ item.heading }</h2>
+              <p className={ styles['article__brief-text'] }>
+                { item.briefText }
+              </p>
+              <time className={ styles['article__date'] }>
+                { parseDateMonthString(item.date) }
+              </time>
+              <div className={styles['article__img-wrapper']}>
+                { newsImg(item.images, 0, 1) }
+                { newsImgText(item.images, 0, 1) }
+              </div>
+              { articleText(item.text) }
+              <div className={styles['article__img-wrapper']}>
+                { newsImg(item.images, 1) }
+                { newsImgText(item.images, 1) }
+              </div>
+            </article>
+          </Container>
+        </section>
+      }
+    </React.Fragment>
   );
 };
 
