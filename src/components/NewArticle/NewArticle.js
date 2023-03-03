@@ -1,4 +1,4 @@
-import React, { useState, useRef, useReducer, useEffect, useContext } from 'react';
+import React, { useState, useReducer, useEffect, useContext } from 'react';
 
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -109,12 +109,12 @@ const NewArticle = () => {
   } = useInput(isText, 300);
 
   const {
-    value: selectedCathegory,
-    isValid: cathegoryIsValid,
-    hasError: cathegoryHasError,
-    valueChangeHandler: cathegoryChangeHandler,
-    inputBlurHandler: validateCathegoryHandler,
-    reset: resetCathegoryHandler
+    value: selectedCategory,
+    isValid: categoryIsValid,
+    hasError: categoryHasError,
+    valueChangeHandler: categoryChangeHandler,
+    inputBlurHandler: validateCategoryHandler,
+    reset: resetCategoryHandler
   } = useInput(isNotEmpty);
 
   const {
@@ -143,15 +143,6 @@ const NewArticle = () => {
     isTouched: false
   });
 
-  const articleKeyRef = useRef();
-  const articleHeadingRef = useRef();
-  const articleBriefTextRef = useRef();
-  const articleTextRef = useRef();
-  const articleCathegoryRef = useRef();
-  const articlePriorityRef = useRef();
-  const filesRef = useRef();
-  const filesDescriptionRef = useRef();
-
   const filesChangeHandler = event => {
     dispatchFiles({ type: 'USER_INPUT', val: event.target.value, files: event.target.files });
   };
@@ -170,14 +161,14 @@ const NewArticle = () => {
   useEffect(() => {
     const identifier = setTimeout(() => {
       setFormIsValid(
-        keyIsValid && headingIsValid && briefTextIsValid && textIsValid && fileDescriptionIsValid && cathegoryIsValid && priorityIsValid && filesIsValid
+        keyIsValid && headingIsValid && briefTextIsValid && textIsValid && fileDescriptionIsValid && categoryIsValid && priorityIsValid && filesIsValid
       );
     }, 500);
 
     return () => {
       clearTimeout(identifier);
     }
-  }, [keyIsValid, headingIsValid, briefTextIsValid, textIsValid, fileDescriptionIsValid, cathegoryIsValid, priorityIsValid, filesIsValid]);
+  }, [keyIsValid, headingIsValid, briefTextIsValid, textIsValid, fileDescriptionIsValid, categoryIsValid, priorityIsValid, filesIsValid]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
@@ -190,7 +181,7 @@ const NewArticle = () => {
     resetHeadingHandler();
     resetBriefTextHandler();
     resettextHandler();
-    resetCathegoryHandler();
+    resetCategoryHandler();
     resetPriorityHandler();
     resetFilesHandler();
     resetFileDescriptionHandler();
@@ -204,79 +195,63 @@ const NewArticle = () => {
   const submitHandler = event => {
     event.preventDefault();
 
-    if (formIsValid) {
-      setIsSubmitting(true);
+    setIsSubmitting(true);
 
-      const articleDate = new Date();
-      const newArticle = {};
+    const articleDate = new Date();
+    const newArticle = {};
 
-      const key = `${ enteredKey }-${ articleDate.getDate() }${ articleDate.getMonth() + 1 }${ articleDate.getFullYear() }-${ articleDate.getHours() }${ articleDate.getMinutes() }`;
+    const key = `${ enteredKey }-${ articleDate.getDate() }${ articleDate.getMonth() + 1 }${ articleDate.getFullYear() }-${ articleDate.getHours() }${ articleDate.getMinutes() }`;
 
-      const imageRefs = [];
-      const files = Array.from(filesState.files);
+    const imageRefs = [];
+    const files = Array.from(filesState.files);
 
-      files.forEach((element, index) => {
-        imageRefs[index] = ref(storage, `images/${ key }/${ element.name }`);
-      });
+    files.forEach((element, index) => {
+      imageRefs[index] = ref(storage, `images/${ key }/${ element.name }`);
+    });
 
-      const uploadFiles = async () => {
-        const urls = [];
+    const uploadFiles = async () => {
+      const urls = [];
 
-        for await (const [index, element] of files.entries()) {
-          await uploadBytes(imageRefs[index], element);
-          const url = await getDownloadURL(imageRefs[index]);
-          urls.push(url);
+      for await (const [index, element] of files.entries()) {
+        await uploadBytes(imageRefs[index], element);
+        const url = await getDownloadURL(imageRefs[index]);
+        urls.push(url);
+      }
+
+      return urls;
+    };
+
+    const addArticle = async () => {
+      const urls = await uploadFiles();
+      
+      newArticle.key = key;
+      newArticle.priority = +selectedPriority;
+      newArticle.category = selectedCategory;
+      newArticle.date = articleDate;
+      newArticle.heading = enteredHeading;
+      newArticle.briefText = enteredBriefText;
+      newArticle.text = enteredText.split('\n');
+      newArticle.images = [];
+      
+      urls.forEach((el, index) => {
+        const imageData = {
+          href: el,
+          text: ''
+        };
+
+        if (index === 0) {
+          imageData.text = enteredFileDescription;
         }
 
-        return urls;
-      };
+        newArticle.images.push(imageData);
+      });
 
-      const addArticle = async () => {
-        const urls = await uploadFiles();
-        
-        newArticle.key = key;
-        newArticle.priority = +selectedPriority;
-        newArticle.cathegory = selectedCathegory;
-        newArticle.date = articleDate;
-        newArticle.heading = enteredHeading;
-        newArticle.briefText = enteredBriefText;
-        newArticle.text = enteredText.split('\n');
-        newArticle.images = [];
-        
-        urls.forEach((el, index) => {
-          const imageData = {
-            href: el,
-            text: ''
-          };
+      // change forEach to map
 
-          if (index === 0) {
-            imageData.text = enteredFileDescription;
-          }
+      ctx.addArticleHandler(newArticle, key, formIsSumbitted, isError);
+    };
 
-          newArticle.images.push(imageData);
-        });
-
-        ctx.addArticleHandler(newArticle, key, formIsSumbitted, isError);
-      };
-
-      addArticle();
-    } else if (!keyIsValid) {
-      articleKeyRef.current.focus();
-    } else if (!headingIsValid) {
-      articleHeadingRef.current.focus();
-    } else if (!briefTextIsValid) {
-      articleBriefTextRef.current.focus();
-    } else if (!textIsValid) {
-      articleTextRef.current.focus();
-    } else if (!cathegoryIsValid) {
-      articleCathegoryRef.current.focus();
-    } else if (!priorityIsValid) {
-      articlePriorityRef.current.focus();
-    } else if (!filesIsValid) {
-      filesRef.current.focus();
-    } else {
-      filesDescriptionRef.current.focus();
-    }
+    addArticle();
   };
 
   const modalCloseHandler = () => {
@@ -328,7 +303,6 @@ const NewArticle = () => {
                 <input
                   type="text"
                   id="article_key"
-                  ref={ articleKeyRef }
                   value={enteredKey}
                   onChange={keyChangeHandler}
                   onBlur={validateKeyHandler}
@@ -345,7 +319,6 @@ const NewArticle = () => {
                 <input
                   type="text"
                   id="article_heading"
-                  ref={ articleHeadingRef }
                   value={enteredHeading}
                   onChange={headingChangeHandler}
                   onBlur={validateHeadingHandler}
@@ -362,7 +335,6 @@ const NewArticle = () => {
                 <textarea
                   className={ styles.brief }
                   id="article_brief_text"
-                  ref={ articleBriefTextRef }
                   value={enteredBriefText}
                   onChange={briefTextChangeHandler}
                   onBlur={validateBriefTextHandler}
@@ -379,7 +351,6 @@ const NewArticle = () => {
                 <textarea
                   className={ styles.articleText }
                   id="article_text"
-                  ref={ articleTextRef }
                   value={enteredText}
                   onChange={textChangeHandler}
                   onBlur={validateTextHandler}
@@ -387,19 +358,18 @@ const NewArticle = () => {
               </div>
               <div className={ styles.select }>
                 {
-                  cathegoryHasError &&
+                  categoryHasError &&
                   <p className={ styles.invalidInfo }>
                     Выберите категорию новости.
                   </p>
                 }
-                <label htmlFor="cathegory">Категория</label>
+                <label htmlFor="category">Категория</label>
                 <select
-                  id="cathegory"
-                  name="cathegory"
-                  ref={ articleCathegoryRef }
-                  value={selectedCathegory}
-                  onChange={cathegoryChangeHandler}
-                  onBlur={validateCathegoryHandler}
+                  id="category"
+                  name="category"
+                  value={selectedCategory}
+                  onChange={categoryChangeHandler}
+                  onBlur={validateCategoryHandler}
                 >
                   <option value="" hidden disabled>Выберите категорию</option>
                   <option value="politics">Политика</option>
@@ -420,7 +390,6 @@ const NewArticle = () => {
                 <select
                   id="priority"
                   name="priority"
-                  ref={ articlePriorityRef }
                   value={selectedPriority}
                   onChange={priorityChangeHandler}
                   onBlur={validatePriorityHandler}
@@ -445,7 +414,6 @@ const NewArticle = () => {
                   type="file"
                   multiple
                   accept="image/png, image/jpeg, .webp"
-                  ref={ filesRef }
                   value={filesState.value}
                   onChange={filesChangeHandler}
                   onBlur={validateFilesHandler}
@@ -461,7 +429,6 @@ const NewArticle = () => {
                   <textarea
                     className={ styles.brief }
                     id="files_description"
-                    ref={ filesDescriptionRef }
                     required
                     value={enteredFileDescription}
                     onChange={fileDescriptionChangeHandler}

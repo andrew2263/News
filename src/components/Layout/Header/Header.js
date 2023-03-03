@@ -37,7 +37,7 @@ const Header = (props) => {
               <span></span>
             </button>
             <div>
-              <NavLink to="/index">
+              <NavLink to="/">
                 <img src={ logo } alt='Moldova News' />
               </NavLink>
             </div>

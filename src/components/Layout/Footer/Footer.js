@@ -18,7 +18,7 @@ const Footer = () => {
           <div className={ styles.footerWrap }>
             <div className={ styles.footerLeft }>
               <div className={ styles.footerLogo }>
-                <NavLink to='/index'>
+                <NavLink to='/'>
                   <img src={ logo50 } alt='logo' />
                 </NavLink>
               </div>

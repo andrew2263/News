@@ -2,7 +2,7 @@ import Layout from './components/Layout/Layout';
 import Article from './components/Article/Article';
 import NewsContent from './components/NewsContent/NewsContent';
 import NewArticle from './components/NewArticle/NewArticle';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import NewsProvider from './store/NewsProvider';
 
@@ -12,25 +12,22 @@ function App() {
       <Layout>
         <Switch>
           <Route path="/" exact>
-            <Redirect to="/index" />
-          </Route>
-          <Route path="/index" exact>
-            <NewsContent cathegory="all" />
+            <NewsContent category="all" />
           </Route>
           <Route path="/politics" exact>
-            <NewsContent cathegory="politics" />
+            <NewsContent category="politics" />
           </Route>
           <Route path="/war" exact>
-            <NewsContent cathegory="war" />
+            <NewsContent category="war" />
           </Route>
           <Route path="/economics" exact>
-            <NewsContent cathegory="economics" />
+            <NewsContent category="economics" />
           </Route>
           <Route path="/world" exact>
-            <NewsContent cathegory="world" />
+            <NewsContent category="world" />
           </Route>
           <Route path="/sport" exact>
-            <NewsContent cathegory="sport" />
+            <NewsContent category="sport" />
           </Route>
           <Route path="/politics/:newsId">
             <Article />

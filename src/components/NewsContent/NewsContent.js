@@ -96,24 +96,6 @@ export const scrollToTop = () => {
   });
 };
 
-const mapItems = (items, Item) => {
-  return items.map(item => {
-    return (
-      <Item
-        key={ Math.random() }
-        id={ item.key }
-        heading={ item.heading }
-        date={ item.date }
-        images={ item.images }
-        briefText={ item.briefText }
-        cathegory={ item.cathegory }
-        priority={ item.priority }
-        scroll={ scrollToTop }
-      />
-    );
-  })
-};
-
 const headings = {
   'politics': 'Политика',
   'economics': 'Экономика',
@@ -135,38 +117,50 @@ const NewsContent = (props) => {
 
   const isContent = content.length ? true : false;
 
-  const dates = [];
-  let earliestDate = content.length ? dateWithoutTime(new Date(content[0].date)) : '';
-  dates.push(earliestDate);
-  content.forEach(item => {
-    if (+dateWithoutTime(item.date) !== +earliestDate) {
-      earliestDate = dateWithoutTime(item.date);
-      dates.push(earliestDate);
+  let earliestDate = '';
+
+  const dates = content.reduce((acc, curValue) => {
+    let res = [...acc];
+    if (+dateWithoutTime(curValue.date) !== +earliestDate) {
+      earliestDate = dateWithoutTime(curValue.date);
+      res = [...res, earliestDate];
     }
-  });
+    return res;
+  }, []);
 
-  const isAll = props.cathegory === 'all';
+  const isAll = props.category === 'all';
 
-  const newsContent = isAll ? content : content.filter(item => item.cathegory === props.cathegory);
+  const newsContent = isAll ? content : content.filter(item => item.category === props.category);
 
-  let newsList = [];
-
-  dates.forEach(date => {
+  const newsList = dates.map((date) => {
     const contentForDate = newsContent.filter(item => +dateWithoutTime(item.date) === +date);
-    if (contentForDate.length) {
-      const newsForDate = (
-        <div key={ +date }>
-          <h3 className={ styles.date }>
-            { parseDateMonthString(date, false) }
-          </h3>
-          <ul>
-            { mapItems(contentForDate, BasicItem) }
-          </ul>
-        </div>
-      );
-      newsList = [...newsList, newsForDate];
-    }
-  });
+    return contentForDate.length ? (
+      <div key={ +date }>
+        <h3 className={ styles.date }>
+          { parseDateMonthString(date, false) }
+        </h3>
+        <ul>
+          {
+            contentForDate.map(item => {
+              return (
+                <BasicItem
+                  key={ Math.random() }
+                  id={ item.key }
+                  heading={ item.heading }
+                  date={ item.date }
+                  images={ item.images }
+                  briefText={ item.briefText }
+                  category={ item.category }
+                  priority={ item.priority }
+                  scroll={ scrollToTop }
+                />
+              );
+            })
+          }
+        </ul>
+      </div>
+    ) : null;
+  }).filter((item) => item !== null);
 
   return (
     <React.Fragment>
@@ -190,25 +184,67 @@ const NewsContent = (props) => {
       { isContent &&
         <section>
           <Container>
-            <h1 className={ props.cathegory === 'all' ? 'visually-hidden' : '' }>
-              { headings[props.cathegory] }
+            <h1 className={ props.category === 'all' ? 'visually-hidden' : '' }>
+              { headings[props.category] }
             </h1>
             {
               isAll &&
               <div className={ `${ styles.content } ${ styles.priorityContent }` }>
                 <ul className={ styles.firstPriority }>
                   {
-                    mapItems(content.filter(item => item.priority === 1), FirstPriorityItem)
+                    content.filter(item => item.priority === 1).map(item => {
+                      return (
+                        <FirstPriorityItem
+                          key={ Math.random() }
+                          id={ item.key }
+                          heading={ item.heading }
+                          date={ item.date }
+                          images={ item.images }
+                          briefText={ item.briefText }
+                          category={ item.category }
+                          priority={ item.priority }
+                          scroll={ scrollToTop }
+                        />
+                      );
+                    })
                   }
                 </ul>
                 <ul className={ styles.secondPriority }>
                   {
-                    mapItems(content.filter(item => item.priority === 2), SecondPriorityItem)
+                    content.filter(item => item.priority === 2).map(item => {
+                      return (
+                        <SecondPriorityItem
+                          key={ Math.random() }
+                          id={ item.key }
+                          heading={ item.heading }
+                          date={ item.date }
+                          images={ item.images }
+                          briefText={ item.briefText }
+                          category={ item.category }
+                          priority={ item.priority }
+                          scroll={ scrollToTop }
+                        />
+                      );
+                    })
                   }
                 </ul>
                 <ul className={ styles.secondPriority }>
                   {
-                    mapItems(content.filter(item => item.priority === 3), SecondPriorityItem)
+                    content.filter(item => item.priority === 3).map(item => {
+                      return (
+                        <SecondPriorityItem
+                          key={ Math.random() }
+                          id={ item.key }
+                          heading={ item.heading }
+                          date={ item.date }
+                          images={ item.images }
+                          briefText={ item.briefText }
+                          category={ item.category }
+                          priority={ item.priority }
+                          scroll={ scrollToTop }
+                        />
+                      );
+                    })
                   }
                 </ul>
               </div>
