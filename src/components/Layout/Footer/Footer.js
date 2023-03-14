@@ -15,20 +15,18 @@ const Footer = () => {
     <React.Fragment>
       <footer className={ styles.footer }>
         <Container>
-          <div className={ styles.footerWrap }>
-            <div className={ styles.footerLeft }>
-              <div className={ styles.footerLogo }>
+          <div className={ styles['footer-wrap'] }>
+            <div>
+              <div className={ styles['footer-logo'] }>
                 <NavLink to='/'>
                   <img src={ logo50 } alt='logo' />
                 </NavLink>
               </div>
               <NewsRubrics content='rubrics' onScroll={ scrollToTop } element='footer' />
               <Social />
-              <p className={ styles.footerCopyright }>
-                © Moldova News 2021-2023
-              </p>
+              <p>© Moldova News 2021-2023</p>
             </div>
-            <div className={ styles.footerRight }>
+            <div>
               <Contacts />
             </div>
           </div>

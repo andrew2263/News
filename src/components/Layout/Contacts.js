@@ -2,11 +2,11 @@ import React from 'react';
 
 import styles from './Contacts.module.css';
 
-const Contacts = props => {
+const Contacts = () => {
   return (
     <React.Fragment>
       <div className={ styles.contacts }>
-        <div className={ styles.contactsItem }>
+        <div className={ styles['contacts__item'] }>
           <p>Служба поддержки</p>
           <p>
             <a href="tel:+37322777555">+373 (22) 777 555</a>
@@ -15,7 +15,7 @@ const Contacts = props => {
             <a href="mailto:support@newsmd.md">support@newsmd.md</a>
           </p>
         </div>
-        <div className={ styles.contactsItem }>
+        <div className={ styles['contacts__item'] }>
           <p>Размещение рекламы</p>
           <p>
             <a href="tel:+37322777666">+373 (22) 777 666</a>

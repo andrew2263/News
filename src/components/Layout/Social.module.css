@@ -5,40 +5,40 @@
   max-width: 400px;
 }
 
-.socialNetworks ul {
+.social__networks ul {
   background-color: transparent;
   display: flex;
   flex-direction: row;
   margin-bottom: 20px;
 }
 
-.socialNetworks li {
+.social__networks li {
   margin-right: 20px;
 }
 
-.socialNetwork {
+.social__network {
   display: block;
   height: 36px;
   width: 36px;
   transition: all 0.5s;
 }
 
-.socialFb {
-  background-image: url(../../img/fb_icon.svg);
+.social__fb {
+  background-image: url("../../img/fb_icon.svg");
   background-size: cover;
 }
 
-.socialTg {
-  background-image: url(../../img/tg_icon.svg);
+.social__tg {
+  background-image: url("../../img/tg_icon.svg");
   background-size: cover;
 }
 
-.socialIg {
-  background-image: url(../../img/instagram_icon.svg);
+.social__ig {
+  background-image: url("../../img/instagram_icon.svg");
   background-size: cover;
 }
 
-.socialNetwork:hover {
+.social__network:hover {
   opacity: 0.65;
   transition: all 0.5s;
 }
@@ -66,9 +66,9 @@
 }
 
 .googleplay {
-  background-image: url(../../img/google-play-badge.svg);
+  background-image: url("../../img/google-play-badge.svg");
 }
 
 .appstore {
-  background-image: url(../../img/app-store-badge.svg);
+  background-image: url("../../img/app-store-badge.svg");
 }

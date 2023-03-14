@@ -1,7 +1,6 @@
 h1 {
   font-size: 32px;
   margin-bottom: 30px;
-  
 }
 
 .content {
@@ -9,7 +8,7 @@ h1 {
   background-color: #f0f0f0;
 }
 
-.priorityContent {
+.priority-content {
   margin-bottom: 80px;
 }
 
@@ -31,7 +30,7 @@ h1 {
 
 .content li a {
   text-decoration: none;
-  color: #000000;
+  color: #000;
   transition: all 0.5s;
 }
 
@@ -40,18 +39,18 @@ h1 {
   transition: all 0.5s;
 }
 
-.firstPriority {
+.first-priority {
   margin-bottom: 20px;
 }
 
-.secondPriority {
+.second-priority {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.secondPriority:last-child {
+.second-priority:last-child {
   margin-bottom: 10px;
 }
 
@@ -70,5 +69,5 @@ h1 {
 .error {
   font-size: 18px;
   font-weight: 500;
-  color: #ff0000;
+  color: #f00;
 }

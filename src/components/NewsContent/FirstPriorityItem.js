@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import React, { Link } from 'react-router-dom';
 
 import { newsImg } from './NewsContent';
 import styles from './FirstPriorityItem.module.css';

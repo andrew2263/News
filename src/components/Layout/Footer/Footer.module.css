@@ -4,24 +4,24 @@
   color: #c9bbf8;
 }
 
-.footerWrap a {
+.footer-wrap a {
   text-decoration: none;
   color: #c9bbf8;
   font-size: 18px;
   font-weight: 500;
 }
 
-.footerWrap a:hover,
-.footerWrap a:active {
+.footer-wrap a:hover,
+.footer-wrap a:active {
   font-weight: 600;
   color: #dadaf0;
 }
 
-.footerLogo {
+.footer-logo {
   margin-bottom: 20px;
 }
 
-.footerWrap {
+.footer-wrap {
   display: flex;
   font-display: row;
   justify-content: space-between;

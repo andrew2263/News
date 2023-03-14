@@ -1,0 +1,5 @@
+build/**/*.js
+
+.eslintrc.js
+
+src/App.test.js

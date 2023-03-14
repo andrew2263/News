@@ -1,12 +1,12 @@
-import { useReducer, useEffect, useCallback } from 'react';
+import React, { useReducer, useEffect, useCallback } from 'react';
 
 import Context from './context';
 import newsReducer from './newsReducer';
-import { sendArticle } from './helper';
 
 const defaultState = {
   content: [],
   comments: [],
+  updatedComments: [],
   errorMessage: {}
 };
 
@@ -52,12 +52,10 @@ const NewsProvider = props => {
     
       const responseData = await response.json();
 
-      let contentData = [];
-
-      for (const el in responseData) {
-        responseData[el].date = new Date(responseData[el].date);
-        contentData = [...contentData, responseData[el]];
-      }
+      const contentData = responseData.map(el => {
+        el.date = new Date(el.date);
+        return el;
+      });
 
       loadContentHandler(contentData);
     } catch (error) {
@@ -73,15 +71,13 @@ const NewsProvider = props => {
 
       const responseData = await response.json();
 
-      let commentsData = [];
-
-      responseData.forEach(el => {
+      const commentsData = responseData.map(el => {
         if (el.comments) {
           el.comments = el.comments.map((comment) => {
             return { ...comment, date: new Date(comment.date) };
           });
         }
-        commentsData = [...commentsData, el];
+        return el;
       });
 
       loadCommentsHandler(commentsData);
@@ -95,14 +91,17 @@ const NewsProvider = props => {
     fetchCommentsHandler();
   }, [fetchContentHandler, fetchCommentsHandler]);
 
+  useEffect(() => {}, []);
+
   const context = {
     content: newsState.content,
     comments: newsState.comments,
+    updatedComments: newsState.updatedComments,
     errorMessage: newsState.errorMessage,
     addArticleHandler,
     addCommentHandler,
     removeCommentHandler,
-    sendArticle
+    loadCommentsHandler
   };
 
   return (

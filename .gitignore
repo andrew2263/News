@@ -9,7 +9,7 @@
 /coverage
 
 #images
-/src/img
+/src/news_images
 
 # production
 /build

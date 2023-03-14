@@ -9,7 +9,7 @@ import SecondPriorityItem from './SecondPriorityItem';
 
 export const newsImg = (images) => images.map(image => {
   return (
-    <img src={ image.href } alt={ image.text }></img>
+    <img src={ image.href } alt={ image.text } key={ Math.random() }></img>
   );
 });
 
@@ -189,8 +189,8 @@ const NewsContent = (props) => {
             </h1>
             {
               isAll &&
-              <div className={ `${ styles.content } ${ styles.priorityContent }` }>
-                <ul className={ styles.firstPriority }>
+              <div className={ `${ styles.content } ${ styles['priority-content'] }` }>
+                <ul className={ styles['first-priority'] }>
                   {
                     content.filter(item => item.priority === 1).map(item => {
                       return (
@@ -209,7 +209,7 @@ const NewsContent = (props) => {
                     })
                   }
                 </ul>
-                <ul className={ styles.secondPriority }>
+                <ul className={ styles['second-priority'] }>
                   {
                     content.filter(item => item.priority === 2).map(item => {
                       return (
@@ -228,7 +228,7 @@ const NewsContent = (props) => {
                     })
                   }
                 </ul>
-                <ul className={ styles.secondPriority }>
+                <ul className={ styles['second-priority'] }>
                   {
                     content.filter(item => item.priority === 3).map(item => {
                       return (

@@ -1,46 +1,56 @@
-.commentList {
+.comments-list {
   padding-left: 0;
   background-color: #f0f0f0;
 }
 
-.comment {
+.comments-list__comment {
   margin-bottom: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid #bbb;
 }
 
-.nameDate {
+.comments-list__namedate {
   display: flex;
   justify-content: space-between;
 }
 
-.name {
+.comments-list__name {
   font-weight: 600;
 }
 
-.dateDelete {
+.comments-list__deldate {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.date {
+.comments-list__date {
   color: #777;
 }
 
-.delButton {
+.comments-list__delbutton {
   width: 24px;
   height: 24px;
   border: none;
   background-color: transparent;
   cursor: pointer;
-  background-image: url(../../img/delete.svg);
+  background-image: url("../../img/delete.svg");
   background-size: cover;
   margin-right: 25px;
   transition: all 500ms;
 }
 
-.delButton:hover {
+.comments-list__delbutton:hover {
   opacity: 0.5;
   transition: all 500ms;
+}
+
+.comments-list__delbutton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #f00;
+  font-weight: 600;
 }

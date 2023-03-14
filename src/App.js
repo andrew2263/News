@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Layout from './components/Layout/Layout';
 import Article from './components/Article/Article';
 import NewsContent from './components/NewsContent/NewsContent';

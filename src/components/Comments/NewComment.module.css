@@ -15,7 +15,7 @@
   font-size: 14px;
 }
 
-.submitButton {
+.submit {
   border: 2px solid #505590;
   background-color: #505590;
   color: #fff;
@@ -28,7 +28,12 @@
   transition: all 0.5s;
 }
 
-.clearButton {
+.submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.clear {
   border: 2px solid #505590;
   color: #505590;
   background-color: #fff;
@@ -40,8 +45,13 @@
   transition: all 0.5s;
 }
 
-.submitButton:hover,
-.clearButton:hover {
+.submit:hover,
+.clear:hover {
   opacity: 0.65;
   transition: all 0.5s;
+}
+
+.error {
+  color: #f00;
+  font-weight: 600;
 }

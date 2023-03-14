@@ -6,19 +6,19 @@ const Social = () => {
   return (
     <React.Fragment>
       <div className={ styles.social }>
-        <div className={ styles.socialNetworks }>
+        <div className={ styles['social__networks'] }>
           <p>Наши социальные сети</p>
           <ul>
             <li>
-              <a href='https://facebook.com/' className={ `${ styles.socialNetwork } ${ styles.socialFb }` } aria-label='Facebook'>
+              <a href='https://facebook.com/' className={ `${ styles['social__network'] } ${ styles['social__fb'] }` } aria-label='Facebook'>
               </a>
             </li>
             <li>
-              <a href='https://t.me/' className={ `${ styles.socialNetwork } ${ styles.socialTg }` } aria-label='Telegram'>
+              <a href='https://t.me/' className={ `${ styles['socialNetwork'] } ${ styles['social__tg'] }` } aria-label='Telegram'>
               </a>
             </li>
             <li>
-              <a href='https://instagram.com/' className={ `${ styles.socialNetwork } ${ styles.socialIg }` } aria-label='Instagram'>
+              <a href='https://instagram.com/' className={ `${ styles['social__network'] } ${ styles['social__ig'] }` } aria-label='Instagram'>
               </a>
             </li>
           </ul>

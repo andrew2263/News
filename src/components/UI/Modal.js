@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import styles from './Modal.module.css';
@@ -11,8 +11,8 @@ const Backdrop = props => {
 
 const ModalOverlayStatus = props => {
   return (
-    <div className={ styles.modalStatus }>
-      <div className={ styles.content }>
+    <div className={ styles['modal-status'] }>
+      <div>
         { props.children }
       </div>
     </div>
@@ -21,8 +21,8 @@ const ModalOverlayStatus = props => {
 
 const ModalOverlayInfo = props => {
   return (
-    <div className={ styles.modalInfo }>
-      <div className={ styles.contentInfo }>
+    <div className={ styles['modal-info'] }>
+      <div>
         { props.children }
       </div>
     </div>
@@ -33,7 +33,7 @@ const potralElement = document.getElementById('overlays');
 
 const Modal = props => {
   return (
-    <Fragment>
+    <React.Fragment>
       { ReactDOM.createPortal(
         <Backdrop onClose={ props.onClose } />, potralElement
       ) }
@@ -45,7 +45,7 @@ const Modal = props => {
         <ModalOverlayInfo>{ props.children }</ModalOverlayInfo>,
         potralElement
       ) }
-    </Fragment>
+    </React.Fragment>
   );
 };
 

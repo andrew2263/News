@@ -1,0 +1,7 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "selector-class-pattern": "^[a-z-]+_?_?[a-z0-9-]*_?[a-z0-9-]*$",
+    "font-family-name-quotes": "always-unless-keyword"
+  }
+}

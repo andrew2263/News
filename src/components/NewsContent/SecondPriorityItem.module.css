@@ -14,7 +14,7 @@
 
 .news__img-wrapper {
   width: 300px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .news__img-wrapper img {
@@ -39,5 +39,5 @@
   display: block;
   font-size: 14px;
   font-weight: 300;
-  color: #666666;
+  color: #666;
 }

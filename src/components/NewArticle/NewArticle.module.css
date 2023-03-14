@@ -26,7 +26,7 @@
   height: 50px;
 }
 
-.articleText {
+.article-text {
   height: 170px;
 }
 
@@ -38,7 +38,7 @@
   margin-right: 15px;
 }
 
-.submitButton {
+.submit {
   margin: 10px 0;
   padding: 10px 30px;
   border: none;
@@ -51,34 +51,34 @@
   transition: all 0.5s;
 }
 
-.submitButton:hover {
+.submit:hover {
   opacity: 0.6;
   transition: all 0.5s;
 }
 
-.submitButton:disabled {
+.submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.invalidInfo {
-  color: #ff0000;
+.invalid-info {
+  color: #f00;
   font-size: 14px;
 }
 
-.submitMsg {
+.submit-msg {
   font-size: 18px;
 }
 
-.modalButtons {
+.modal-buttons {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.modalButton {
+.modal-button {
   padding: 15px 20px;
-  background-color: #111111;
+  background-color: #111;
   color: #f5f5f5;
   font-weight: 400;
   font-size: 18px;
@@ -89,11 +89,11 @@
   transition: all 0.5s;
 }
 
-.modalButton:first-child {
+.modal-button:first-child {
   margin-right: 30px;
 }
 
-.modalButton:hover {
+.modal-button:hover {
   opacity: 0.7;
   font-weight: 500;
   transition: all 0.5s;
@@ -102,5 +102,5 @@
 .error {
   font-size: 18px;
   font-weight: 500;
-  color: #ff0000;
+  color: #f00;
 }

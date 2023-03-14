@@ -2,6 +2,7 @@ import React, { useState, useReducer, useEffect, useContext } from 'react';
 
 import { storage } from '../../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { filesReducer } from './filesReducer';
 
 import { NavLink } from 'react-router-dom';
 import Container from '../Layout/Container';
@@ -13,7 +14,7 @@ import styles from './NewArticle.module.css';
 const isKey = value => {
   return /^[a-z0-9-_]+$/.test(value) &&
     value.toString().length >= 5 &&
-    value.toString().length <= 50
+    value.toString().length <= 50;
 };
 
 const isLineText = (value, minLength, maxLength) => {
@@ -24,44 +25,10 @@ const isLineText = (value, minLength, maxLength) => {
 
 const isText = (value, maxLength) => {
   return /^[а-яА-ЯёЁa-zăîâĂÎșțȘȚA-Z0-9- .,!?%;:«»„”"()—\n]+$/.test(value) &&
-    value.toString().length >= maxLength
+    value.toString().length >= maxLength;
 };
 
 const isNotEmpty = value => value !== '';
-
-const filesReducer = (state, action) => {
-  const fileTypes = ['image/png', 'image/jpeg', 'image/webp'];
-
-  if (action.type === 'USER_INPUT') {
-    return {
-      value: action.val,
-      files: action.files,
-      isValid: action.val !== '' && Array.from(action.files).every(file => {
-        return fileTypes.some(el => el === file.type);
-      }),
-      isTouched: state.isTouched
-    };
-  }
-  if (action.type === 'INPUT_BLUR') {
-    return {
-      value: state.value,
-      files: state.files,
-      isValid: state.value !== '' && Array.from(state.files).every(file => {
-        return fileTypes.some(el => el === file.type);
-      }),
-      isTouched: true
-    };
-  }
-  if (action.type === 'RESET') {
-    return {
-      value: '',
-      files: '',
-      isTouched: false,
-      isValid: undefined
-    }
-  }
-  return { value: '', files: '', isValid: false, isTouched: true };
-};
 
 const NewArticle = () => {
   const [formIsValid, setFormIsValid] = useState(false);
@@ -147,7 +114,7 @@ const NewArticle = () => {
     dispatchFiles({ type: 'USER_INPUT', val: event.target.value, files: event.target.files });
   };
 
-  const validateFilesHandler = event => {
+  const validateFilesHandler = () => {
     dispatchFiles({ type: 'INPUT_BLUR' });
   };
 
@@ -187,7 +154,7 @@ const NewArticle = () => {
     resetFileDescriptionHandler();
   };
 
-  const isError = (error) => {
+  const errorHandler = (error) => {
     setIsSubmitting(false);
     setErrorMessage(error.message);
   };
@@ -231,9 +198,8 @@ const NewArticle = () => {
       newArticle.heading = enteredHeading;
       newArticle.briefText = enteredBriefText;
       newArticle.text = enteredText.split('\n');
-      newArticle.images = [];
-      
-      urls.forEach((el, index) => {
+
+      newArticle.images = urls.map((el, index) => {
         const imageData = {
           href: el,
           text: ''
@@ -242,13 +208,10 @@ const NewArticle = () => {
         if (index === 0) {
           imageData.text = enteredFileDescription;
         }
-
-        newArticle.images.push(imageData);
+        return imageData;
       });
 
-      // change forEach to map
-
-      ctx.addArticleHandler(newArticle, key, formIsSumbitted, isError);
+      ctx.addArticleHandler(newArticle, key, formIsSumbitted, errorHandler);
     };
 
     addArticle();
@@ -262,7 +225,7 @@ const NewArticle = () => {
     <React.Fragment>
       { isSubmitting && (
         <Modal type='status'>
-          <p className={ styles.submitMsg }>Форма отправляется...</p>
+          <p className={ styles['submit-msg'] }>Форма отправляется...</p>
         </Modal>
       ) }
       {
@@ -276,12 +239,12 @@ const NewArticle = () => {
       }
       { didSubmit && (
         <Modal type='status' onClose={ modalCloseHandler }>
-          <p className={ styles.submitMsg }>Форма отправлена</p>
-          <div className={ styles.modalButtons }>
-            <button className={ styles.modalButton } onClick={ modalCloseHandler }>
+          <p className={ styles['submit-msg'] }>Форма отправлена</p>
+          <div className={ styles['modal-buttons'] }>
+            <button className={ styles['modal-button'] } onClick={ modalCloseHandler }>
               OK
             </button>
-            <NavLink className={ styles.modalButton } to='/'>
+            <NavLink className={ styles['modal-button'] } to='/'>
               Перейти к новостям
             </NavLink>
           </div>
@@ -295,8 +258,8 @@ const NewArticle = () => {
               <div className={ styles.control }>
                 {
                   keyHasError &&
-                  <p className={ styles.invalidInfo }>
-                    Ключ может содержать только латинские буквы в нижнем регистре, цифры, символы "-" и "_" без пробелов. Минимальное число символов — 5, максимальное — 50.
+                  <p className={ styles['invalid-info'] }>
+                    Ключ может содержать только латинские буквы в нижнем регистре, цифры, символы &quot;-&quot; и &quot;_&quot; без пробелов. Минимальное число символов — 5, максимальное — 50.
                   </p>
                 }
                 <label htmlFor="article_key">Ключ</label>
@@ -311,7 +274,7 @@ const NewArticle = () => {
               <div className={ styles.control }>
                 {
                   headingHasError &&
-                  <p className={ styles.invalidInfo }>
+                  <p className={ styles['invalid-info'] }>
                     Заголовок может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”.  Минимальное число символов — 50, максимальное — 100.
                   </p>
                 }
@@ -327,7 +290,7 @@ const NewArticle = () => {
               <div className={ styles.control }>
                 {
                   briefTextHasError &&
-                  <p className={ styles.invalidInfo }>
+                  <p className={ styles['invalid-info'] }>
                     Краткое описание может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 120, максимальное — 250.
                   </p>
                 }
@@ -343,13 +306,13 @@ const NewArticle = () => {
               <div className={ styles.control }>
                 {
                   textHasError &&
-                  <p className={ styles.invalidInfo }>
+                  <p className={ styles['invalid-info'] }>
                     Текст новости может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 300.
                   </p>
                 }
                 <label htmlFor="article_text">Текст новости</label>
                 <textarea
-                  className={ styles.articleText }
+                  className={ styles['article-text'] }
                   id="article_text"
                   value={enteredText}
                   onChange={textChangeHandler}
@@ -359,7 +322,7 @@ const NewArticle = () => {
               <div className={ styles.select }>
                 {
                   categoryHasError &&
-                  <p className={ styles.invalidInfo }>
+                  <p className={ styles['invalid-info'] }>
                     Выберите категорию новости.
                   </p>
                 }
@@ -382,7 +345,7 @@ const NewArticle = () => {
               <div className={ styles.select }>
                 {
                   priorityHasError &&
-                  <p className={ styles.invalidInfo }>
+                  <p className={ styles['invalid-info'] }>
                     Выберите приоритет новости.
                   </p>
                 }
@@ -404,7 +367,7 @@ const NewArticle = () => {
               <div className={ styles.fileInput }>
                 {
                   !filesIsValid && filesIsTouched &&
-                  <p className={ styles.invalidInfo }>
+                  <p className={ styles['invalid-info'] }>
                     Загрузите файлы с расширением .png, .jpg или .webp.
                   </p>
                 }
@@ -421,7 +384,7 @@ const NewArticle = () => {
                 <div className={ styles.control }>
                   {
                     fileDescriptionHasError &&
-                    <p className={ styles.invalidInfo }>
+                    <p className={ styles['invalid-info'] }>
                       Описание изображения может содержать только буквы, цифры, пробелы и символы -.,!?%;:«»„”. Минимальное число символов — 50, максимальное — 200.
                     </p>
                   }
@@ -436,7 +399,7 @@ const NewArticle = () => {
                   />
                 </div>
               </div>
-              <button type="submit" className={ styles.submitButton } disabled={ !formIsValid }>
+              <button type="submit" className={ styles.submit } disabled={ !formIsValid }>
                 Добавить новость
               </button>
             </form>

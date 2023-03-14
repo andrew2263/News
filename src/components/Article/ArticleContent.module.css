@@ -4,7 +4,7 @@
 
 .article__date {
   display: block;
-  color: #666666;
+  color: #666;
   font-size: 14px;
   font-weight: 300;
   margin-bottom: 25px;
@@ -24,7 +24,7 @@
   margin-bottom: 25px;
   font-weight: 400;
   font-size: 14px;
-  color: #777777;
+  color: #777;
 }
 
 .nonews {
@@ -35,6 +35,6 @@
 .error {
   font-size: 18px;
   font-weight: 500;
-  color: #ff0000;
+  color: #f00;
 }
 

@@ -37,7 +37,7 @@ const useInput = (validateValue, minLength, maxLength) => {
     dispatch({ type: 'USER_INPUT', val: event.target.value });
   };
 
-  const inputBlurHandler = event => {
+  const inputBlurHandler = () => {
     dispatch({ type: 'INPUT_BLUR' });
   };
 

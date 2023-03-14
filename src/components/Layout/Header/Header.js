@@ -8,7 +8,7 @@ import Info from '../Info';
 
 import styles from './Header.module.css';
 
-const Header = (props) => {
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openInfoHandler = () => {
