@@ -10,6 +10,7 @@
 
 #images
 /src/news_images
+/screenshots
 
 # production
 /build
