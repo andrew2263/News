@@ -5,10 +5,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Features
 SPA displaying the news according to priority and category, sorted by date in descending order. You may add and delete comments to each article, also you may add news.
 
-## Tecchnologies used
-- ReactJS
+## Technologies used
+- React
 - React-Router
-- React ContextAPI
+- React Context API
 - Firebase: storage, hosting, realtime database
 
 ## Available Scripts
