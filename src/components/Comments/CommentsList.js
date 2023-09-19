@@ -1,12 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
+//import React, { useContext, useState, useEffect } from "react";
+//import { useParams } from "react-router-dom";
 
-import Context from "../../store/context";
-import { updateCommentsHandler } from "../../store/helper";
+//import Context from "../../store/context";
+//import { updateCommentsHandler } from "../../store/helper";
 import { parseDateMonthString } from "../NewsContent/NewsContent";
 import styles from './CommentsList.module.css';
 
 const CommentsList = props => {
+/*
   const params = useParams();
 
   const [isUpdating, setIsUpdating] = useState(false);
@@ -39,11 +41,12 @@ const CommentsList = props => {
       })();
     }
   }, [isUpdating, ctx]);
+*/
 
   return (
     <>
-      { isUpdating && <p>Комментарий удаляется...</p> }
-      { errorMessage && <p className={ styles.error }>{ errorMessage }</p> }
+      {/* isUpdating && <p>Комментарий удаляется...</p> */}
+      {/* errorMessage && <p className={ styles.error }>{ errorMessage }</p> */}
       <ul className={ styles['comments-list'] }>
         { props.commentData.map(comment => {
           return (
@@ -55,11 +58,13 @@ const CommentsList = props => {
                     className={ styles['comments-list__delbutton'] }
                     type="button"
                     value={ comment.id }
-                    onClick={ deleteHandler }
-                    disabled={ isUpdating || errorMessage }
+                    //onClick={ deleteHandler }
+                    onClick={ () => {} }
+                    //disabled={ isUpdating || errorMessage }
+                    disabled
                   />
                   <p className={ styles['comments-list__date'] }>
-                    { parseDateMonthString(comment.date) }
+                    { parseDateMonthString(new Date(comment.date)) }
                   </p>
                 </div>
               </div>

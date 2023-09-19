@@ -1,6 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+//import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-import Context from '../../store/context';
+//import Context from '../../store/context';
+import { useSelector } from 'react-redux';
 import styles from './NewsContent.module.css';
 import Container from '../Layout/Container';
 import BasicItem from './BasicItem';
@@ -109,11 +111,15 @@ const NewsContent = (props) => {
     document.title = 'Новости Молдовы — Moldova News';
   }, []);
 
-  const ctx = useContext(Context);
+  //const ctx = useContext(Context);
 
-  const content = ctx.content.sort(sortDateDesc);
+  const sContent = useSelector((state) => state.content.content);
 
-  const errorMessage = ctx.errorMessage['loadContent'];
+  const stContent = [...sContent];
+
+  const content = stContent.sort(sortDateDesc);
+
+ // const errorMessage = ctx.errorMessage['loadContent'];
 
   const isContent = content.length ? true : false;
 
@@ -137,7 +143,7 @@ const NewsContent = (props) => {
     return contentForDate.length ? (
       <div key={ +date }>
         <h3 className={ styles.date }>
-          { parseDateMonthString(date, false) }
+          { parseDateMonthString(new Date(date), false) }
         </h3>
         <ul>
           {
@@ -164,7 +170,7 @@ const NewsContent = (props) => {
 
   return (
     <React.Fragment>
-      {
+      {/*
         !isContent && errorMessage &&
         <section>
           <Container>
@@ -173,8 +179,9 @@ const NewsContent = (props) => {
             </p>
           </Container>
         </section>
-      }
-      { !isContent && !errorMessage &&
+  */}
+      {/* !isContent && !errorMessage &&*/}
+      { !isContent &&
         <section>
           <Container>
             <p className={ styles.nonews }>Новости загружаются...</p>

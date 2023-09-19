@@ -1,7 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+//import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Context from '../../store/context';
+import { useSelector } from 'react-redux';
+//import Context from '../../store/context';
 import Container from '../Layout/Container';
 import styles from './ArticleContent.module.css';
 import { parseDateMonthString } from '../NewsContent/NewsContent';
@@ -10,13 +12,15 @@ const ArticleContent = () => {
   const params = useParams();
   const { newsId } = params;
 
-  const ctx = useContext(Context);
+  //const ctx = useContext(Context);
 
-  const errorMessage = ctx.errorMessage['loadContent'];
+  const content = useSelector((state) => state.content.content);
 
-  const isContent = ctx.content.length ? true : false;
+  //const errorMessage = ctx.errorMessage['loadContent'];
 
-  const item = isContent ? ctx.content[ctx.content.findIndex(el => {
+  const isContent = content.length ? true : false;
+
+  const item = isContent ? content[content.findIndex(el => {
     return el.key === newsId;
   })] : '';
 
@@ -48,7 +52,7 @@ const ArticleContent = () => {
 
   return (
     <React.Fragment>
-      {
+      {/*
         !isContent && errorMessage &&
         <section>
           <Container>
@@ -57,8 +61,9 @@ const ArticleContent = () => {
             </p>
           </Container>
         </section>
-      }
-      { !isContent && !errorMessage &&
+  */}
+      {/* !isContent && !errorMessage && */}
+    { !isContent && 
         <section>
           <Container>
             <p className={ styles.nonews }>Новость загружается...</p>

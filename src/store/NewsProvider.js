@@ -91,8 +91,6 @@ const NewsProvider = props => {
     fetchCommentsHandler();
   }, [fetchContentHandler, fetchCommentsHandler]);
 
-  useEffect(() => {}, []);
-
   const context = {
     content: newsState.content,
     comments: newsState.comments,
