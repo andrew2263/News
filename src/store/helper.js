@@ -1,5 +1,4 @@
 export const sendArticle = async (data, onSuccess) => {
-  console.log(data);
   const putResponse = await fetch('https://news-acc8f-default-rtdb.firebaseio.com/content.json', {
     method: 'PUT',
     body: JSON.stringify(data)
@@ -12,18 +11,15 @@ export const sendArticle = async (data, onSuccess) => {
   }
 };
 
-export const updateCommentsHandler = async (data, onSuccess) => {
-  console.log(data);
-    const putResponse = await fetch('https://news-acc8f-default-rtdb.firebaseio.com/comments.json', {
-      method: 'PUT',
+export const updateCommentsHandler = async (id, data, onSuccess) => {
+    const patchResponse = await fetch(`https://news-acc8f-default-rtdb.firebaseio.com/content.json`, {
+      method: 'PATCH',
       body: JSON.stringify(data)
     });
 
-    if (!putResponse.ok) {
-      console.log('error');
+    if (!patchResponse.ok) {
       throw new Error('Ошибка загрузки комментариев');
     } else {
-      console.log('success');
       onSuccess();
     }
 };

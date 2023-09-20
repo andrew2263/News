@@ -1,4 +1,3 @@
-//import React, { useState, useReducer, useEffect, useContext } from "react";
 import React, { useState, useReducer, useEffect } from "react";
 
 import { storage } from "../../firebase";
@@ -12,14 +11,10 @@ import { contentActions } from "../../store/content-slice";
 import { NavLink } from "react-router-dom";
 import Container from "../Layout/Container";
 import Modal from "../UI/Modal";
-//import Context from "../../store/context";
 import useInput from "../../hooks/use-input";
 import styles from "./NewArticle.module.css";
 
 import { sendArticle } from "../../store/helper";
-
-//import { getUpdatedContent } from "../../utils/getUpdatedContent";
-//import { getUpdatedComments } from "../../utils/getUpdatedComments";
 
 const isKey = (value) => {
   return (
@@ -53,22 +48,10 @@ const NewArticle = () => {
     document.title = "Добавить новость — Moldova News";
   }, []);
 
-  //const ctx = useContext(Context);
-
   const content = useSelector((state) => state.content.content);
   const isAdded = useSelector((state) => state.content.articleAdded);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (isAdded) {
-      sendArticle(content, () => {
-        dispatch(contentActions.setArticleIsSent());
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-  }, [content, dispatch]);
 
   const {
     value: enteredKey,
@@ -186,12 +169,13 @@ const NewArticle = () => {
     priorityIsValid,
     filesIsValid,
   ]);
-  //eslint-disable-next-line
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-  //eslint-disable-next-line
+
   const formIsSubmitted = () => {
+    dispatch(contentActions.setArticleIsSent());
     setIsSubmitting(false);
     setDidSubmit(true);
     resetKeyHandler();
@@ -203,11 +187,20 @@ const NewArticle = () => {
     resetFilesHandler();
     resetFileDescriptionHandler();
   };
-  //eslint-disable-next-line
+  
   const errorHandler = (error) => {
     setIsSubmitting(false);
     setErrorMessage(error.message);
   };
+
+  useEffect(() => {
+    if (isAdded) {
+      sendArticle(content, formIsSubmitted).catch((error) => {
+        errorHandler(error);
+        dispatch(contentActions.setPrevContent());
+      });
+    }
+  }, [content, dispatch]);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -240,19 +233,13 @@ const NewArticle = () => {
       return urls;
     };
 
-    /*const addArticleHandler = () => {
-      dispatch(contentActions.addArticle({
-        newArticle, key, formIsSumbitted, errorHandler
-      }))
-    };*/
-
     const addArticle = async () => {
       const urls = await uploadFiles();
 
       newArticle.key = key;
       newArticle.priority = +selectedPriority;
       newArticle.category = selectedCategory;
-      newArticle.date = articleDate;
+      newArticle.date = +articleDate;
       newArticle.heading = enteredHeading;
       newArticle.briefText = enteredBriefText;
       newArticle.text = enteredText.split("\n");
@@ -270,17 +257,7 @@ const NewArticle = () => {
         return imageData;
       });
 
-      //ctx.addArticleHandler(newArticle, key, formIsSumbitted, errorHandler);
-
       dispatch(contentActions.addArticle(newArticle));
-
-      /*
-      dispatch(contentActions.addArticle({
-        newArticle, key, formIsSubmitted, errorHandler
-      }))
-      */
-      //const updatedContent = getUpdatedContent(newArticle, articlesContent);
-      //const updatedComments = getUpdatedComments(key, articlesComments);
     };
 
     addArticle();
@@ -292,11 +269,11 @@ const NewArticle = () => {
 
   return (
     <React.Fragment>
-      {/*isSubmitting && (
+      {isSubmitting && (
         <Modal type="status">
           <p className={styles["submit-msg"]}>Форма отправляется...</p>
         </Modal>
-      )*/}
+      )}
       {errorMessage && (
         <Modal type="status">
           <p className={styles.error}>ERROR: {errorMessage}</p>

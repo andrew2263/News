@@ -1,22 +1,32 @@
-import React from "react";
-//import React, { useState, useRef, useContext, useEffect } from "react";
-//import { useParams } from "react-router-dom";
+//import React from "react";
+import React, { useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 
+import { app } from "../../firebase";
+import { getDatabase, ref, set } from "firebase/database";
 //import { updateCommentsHandler } from "../../store/helper";
 
-//import Context from "../../store/context";
+import { useDispatch, useSelector } from "react-redux";
+import { contentActions } from "../../store/content-slice";
 import styles from "./NewComment.module.css";
 
-//const NewComment = (props) => {
-const NewComment = () => {
-  /*
+const NewComment = (props) => {
+  
   const params = useParams();
 
   const { newsId } = params;
 
-  const ctx = useContext(Context);
+  const dispatch = useDispatch();
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const updatedComments = useSelector((state) => state.content.updatedComments);
+  const content = useSelector((state) => state.content.content);
+
+  const updateCommentsPath = `content/${props.index}/comments`;
+
+  const database = getDatabase(app);
+  const databaseRef = ref(database, updateCommentsPath);
+
+  //const [errorMessage, setErrorMessage] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
 
   const nameInputRef = useRef();
@@ -31,16 +41,26 @@ const NewComment = () => {
       id: props.id,
       name: enteredName,
       text: enteredText,
-      date: new Date(),
+      date: Number(new Date()),
     };
-
-    ctx.addCommentHandler(comment, newsId);
-
     setIsUpdating(true);
+    dispatch(contentActions.addCommentHandler({ newsId, comment }));
+    console.log(updatedComments);
+    console.log(content);
+    set(databaseRef, updatedComments)
+      .then(() => {
+        setIsUpdating(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        dispatch(contentActions.setPrevContent());
+        setIsUpdating(false);
+      });
   };
-
+/*
   useEffect(() => {
     if (isUpdating) {
+
       const updatedComments = ctx.updatedComments;
 
       const onPutSuccess = () => {
@@ -61,34 +81,35 @@ const NewComment = () => {
 
         setIsUpdating(false);
       })();
+      
     }
-  }, [isUpdating, ctx]);
-
+  }, [isUpdating]);
+*/
   const onBtnCleanHAndler = (event) => {
     event.preventDefault();
     nameInputRef.current.value = "";
     textInputRef.current.value = "";
   };
-*/
+
   return (
     <>
       {/*errorMessage && <p className={styles.error}>{errorMessage}</p>*/}
       {/*isUpdating && <p>Комментарий добавляется...</p>*/}
       {/*<form onSubmit={submitHandler}>*/}
-      <form onSubmit={() => {}}>
+      <form onSubmit={submitHandler}>
         <div className={styles.name}>
           <label htmlFor="name">Введите имя</label>
           <input
           id="name"
           type="text"
-          //ref={nameInputRef}
+          ref={nameInputRef}
           required
           />
         </div>
         <textarea
           className={styles.text}
           placeholder="Ведите комментарий"
-          //ref={textInputRef}
+          ref={textInputRef}
           required
         />
         <div>
@@ -96,15 +117,14 @@ const NewComment = () => {
             type="submit"
             className={styles.submit}
             //disabled={errorMessage || isUpdating}
-            disabled
+            disabled={isUpdating}
           >
             Отправить комментарий
           </button>
           <button
             type="button"
             className={styles.clear}
-            //onClick={onBtnCleanHAndler}
-            onClick={() => {}}
+            onClick={onBtnCleanHAndler}
           >
             Очистить
           </button>

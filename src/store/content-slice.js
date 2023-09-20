@@ -7,12 +7,10 @@ const contentSlice = createSlice({
     content: [],
     prevContent: [],
     articleAdded: false,
+    updatedComments: [],
   },
   reducers: {
     addArticle(state, action) {
-      //const addAction = action.payload;
-
-      // начало добавления статьи
       const lastPriorityItem = {
         '1': 0,
         '2': 2,
@@ -20,8 +18,6 @@ const contentSlice = createSlice({
       };
 
       const article = action.payload;
-      //const onSuccess = addAction.formIsSubmitted;
-      //const onFail = addAction.errorHandler;
 
       state.prevContent = [...state.content];
 
@@ -50,74 +46,7 @@ const contentSlice = createSlice({
       state.content = updatedContent;
 
       state.articleAdded = true;
-      
-      // конец добавления статьи, получен массив статей с новой статьёй
-
-      // начало добавления объекта с комментариями для новой статьи
-
-      /*
-      const newComments = {
-        key: key,
-        comments: [],
-      };
-
-      const updatedComments = [...comments, newComments];
-      */
-      // получен новый массив со всеми комментариями, в который добавлен объект
-      // с комментариями для новой статьи
-
-      // функция для удаления последнего элемента такой же приоритетности из массива статей
-/*
-      const changeUpdatedContent = () => {
-        const addedArticleIndex = updatedContent.findIndex(
-          (elem) => elem.key === article.key
-        );
-        updatedContent[lowerPriorityArticleIndex] = {
-          ...updatedContent[lowerPriorityArticleIndex],
-          priority: article.priority,
-        };
-        updatedContent.splice(addedArticleIndex, 1);
-      };
-*/
-      // при успешном отправлении статьи на сервер обновляются комментарии
-/*
-      const onSuccessSendingArticle = () => {
-        console.log('1');
-        updateCommentsHandler(updatedComments, () => {
-          state.content = updatedContent;
-          state.comments = updatedComments;
-          onSuccess();
-          console.log('2');
-        }).catch(
-          (error) => {
-            console.log('3');
-            changeUpdatedContent();
-            const newCommentsKey = updatedComments.findIndex(
-              (comment) => comment.key === key
-            );
-            updatedComments.splice(newCommentsKey, 1);
-            sendArticle(updatedContent, () => {
-              state.content = updatedContent;
-              state.comments = updatedComments;
-              console.log('4');
-            }).catch((error) => {
-              onFail(error);
-              console.log('5');
-            });
-            onFail(error);
-            console.log('6');
-          }
-        );
-      };
-*/
-      // отправление статьи на сервер
-/*
-      sendArticle(updatedContent, onSuccessSendingArticle).catch((error) => {
-        //changeUpdatedContent();
-        onFail(error);
-        console.log('7');
-      });
-      */
+  
     },
     loadContentHandler(state, action) {
       const data = action.payload;
@@ -126,6 +55,33 @@ const contentSlice = createSlice({
     setArticleIsSent(state) {
       state.articleAdded = false;
     },
+    setPrevContent(state) {
+      state.content = state.prevContent;
+    },
+    removeCommentHandler(state, action) {
+      state.prevContent = [...state.content];
+
+      const commentIndex = state.content.findIndex((elem) => elem.key === action.payload.newsId);
+
+      const newCommentsList = state.content[commentIndex].comments;
+
+      const removedCommentIndex = newCommentsList.findIndex(elem => {
+        return elem.id === +action.payload.commentId;
+      });
+      newCommentsList.splice(removedCommentIndex, 1);
+
+      console.log(newCommentsList);
+      state.updatedComments = newCommentsList;
+    },
+    addCommentHandler(state, action) {
+      state.prevContent = [...state.content];
+      const commentIndex = state.content.findIndex((elem) => elem.key === action.payload.newsId);
+      const newCommentsList = state.content[commentIndex].comments;
+      //const updatedCommentsList = [...newCommentsList, action.payload.comment];
+      newCommentsList.push(action.payload.comment);
+
+      state.updatedComments = newCommentsList;
+    }
     /*
     loadCommentsHandler(state, action) {
       const data = action.payload;

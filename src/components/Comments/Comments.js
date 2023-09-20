@@ -7,21 +7,17 @@ import { useSelector } from "react-redux";
 import Container from "../Layout/Container";
 import NewComment from "./NewComment";
 import CommentsList from "./CommentsList";
-//import Context from '../../store/context';
 import styles from "./Comments.module.css";
 
 const Comments = () => {
   const params = useParams();
   const { newsId } = params;
 
-  //const ctx = useContext(Context);
 
   //let errorMessage = ctx.errorMessage['loadComments'];
 
-  //const comments = useSelector((state) => state.content.comments);
   const content = useSelector((state) => state.content.content);
 
-  //const isCommentsLoaded = comments.length ? true : false;
   const isContentLoaded = content.length ? true : false;
 
   const commentIndex = content.findIndex((elem) => elem.key === newsId);
@@ -38,7 +34,6 @@ const Comments = () => {
     content[commentIndex] &&
     content[commentIndex].comments
   ) {
-    //commentsList = comments[commentIndex].comments;
     commentsList = content[commentIndex].comments;
   }
 
@@ -78,9 +73,9 @@ const Comments = () => {
           <Container>
             <article>
               <h3>Комментарии</h3>
-              {isComments ? <CommentsList commentData={commentsList} /> : ""}
+              {isComments ? <CommentsList index={commentIndex} commentData={commentsList} /> : ""}
               {!isComments && <p>Комментариев пока нет.</p>}
-              <NewComment id={lastId + 1} />
+              <NewComment id={lastId + 1} index={commentIndex} />
             </article>
           </Container>
         </section>

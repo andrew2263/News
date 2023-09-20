@@ -29,8 +29,14 @@ function App() {
       const responseData = await response.json();
 
       const contentData = responseData.map((el) => {
-        el.date = new Date(el.date);
-        return el;
+        return {
+          ...el,
+          date: Number(new Date(el.date)),
+          comments: el.comments?.length ? el.comments.map((comment) => ({
+            ...comment,
+            date: Number(new Date(comment.date)),
+          })) : [],
+        };
       });
 
       dispatch(contentActions.loadContentHandler(contentData));

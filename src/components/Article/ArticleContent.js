@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
-//import Context from '../../store/context';
 import Container from '../Layout/Container';
 import styles from './ArticleContent.module.css';
 import { parseDateMonthString } from '../NewsContent/NewsContent';
@@ -12,7 +11,6 @@ const ArticleContent = () => {
   const params = useParams();
   const { newsId } = params;
 
-  //const ctx = useContext(Context);
 
   const content = useSelector((state) => state.content.content);
 
@@ -79,7 +77,7 @@ const ArticleContent = () => {
                 { item.briefText }
               </p>
               <time className={ styles['article__date'] }>
-                { parseDateMonthString(item.date) }
+                { parseDateMonthString(new Date(item.date)) }
               </time>
               <div className={styles['article__img-wrapper']}>
                 { newsImg(item.images, 0, 1) }
