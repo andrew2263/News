@@ -1,0 +1,16 @@
+.rubric {
+  &-list {
+    background-color: transparent;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &-item {
+    margin: 0 20px 13px 0;
+
+    & .active {
+      font-weight: 600;
+      color: #dadaf0;
+    }
+  }
+}

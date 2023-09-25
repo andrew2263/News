@@ -1,0 +1,41 @@
+.article {
+  &__img-wrapper img {
+    width: 940px;
+  }
+
+  &__date {
+    display: block;
+    color: #666;
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 25px;
+  }
+
+  &__brief-text {
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  &__text {
+    font-weight: 500;
+  }
+
+  &__img-text {
+    margin-top: 5px;
+    margin-bottom: 25px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #777;
+  }
+}
+
+.nonews {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.error {
+  font-size: 18px;
+  font-weight: 500;
+  color: #f00;
+}

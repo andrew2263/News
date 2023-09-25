@@ -2,31 +2,31 @@
   display: flex;
   flex-direction: column;
   max-width: 300px;
-}
 
-.news__content-info_visited {
-  opacity: 0.65;
-}
+  &_visited {
+    opacity: 0.65;
+  }
 
-.news__content-info_small {
-  width: 220px;
+  &_small {
+    width: 220px;
+  }
 }
 
 .news__img-wrapper {
   width: 300px;
   margin-bottom: 0;
-}
 
-.news__img-wrapper img {
-  width: 300px;
-}
+  img {
+    width: 300px;
+  }
 
-.news__img-wrapper_small {
-  width: 220px;
-}
+  &_small {
+    width: 220px;
 
-.news__img-wrapper_small img {
-  width: 220px;
+    img {
+      width: 220px;
+    }
+  }
 }
 
 .news__info h2 {

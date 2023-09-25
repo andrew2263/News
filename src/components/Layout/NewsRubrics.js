@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { NavLink } from 'react-router-dom';
-import styles from './NewsRubrics.module.css';
+
+import styles from './NewsRubrics.module.scss';
 
 const NewsRubrics = (props) => {
   const onClickHandler = props.element === 'footer' ? props.onScroll : props.onClose;

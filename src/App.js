@@ -1,17 +1,13 @@
 import React, { useCallback, useEffect } from "react";
-//import { Provider, useDispatch } from "react-redux";
 import { useDispatch } from "react-redux";
-import { contentActions } from "./store/content-slice";
+import { Route, Switch } from "react-router-dom";
 
-//import store from "./store/index";
+import { contentActions } from "./store/content-slice";
 
 import Layout from "./components/Layout/Layout";
 import Article from "./components/Article/Article";
 import NewsContent from "./components/NewsContent/NewsContent";
 import NewArticle from "./components/NewArticle/NewArticle";
-import { Route, Switch } from "react-router-dom";
-
-//import NewsProvider from './store/NewsProvider';
 
 function App() {
   const dispatch = useDispatch();

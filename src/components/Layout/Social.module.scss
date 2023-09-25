@@ -1,0 +1,76 @@
+.social {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: 400px;
+
+  &__networks {
+    display: block;
+    height: 36px;
+    width: 36px;
+    transition: all 0.5s;
+  
+    ul {
+      background-color: transparent;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 20px;
+    }
+  
+    li {
+      margin-right: 20px;
+    }
+  
+    &:hover {
+      opacity: 0.65;
+      transition: all 0.5s;
+    }
+  }
+  
+  &__fb {
+    background-image: url("../../img/fb_icon.svg");
+    background-size: cover;
+  }
+  
+  &__tg {
+    background-image: url("../../img/tg_icon.svg");
+    background-size: cover;
+  }
+  
+  &__ig {
+    background-image: url("../../img/instagram_icon.svg");
+    background-size: cover;
+  }
+}
+
+.social__network .apps {
+  ul {
+    background-color: transparent;
+    margin-top: 15px;
+  }
+
+  li:first-child {
+    margin-bottom: 10px;
+  }
+
+  a {
+    display: block;
+    height: 33px;
+    width: 111px;
+    background-size: cover;
+    transition: all 0.5s;
+
+    &:hover {
+      opacity: 0.65;
+      transition: all 0.5s;
+    }
+  }
+}
+
+.googleplay {
+  background-image: url("../../img/google-play-badge.svg");
+}
+
+.appstore {
+  background-image: url("../../img/app-store-badge.svg");
+}

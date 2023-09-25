@@ -1,4 +1,5 @@
 import React, { useState, useReducer, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -8,13 +9,13 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { contentActions } from "../../store/content-slice";
 
-import { NavLink } from "react-router-dom";
 import Container from "../Layout/Container";
 import Modal from "../UI/Modal";
-import useInput from "../../hooks/use-input";
-import styles from "./NewArticle.module.css";
 
+import useInput from "../../hooks/use-input";
 import { sendArticle } from "../../store/helper";
+
+import styles from "./NewArticle.module.scss";
 
 const isKey = (value) => {
   return (

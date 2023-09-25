@@ -1,25 +1,24 @@
 //import React from "react";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import { app } from "../../firebase";
 import { getDatabase, ref, set } from "firebase/database";
 
-import { useDispatch, useSelector } from "react-redux";
 import { contentActions } from "../../store/content-slice";
 
-//import { updateCommentsHandler } from "../../store/helper";
 import { parseDateMonthString } from "../NewsContent/NewsContent";
-import styles from "./CommentsList.module.css";
+
+import styles from "./CommentsList.module.scss";
 
 const CommentsList = (props) => {
   const params = useParams();
 
   const dispatch = useDispatch();
 
-  const updatedComments = useSelector((state) => state.content.updatedComments);
-
   const [isUpdating, setIsUpdating] = useState(false);
-  //const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { newsId } = params;
 
@@ -31,9 +30,12 @@ const CommentsList = (props) => {
   const deleteHandler = async (event) => {
     event.preventDefault();
     setIsUpdating(true);
+    const updatedComments = props.commentData.filter((comment) => {
+      return Number(comment.id) !== Number(event.target.value);
+    });
     dispatch(
-      contentActions.removeCommentHandler({
-        commentId: event.target.value,
+      contentActions.changeCommentHandler({
+        updatedComments,
         newsId,
       })
     );
@@ -44,47 +46,17 @@ const CommentsList = (props) => {
       .catch((error) => {
         console.error(error);
         dispatch(contentActions.setPrevContent());
+        setErrorMessage(
+          `${error.message}: Удалить комментарий не удалось. Обновите страницу и повторите попытку.`
+        );
         setIsUpdating(false);
       });
   };
-/*
-  useEffect(() => {
-    if (isUpdating) {
-      console.log(1);
-      //const updatedComments = ctx.updatedComments;
-      /*
-      const onPutSuccess = () => {
-        //ctx.loadCommentsHandler(updatedComments);
-      };
 
-      (async () => {
-        await updateCommentsHandler(props.index, props.commentsData, onPutSuccess).catch((error) => {
-          console.log(error);
-          //setErrorMessage(`${ error.message }: Удалить комментарий не удалось. Обновите страницу и повторите попытку.`);
-        });
-
-        setIsUpdating(false);
-      })();
-      */
-/*
-      set(databaseRef, props.commentData)
-        .then(() => {
-          setIsUpdating(false);
-          console.log(content);
-        })
-        .catch((error) => {
-          console.error(error);
-          dispatch(contentActions.setPrevContent());
-          setIsUpdating(false);
-          console.log(content);
-        });
-    }
-  }, [isUpdating]);
-*/
   return (
     <>
-      {/* isUpdating && <p>Комментарий удаляется...</p> */}
-      {/* errorMessage && <p className={ styles.error }>{ errorMessage }</p> */}
+      {isUpdating && <p>Комментарий удаляется...</p>}
+      {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       <ul className={styles["comments-list"]}>
         {props.commentData.map((comment) => {
           return (
@@ -97,8 +69,7 @@ const CommentsList = (props) => {
                     type="button"
                     value={comment.id}
                     onClick={deleteHandler}
-                    //disabled={ isUpdating || errorMessage }
-                    disabled={isUpdating}
+                    disabled={isUpdating || errorMessage}
                   />
                   <p className={styles["comments-list__date"]}>
                     {parseDateMonthString(new Date(comment.date))}

@@ -1,13 +1,13 @@
 //import React, { useContext, useEffect } from 'react';
 import React, { useEffect } from "react";
-
-//import Context from '../../store/context';
 import { useSelector } from "react-redux";
-import styles from "./NewsContent.module.css";
+
 import Container from "../Layout/Container";
 import BasicItem from "./BasicItem";
 import FirstPriorityItem from "./FirstPriorityItem";
 import SecondPriorityItem from "./SecondPriorityItem";
+
+import styles from "./NewsContent.module.scss";
 
 export const newsImg = (images) =>
   images.map((image) => {
@@ -126,8 +126,6 @@ const NewsContent = (props) => {
   useEffect(() => {
     document.title = "Новости Молдовы — Moldova News";
   }, []);
-
-  //const ctx = useContext(Context);
 
   const sContent = useSelector((state) => state.content.content);
 

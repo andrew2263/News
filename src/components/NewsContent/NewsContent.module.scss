@@ -6,37 +6,37 @@ h1 {
 .content {
   padding: 20px 0;
   background-color: #f0f0f0;
+
+  ul {
+    padding: 0 20px;
+    background-color: #f0f0f0;
+  }
+
+  li {
+    padding: 20px;
+    transition: all 0.5s;
+
+    a {
+      text-decoration: none;
+      color: #000;
+      transition: all 0.5s;
+    }
+
+    &:hover {
+      background-color: #e1e0e0;
+      color: #4f4f4f;
+      transition: all 0.5s;
+
+      a {
+        color: #4f4f4f;
+        transition: all 0.5s;
+      }
+    }
+  }
 }
 
 .priority-content {
   margin-bottom: 80px;
-}
-
-.content ul {
-  padding: 0 20px;
-  background-color: #f0f0f0;
-}
-
-.content li {
-  padding: 20px;
-  transition: all 0.5s;
-}
-
-.content li:hover {
-  background-color: #e1e0e0;
-  color: #4f4f4f;
-  transition: all 0.5s;
-}
-
-.content li a {
-  text-decoration: none;
-  color: #000;
-  transition: all 0.5s;
-}
-
-.content li:hover a {
-  color: #4f4f4f;
-  transition: all 0.5s;
 }
 
 .first-priority {
@@ -48,10 +48,10 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
-}
 
-.second-priority:last-child {
-  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 10px;
+  }
 }
 
 .date {

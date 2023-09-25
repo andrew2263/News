@@ -1,8 +1,9 @@
 import React, { Link } from 'react-router-dom';
 
 import { newsImg } from './NewsContent';
-import styles from './FirstPriorityItem.module.css';
 import { parseDateMonthString } from './NewsContent';
+
+import styles from './FirstPriorityItem.module.scss';
 
 const FirstPriorityItem = props => {
   return (

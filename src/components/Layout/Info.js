@@ -2,8 +2,9 @@ import React from 'react';
 
 import NewsRubrics from './NewsRubrics';
 import Contacts from './Contacts';
-import styles from './Info.module.css';
 import Social from './Social';
+
+import styles from './Info.module.scss';
 
 const Info = props => {
   return (

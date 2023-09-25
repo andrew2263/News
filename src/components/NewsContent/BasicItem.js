@@ -1,7 +1,7 @@
 import React, { Link } from 'react-router-dom';
 
 import { newsImg } from './NewsContent';
-import styles from './BasicItem.module.css';
+import styles from './BasicItem.module.scss';
 import { parseDateMonthString } from './NewsContent';
 
 const BasicItem = props => {

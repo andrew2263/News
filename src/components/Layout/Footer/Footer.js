@@ -7,7 +7,8 @@ import NewsRubrics from '../NewsRubrics';
 import Contacts from '../Contacts';
 import Social from '../Social';
 import Container from '../Container';
-import styles from './Footer.module.css';
+
+import styles from './Footer.module.scss';
 import logo50 from '../../../logo50.png';
 
 const Footer = () => {

@@ -1,20 +1,19 @@
 //import React, { useContext } from 'react';
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-
 import { useSelector } from "react-redux";
 
 import Container from "../Layout/Container";
 import NewComment from "./NewComment";
 import CommentsList from "./CommentsList";
-import styles from "./Comments.module.css";
+
+import styles from "./Comments.module.scss";
 
 const Comments = () => {
   const params = useParams();
   const { newsId } = params;
 
-
-  //let errorMessage = ctx.errorMessage['loadComments'];
+  const [errorMessage, setErrorMessage] = useState("");
 
   const content = useSelector((state) => state.content.content);
 
@@ -26,7 +25,7 @@ const Comments = () => {
 
   if (isContentLoaded && !content[commentIndex]) {
     commentsList = undefined;
-    //errorMessage = 'Комментарии к данной новости не загрузились.';
+    setErrorMessage("Комментарии к данной новости не загрузились.");
   }
 
   if (
@@ -49,31 +48,30 @@ const Comments = () => {
 
   return (
     <React.Fragment>
-      {/*
-        errorMessage &&
+      {errorMessage && (
         <section>
           <Container>
-            <p className={ styles.error }>
-              ERROR: { errorMessage }
-            </p>
+            <p className={styles.error}>ERROR: {errorMessage}</p>
           </Container>
         </section>
-  */}
-      {/* !isCommentsLoaded && !errorMessage &&*/}
-      {!isContentLoaded && (
+      )}
+      {!isContentLoaded && !errorMessage && (
         <section>
           <Container>
             <p className={styles.nocomments}>Комментарии загружаются...</p>
           </Container>
         </section>
       )}
-      {/* isCommentsLoaded && !errorMessage &&*/}
-      {isContentLoaded && (
+      {isContentLoaded && !errorMessage && (
         <section>
           <Container>
             <article>
               <h3>Комментарии</h3>
-              {isComments ? <CommentsList index={commentIndex} commentData={commentsList} /> : ""}
+              {isComments ? (
+                <CommentsList index={commentIndex} commentData={commentsList} />
+              ) : (
+                ""
+              )}
               {!isComments && <p>Комментариев пока нет.</p>}
               <NewComment id={lastId + 1} index={commentIndex} />
             </article>

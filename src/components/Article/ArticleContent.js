@@ -3,9 +3,11 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
+
 import Container from '../Layout/Container';
-import styles from './ArticleContent.module.css';
 import { parseDateMonthString } from '../NewsContent/NewsContent';
+
+import styles from './ArticleContent.module.scss';
 
 const ArticleContent = () => {
   const params = useParams();

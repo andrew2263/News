@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-//import { sendArticle, updateCommentsHandler } from "./helper";
 
 const contentSlice = createSlice({
   name: "content",
@@ -7,7 +6,6 @@ const contentSlice = createSlice({
     content: [],
     prevContent: [],
     articleAdded: false,
-    updatedComments: [],
   },
   reducers: {
     addArticle(state, action) {
@@ -58,37 +56,13 @@ const contentSlice = createSlice({
     setPrevContent(state) {
       state.content = state.prevContent;
     },
-    removeCommentHandler(state, action) {
+    changeCommentHandler(state, action) {
       state.prevContent = [...state.content];
 
       const commentIndex = state.content.findIndex((elem) => elem.key === action.payload.newsId);
 
-      const newCommentsList = state.content[commentIndex].comments;
-
-      const removedCommentIndex = newCommentsList.findIndex(elem => {
-        return elem.id === +action.payload.commentId;
-      });
-      newCommentsList.splice(removedCommentIndex, 1);
-
-      console.log(newCommentsList);
-      state.updatedComments = newCommentsList;
+      state.content[commentIndex].comments = action.payload.updatedComments;
     },
-    addCommentHandler(state, action) {
-      state.prevContent = [...state.content];
-      const commentIndex = state.content.findIndex((elem) => elem.key === action.payload.newsId);
-      const newCommentsList = state.content[commentIndex].comments;
-      //const updatedCommentsList = [...newCommentsList, action.payload.comment];
-      newCommentsList.push(action.payload.comment);
-
-      state.updatedComments = newCommentsList;
-    }
-    /*
-    loadCommentsHandler(state, action) {
-      const data = action.payload;
-      state.comments = data;
-      console.log(state.comments);
-    },
-    */
   },
 });
 

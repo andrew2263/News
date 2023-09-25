@@ -10,16 +10,3 @@ export const sendArticle = async (data, onSuccess) => {
     onSuccess();
   }
 };
-
-export const updateCommentsHandler = async (id, data, onSuccess) => {
-    const patchResponse = await fetch(`https://news-acc8f-default-rtdb.firebaseio.com/content.json`, {
-      method: 'PATCH',
-      body: JSON.stringify(data)
-    });
-
-    if (!patchResponse.ok) {
-      throw new Error('Ошибка загрузки комментариев');
-    } else {
-      onSuccess();
-    }
-};

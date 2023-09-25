@@ -6,7 +6,7 @@ import Container from '../Container';
 import Modal from '../../UI/Modal';
 import Info from '../Info';
 
-import styles from './Header.module.css';
+import styles from './Header.module.scss';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
