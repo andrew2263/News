@@ -133,8 +133,6 @@ const NewsContent = (props) => {
 
   const content = stContent.sort(sortDateDesc);
 
-  // const errorMessage = ctx.errorMessage['loadContent'];
-
   const isContent = content.length ? true : false;
 
   let earliestDate = "";
@@ -189,17 +187,6 @@ const NewsContent = (props) => {
 
   return (
     <React.Fragment>
-      {/*
-        !isContent && errorMessage &&
-        <section>
-          <Container>
-            <p className={ styles.error }>
-              ERROR: { errorMessage }
-            </p>
-          </Container>
-        </section>
-  */}
-      {/* !isContent && !errorMessage &&*/}
       {!isContent && (
         <section>
           <Container>

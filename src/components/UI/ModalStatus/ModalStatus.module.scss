@@ -1,0 +1,39 @@
+.submit-msg {
+  font-size: 18px;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.modal-button {
+  padding: 15px 20px;
+  background-color: #111;
+  color: #f5f5f5;
+  font-weight: 400;
+  font-size: 18px;
+  border: none;
+  border-radius: 15px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.5s;
+
+  &:first-child {
+    margin-right: 30px;
+  }
+
+  &:hover {
+    opacity: 0.7;
+    font-weight: 500;
+    transition: all 0.5s;
+  }
+}
+
+.error {
+  font-size: 18px;
+  font-weight: 500;
+  color: #f00;
+}
+

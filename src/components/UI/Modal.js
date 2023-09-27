@@ -1,50 +1,56 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import styles from './Modal.module.scss';
+import { useSelector } from "react-redux";
 
-const Backdrop = props => {
+import Backdrop from "./Backdrop";
+import ModalSubmitting from "./ModalStatus/ModalSubmitting";
+import ModalError from "./ModalStatus/ModalError";
+import ModalIsSubmitted from "./ModalStatus/ModalSubmitted";
+
+import styles from "./Modal.module.scss";
+
+const ModalOverlayStatus = (props) => {
   return (
-    <div className={ styles.backdrop } onClick={ props.onClose } />
-  );
-};
-
-const ModalOverlayStatus = props => {
-  return (
-    <div className={ styles['modal-status'] }>
-      <div>
-        { props.children }
-      </div>
+    <div className={styles["modal-status"]}>
+      <div>{props.children}</div>
     </div>
   );
 };
 
-const ModalOverlayInfo = props => {
-  return (
-    <div className={ styles['modal-info'] }>
-      <div>
-        { props.children }
-      </div>
-    </div>
-  )
-}
+const potralElement = document.getElementById("overlays");
 
-const potralElement = document.getElementById('overlays');
+const Modal = (props) => {
+  const modalType = useSelector((state) => state.modal.type);
+  const modalText = useSelector((state) => state.modal.text);
 
-const Modal = props => {
+  const getModalContent = (type) => {
+    switch(type) {
+      case 'submitting':
+        return <ModalSubmitting />;
+      case 'error':
+        return <ModalError errorMessage={modalText} />;
+      case 'isSubmitted':
+        return <ModalIsSubmitted onClose={props.onClose} />;
+      default:
+        return <ModalError error={modalText} />;
+    }
+  }
+
+  const modalContent = getModalContent(modalType);
+
   return (
     <React.Fragment>
-      { ReactDOM.createPortal(
-        <Backdrop onClose={ props.onClose } />, potralElement
-      ) }
-      { props.type === 'status' && ReactDOM.createPortal(
-        <ModalOverlayStatus>{ props.children }</ModalOverlayStatus>,
+      {ReactDOM.createPortal(
+        <Backdrop onClose={props.onClose}>
+          ReactDOM.createPortal(
+            <ModalOverlayStatus>
+              {modalContent}
+            </ModalOverlayStatus>
+          )
+        </Backdrop>,
         potralElement
-      ) }
-      { props.type === 'info' && ReactDOM.createPortal(
-        <ModalOverlayInfo>{ props.children }</ModalOverlayInfo>,
-        potralElement
-      ) }
+      )}
     </React.Fragment>
   );
 };

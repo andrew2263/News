@@ -6,6 +6,7 @@ const contentSlice = createSlice({
     content: [],
     prevContent: [],
     articleAdded: false,
+    errorMessage: '',
   },
   reducers: {
     addArticle(state, action) {
@@ -63,6 +64,9 @@ const contentSlice = createSlice({
 
       state.content[commentIndex].comments = action.payload.updatedComments;
     },
+    setErrorMessage(state, action) {
+      state.errorMessage = action.payload.errorMessage;
+    }
   },
 });
 

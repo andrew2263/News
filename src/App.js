@@ -41,34 +41,9 @@ function App() {
       console.log("error");
     }
   }, []);
-/*
-  const fetchCommentsHandler = useCallback(async () => {
-    try {
-      const response = await fetch(
-        "https://news-acc8f-default-rtdb.firebaseio.com/comments.json"
-      );
 
-      const responseData = await response.json();
-
-      const commentsData = responseData.map((el) => {
-        if (el.comments) {
-          el.comments = el.comments.map((comment) => {
-            return { ...comment, date: new Date(comment.date) };
-          });
-        }
-        return el;
-      });
-
-      dispatch(contentActions.loadCommentsHandler(commentsData));
-    } catch (error) {
-      //catchErrorHandler(error.message, 'loadComments');
-      console.log("error");
-    }
-  }, []);
-*/
   useEffect(() => {
     fetchContentHandler();
-    //fetchCommentsHandler();
   }, [fetchContentHandler]);
 
   return (

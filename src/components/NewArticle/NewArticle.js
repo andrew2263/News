@@ -1,5 +1,4 @@
 import React, { useState, useReducer, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -8,9 +7,9 @@ import { filesReducer } from "./filesReducer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { contentActions } from "../../store/content-slice";
+import { modalActions } from "../../store/modal-slice";
 
 import Container from "../Layout/Container";
-import Modal from "../UI/Modal";
 
 import useInput from "../../hooks/use-input";
 import { sendArticle } from "../../store/helper";
@@ -171,14 +170,11 @@ const NewArticle = () => {
     filesIsValid,
   ]);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [didSubmit, setDidSubmit] = useState(false);
-  const [errorMessage, setErrorMessage] = useState();
-
   const formIsSubmitted = () => {
     dispatch(contentActions.setArticleIsSent());
-    setIsSubmitting(false);
-    setDidSubmit(true);
+    //setIsSubmitting(false);
+    dispatch(modalActions.setCloseModal());
+    dispatch(modalActions.setOpenModal({type: 'isSubmitted'}));
     resetKeyHandler();
     resetHeadingHandler();
     resetBriefTextHandler();
@@ -190,8 +186,8 @@ const NewArticle = () => {
   };
   
   const errorHandler = (error) => {
-    setIsSubmitting(false);
-    setErrorMessage(error.message);
+    dispatch(modalActions.setCloseModal());
+    dispatch(modalActions.setOpenModal({type: 'error', text: error.message}))
   };
 
   useEffect(() => {
@@ -206,7 +202,7 @@ const NewArticle = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    setIsSubmitting(true);
+    dispatch(modalActions.setOpenModal({type: 'submitting'}));
 
     const articleDate = new Date();
     const newArticle = {};
@@ -264,38 +260,8 @@ const NewArticle = () => {
     addArticle();
   };
 
-  const modalCloseHandler = () => {
-    setDidSubmit(false);
-  };
-
   return (
     <React.Fragment>
-      {isSubmitting && (
-        <Modal type="status">
-          <p className={styles["submit-msg"]}>Форма отправляется...</p>
-        </Modal>
-      )}
-      {errorMessage && (
-        <Modal type="status">
-          <p className={styles.error}>ERROR: {errorMessage}</p>
-        </Modal>
-      )}
-      {didSubmit && (
-        <Modal type="status" onClose={modalCloseHandler}>
-          <p className={styles["submit-msg"]}>Форма отправлена</p>
-          <div className={styles["modal-buttons"]}>
-            <button
-              className={styles["modal-button"]}
-              onClick={modalCloseHandler}
-            >
-              OK
-            </button>
-            <NavLink className={styles["modal-button"]} to="/">
-              Перейти к новостям
-            </NavLink>
-          </div>
-        </Modal>
-      )}
       <section>
         <Container>
           <article>
