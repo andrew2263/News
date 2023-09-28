@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 
 import { contentActions } from "./store/content-slice";
+import { modalActions } from "./store/modal-slice";
 
 import Layout from "./components/Layout/Layout";
 import Article from "./components/Article/Article";
@@ -28,16 +29,20 @@ function App() {
         return {
           ...el,
           date: Number(new Date(el.date)),
-          comments: el.comments?.length ? el.comments.map((comment) => ({
-            ...comment,
-            date: Number(new Date(comment.date)),
-          })) : [],
+          comments: el.comments?.length
+            ? el.comments.map((comment) => ({
+                ...comment,
+                date: Number(new Date(comment.date)),
+              }))
+            : [],
         };
       });
 
       dispatch(contentActions.loadContentHandler(contentData));
     } catch (error) {
-      //catchErrorHandler(error.message, 'loadContent');
+      dispatch(
+        modalActions.setOpenModal({ type: "error", text: error.message })
+      );
       console.log("error");
     }
   }, []);

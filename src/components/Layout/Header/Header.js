@@ -6,6 +6,8 @@ import Container from "../Container";
 import HeaderMenu from "../../UI/HeaderMenu";
 import Info from "../Info";
 
+import { MAIN_RUBRICS } from "../../../constants/NewsRubrics.Constant";
+
 import styles from "./Header.module.scss";
 
 const Header = () => {
@@ -59,31 +61,13 @@ const Header = () => {
           </div>
           <nav className={styles["header__nav"]}>
             <ul className={styles["header__list"]}>
-              <li className={styles["header__item"]}>
-                <NavLink to="/politics" activeClassName={styles.active}>
-                  Политика
+              {MAIN_RUBRICS.map((el) => (
+                <li className={styles["header__item"]} key={el.category}>
+                <NavLink to={el.link} activeClassName={styles.active}>
+                  {el.name}
                 </NavLink>
               </li>
-              <li className={styles["header__item"]}>
-                <NavLink to="/war" activeClassName={styles.active}>
-                  Война Россия — Украина
-                </NavLink>
-              </li>
-              <li className={styles["header__item"]}>
-                <NavLink to="/economics" activeClassName={styles.active}>
-                  Экономика
-                </NavLink>
-              </li>
-              <li className={styles["header__item"]}>
-                <NavLink to="/world" activeClassName={styles.active}>
-                  В мире
-                </NavLink>
-              </li>
-              <li className={styles["header__item"]}>
-                <NavLink to="/sport" activeClassName={styles.active}>
-                  Спорт
-                </NavLink>
-              </li>
+              ))}
             </ul>
             <div className={styles["header__add"]}>
               <NavLink to="/newArticle" activeClassName={styles.active}>

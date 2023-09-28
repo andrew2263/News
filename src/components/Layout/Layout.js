@@ -13,7 +13,6 @@ const Layout = (props) => {
   const dispatch = useDispatch();
 
   const isModalOpen = useSelector((state) => state.modal.show);
-  console.log(isModalOpen);
 
   const closeModalHandler = () => {
     dispatch(modalActions.setCloseModal());

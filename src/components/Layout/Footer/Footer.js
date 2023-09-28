@@ -2,11 +2,12 @@ import React from "react";
 
 import { NavLink } from "react-router-dom";
 
-import { scrollToTop } from "../../NewsContent/NewsContent";
 import NewsRubrics from "../NewsRubrics";
 import Contacts from "../Contacts";
 import Social from "../Social";
 import Container from "../Container";
+
+import { scrollToTop } from "../../../helpers/scrollToTop";
 
 import styles from "./Footer.module.scss";
 import logo50 from "../../../logo50.png";

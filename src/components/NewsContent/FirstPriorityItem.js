@@ -1,17 +1,20 @@
 import React, { Link } from "react-router-dom";
 
-import { newsImg } from "./NewsContent";
-import { parseDateMonthString } from "./NewsContent";
+import NewsImage from "./NewsImage";
+
+import { parseDateMonthString } from "../../helpers/parseDateMonth";
 
 import styles from "./FirstPriorityItem.module.scss";
 
 const FirstPriorityItem = (props) => {
+  const image = props.images[0];
+
   return (
     <li className={styles["news__content-item"]} key={props.id}>
       <div className={styles["news__content-info"]}>
         <div className={styles["news__img-wrapper"]}>
           <Link to={`/${props.category}/${props.id}`} onClick={props.scroll}>
-            {newsImg(props.images)[0]}
+          <NewsImage src={image.href} alt={image.text} />
           </Link>
         </div>
         <div className={styles["news__info"]}>

@@ -1,11 +1,14 @@
 import React, { Link } from "react-router-dom";
 
-import { newsImg } from "./NewsContent";
-import { parseDateMonthNumber } from "./NewsContent";
+import NewsImage from "./NewsImage";
+
+import { parseDateMonthNumber } from "../../helpers/parseDateMonth";
 
 import styles from "./SecondPriorityItem.module.scss";
 
 const SecondPriorityItem = (props) => {
+  const image = props.images[0];
+
   return (
     <li className={styles["news__content-item"]} key={props.id}>
       <div
@@ -23,7 +26,7 @@ const SecondPriorityItem = (props) => {
           }
         >
           <Link to={`/${props.category}/${props.id}`} onClick={props.scroll}>
-            {newsImg(props.images)[0]}
+            <NewsImage src={image.href} alt={image.text} />
           </Link>
         </div>
         <div className={styles["news__info"]}>

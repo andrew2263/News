@@ -7,7 +7,7 @@ import { getDatabase, ref, set } from "firebase/database";
 
 import { contentActions } from "../../store/content-slice";
 
-import { parseDateMonthString } from "../NewsContent/NewsContent";
+import { parseDateMonthString } from "../../helpers/parseDateMonth";
 
 import styles from "./CommentsList.module.scss";
 

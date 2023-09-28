@@ -1,12 +1,14 @@
 import React, { Link } from "react-router-dom";
 
-import { parseDateMonthString } from "./NewsContent";
+import NewsImage from "./NewsImage";
 
-import { newsImg } from "./NewsContent";
+import { parseDateMonthString } from "../../helpers/parseDateMonth";
 
 import styles from "./BasicItem.module.scss";
 
 const BasicItem = (props) => {
+  const image = props.images[0];
+
   return (
     <li className={styles["news__content-item"]} key={props.id}>
       <h2 className={styles["news__content-heading"]}>
@@ -17,7 +19,7 @@ const BasicItem = (props) => {
       <div className={styles["news__content-info"]}>
         <div className={styles["news__img-wrapper"]}>
           <Link to={`/${props.category}/${props.id}`} onClick={props.scroll}>
-            {newsImg(props.images)[0]}
+            <NewsImage src={image.href} alt={image.text} />
           </Link>
         </div>
         <div>
