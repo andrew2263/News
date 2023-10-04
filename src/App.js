@@ -10,6 +10,8 @@ import Article from "./components/Article/Article";
 import NewsContent from "./components/NewsContent/NewsContent";
 import NewArticle from "./components/NewArticle/NewArticle";
 
+import { MAIN_RUBRICS } from "./constants/NewsRubrics.Constant";
+
 function App() {
   const dispatch = useDispatch();
 
@@ -57,34 +59,15 @@ function App() {
         <Route path="/" exact>
           <NewsContent category="all" />
         </Route>
-        <Route path="/politics" exact>
-          <NewsContent category="politics" />
+        {MAIN_RUBRICS.map((el) => (
+          <Route path={el.link} key={el.category} exact>
+            <NewsContent category={el.category} />
+          </Route>
+        ))}
+        <Route path="/rubrics/:rubric">
+          <NewsContent isRubric />
         </Route>
-        <Route path="/war" exact>
-          <NewsContent category="war" />
-        </Route>
-        <Route path="/economics" exact>
-          <NewsContent category="economics" />
-        </Route>
-        <Route path="/world" exact>
-          <NewsContent category="world" />
-        </Route>
-        <Route path="/sport" exact>
-          <NewsContent category="sport" />
-        </Route>
-        <Route path="/politics/:newsId">
-          <Article />
-        </Route>
-        <Route path="/war/:newsId">
-          <Article />
-        </Route>
-        <Route path="/economics/:newsId">
-          <Article />
-        </Route>
-        <Route path="/world/:newsId">
-          <Article />
-        </Route>
-        <Route path="/sport/:newsId">
+        <Route path="/:category/:newsId">
           <Article />
         </Route>
         <Route path="/newArticle">

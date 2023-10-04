@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
@@ -7,6 +7,7 @@ import Container from "../Layout/Container";
 import NewsImage from "../NewsContent/NewsImage";
 
 import { parseDateMonthString } from "../../helpers/parseDateMonth";
+import { OTHER_RUBRICS } from "../../constants/NewsRubrics.Constant";
 
 import styles from "./ArticleContent.module.scss";
 
@@ -81,6 +82,19 @@ const ArticleContent = () => {
                   </React.Fragment>
                 ))}
               </div>
+              {item?.rubrics && (
+                <ul className={styles["article__rubrics-list"]}>
+                  {item.rubrics.map((rubric) => (
+                    <li className={styles["article__rubrics-item"]} key={rubric}>
+                      <NavLink
+                        to={`/rubrics${OTHER_RUBRICS.find((el) => el.category === rubric)?.link}`}
+                      >
+                        {OTHER_RUBRICS.find((el) => el.category === rubric)?.name}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </article>
           </Container>
         </section>

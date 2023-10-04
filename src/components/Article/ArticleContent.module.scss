@@ -27,6 +27,32 @@
     font-size: 14px;
     color: #777;
   }
+
+  &__rubrics {
+    &-list {
+      display: flex;
+      gap: 20px;
+      flex-direction: row;
+    }
+
+    &-item {
+      padding: 5px 15px;
+      border-radius: 15px;
+      background-color: #ddd;
+      transition: all 500ms;
+
+      a {
+        text-decoration: none;
+        color: #686B6F;
+        transition: all 500ms;
+      }
+
+      &:hover, &:hover a {
+        opacity: 0.85;
+        transition: all 500ms;
+      }
+    }
+  }
 }
 
 .nonews {

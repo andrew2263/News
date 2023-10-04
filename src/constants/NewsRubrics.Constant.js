@@ -28,7 +28,7 @@ export const MAIN_RUBRICS = [
 
 export const OTHER_RUBRICS = [
   {
-    link: '/',
+    link: '/fuel',
     category: 'fuel',
     name: 'Цены на топливо'
   },
@@ -38,48 +38,113 @@ export const OTHER_RUBRICS = [
     name: 'Россия — Украина'
   },
   {
-    link: '/',
-    category: 'covid',
-    name: 'Коронавирус'
+    link: '/karabakh',
+    category: 'karabakh',
+    name: 'Нагорный Карабах'
   },
   {
-    link: '/',
+    link: '/foreign',
+    category: 'foreign',
+    name: 'Внешняя политика'
+  },
+  {
+    link: '/government',
+    category: 'government',
+    name: 'Правительство'
+  },
+  {
+    link: '/sandu',
+    category: 'sandu',
+    name: 'Майя Санду'
+  },
+  {
+    link: '/medicine',
+    category: 'medicine',
+    name: 'Медицина'
+  },
+  {
+    link: '/nowar',
     category: 'nowar',
     name: 'Нет войне'
   },
   {
-    link: '/',
+    link: '/gas',
     category: 'gas',
     name: 'Цены на газ'
   },
   {
-    link: '/',
-    category: 'russian',
-    name: 'Русский язык'
+    link: '/auto',
+    category: 'auto',
+    name: 'Автомобили'
   },
   {
-    link: '/',
+    link: '/usa',
+    category: 'usa',
+    name: 'США'
+  },
+  {
+    link: '/europe',
+    category: 'europe',
+    name: 'Европа'
+  },
+  {
+    link: '/accidents',
     category: 'accidents',
     name: 'ДТП в Молдове'
   },
   {
-    link: '/',
+    link: '/transport',
+    category: 'transport',
+    name: 'Транспорт'
+  },
+  {
+    link: '/tech',
+    category: 'tech',
+    name: 'Технологии'
+  },
+  {
+    link: '/chisinau',
     category: 'chisinau',
     name: 'Кишинёв'
   },
   {
-    link: '/',
+    link: '/transnistria',
     category: 'transnistria',
     name: 'Приднестровье'
   },
   {
-    link: '/',
+    link: '/romania',
+    category: 'romania',
+    name: 'Румыния'
+  },
+  {
+    link: '/aeroport',
+    category: 'aeroport',
+    name: 'Аэропорт'
+  },
+  {
+    link: '/gagauz',
     category: 'gagauz',
     name: 'Гагаузия'
   },
   {
-    link: '/',
-    category: 'balti',
-    name: 'Бельцы'
+    link: '/corn',
+    category: 'corn',
+    name: 'Зерно'
+  },
+  {
+    link: '/wine',
+    category: 'wine',
+    name: 'Вино'
+  },
+  {
+    link: '/nature',
+    category: 'nature',
+    name: 'Природа'
+  },
+  {
+    link: '/football',
+    category: 'football',
+    name: 'Футбол'
   },
 ];
