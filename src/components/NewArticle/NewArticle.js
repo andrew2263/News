@@ -11,7 +11,7 @@ import { modalActions } from "../../store/modal-slice";
 
 import Container from "../Layout/Container";
 
-import useInput from "../../hooks/use-input";
+import useForm from "../../hooks/use-form";
 import { sendArticle } from "../../store/helper";
 
 import styles from "./NewArticle.module.scss";
@@ -24,22 +24,35 @@ const isKey = (value) => {
   );
 };
 
-const isLineText = (value, minLength, maxLength) => {
+const isHeading = (value) => {
   return (
-    /^[а-яА-ЯёЁa-zăîâĂÎșțȘȚA-Z0-9- .,!?%;:«»„”"()—\n]+$/.test(value) &&
-    value.toString().length >= minLength &&
-    value.toString().length <= maxLength
+    /[\w\s\p{P}]/gu.test(value) &&
+    value.toString().length >= 50 &&
+    value.toString().length <= 100
   );
 };
 
-const isText = (value, maxLength) => {
+const isBriefText = (value) => {
   return (
-    /^[а-яА-ЯёЁa-zăîâĂÎșțȘȚA-Z0-9- .,!?%;:«»„”"()—\n]+$/.test(value) &&
-    value.toString().length >= maxLength
+    /[\w\s\p{P}]/gu.test(value) &&
+    value.toString().length >= 70 &&
+    value.toString().length <= 250
   );
 };
 
-const isNotEmpty = (value) => value !== "";
+const isText = (value) => {
+  return /[\w\s\p{P}]/gu.test(value) && value.toString().length >= 300;
+};
+
+const isNotEmpty = (value) => (!!value);
+
+const isDescription = (value) => {
+  return (
+    /[\w\s\p{P}]/gu.test(value) &&
+    value.toString().length >= 50 &&
+    value.toString().length <= 200
+  );
+};
 
 const NewArticle = () => {
   const [formIsValid, setFormIsValid] = useState(false);
@@ -53,68 +66,69 @@ const NewArticle = () => {
 
   const dispatch = useDispatch();
 
-  const {
-    value: enteredKey,
-    isValid: keyIsValid,
-    hasError: keyHasError,
-    valueChangeHandler: keyChangeHandler,
-    inputBlurHandler: validateKeyHandler,
-    reset: resetKeyHandler,
-  } = useInput(isKey);
+  const initialFormState = {
+    key: {
+      value: "",
+      touched: false,
+      valid: false,
+      hasError: false,
+    },
+    heading: {
+      value: "",
+      touched: false,
+      valid: false,
+      hasError: false,
+    },
+    briefText: {
+      value: "",
+      touched: false,
+      valid: false,
+      hasError: false,
+    },
+    text: {
+      value: "",
+      touched: false,
+      valid: false,
+      hasError: false,
+    },
+    category: {
+      value: "",
+      touched: false,
+      valid: false,
+      hasError: false,
+    },
+    priority: {
+      value: "",
+      touched: false,
+      valid: false,
+      hasError: false,
+    },
+    description: {
+      value: "",
+      touched: false,
+      valid: false,
+      hasError: false,
+    },
+  };
+
+  const validation = {
+    key: isKey,
+    heading: isHeading,
+    briefText: isBriefText,
+    text: isText,
+    category: isNotEmpty,
+    priority: isNotEmpty,
+    description: isDescription,
+  };
 
   const {
-    value: enteredHeading,
-    isValid: headingIsValid,
-    hasError: headingHasError,
-    valueChangeHandler: headingChangeHandler,
-    inputBlurHandler: validateHeadingHandler,
-    reset: resetHeadingHandler,
-  } = useInput(isLineText, 50, 100);
-
-  const {
-    value: enteredBriefText,
-    isValid: briefTextIsValid,
-    hasError: briefTextHasError,
-    valueChangeHandler: briefTextChangeHandler,
-    inputBlurHandler: validateBriefTextHandler,
-    reset: resetBriefTextHandler,
-  } = useInput(isLineText, 120, 250);
-
-  const {
-    value: enteredText,
-    isValid: textIsValid,
-    hasError: textHasError,
-    valueChangeHandler: textChangeHandler,
-    inputBlurHandler: validateTextHandler,
-    reset: resettextHandler,
-  } = useInput(isText, 300);
-
-  const {
-    value: selectedCategory,
-    isValid: categoryIsValid,
-    hasError: categoryHasError,
-    valueChangeHandler: categoryChangeHandler,
-    inputBlurHandler: validateCategoryHandler,
-    reset: resetCategoryHandler,
-  } = useInput(isNotEmpty);
-
-  const {
-    value: selectedPriority,
-    isValid: priorityIsValid,
-    hasError: priorityHasError,
-    valueChangeHandler: priorityChangeHandler,
-    inputBlurHandler: validatePriorityHandler,
-    reset: resetPriorityHandler,
-  } = useInput(isNotEmpty);
-
-  const {
-    value: enteredFileDescription,
-    isValid: fileDescriptionIsValid,
-    hasError: fileDescriptionHasError,
-    valueChangeHandler: fileDescriptionChangeHandler,
-    inputBlurHandler: validateFileDescriptionHandler,
-    reset: resetFileDescriptionHandler,
-  } = useInput(isLineText, 50, 200);
+    value: formValue,
+    isValid: isFormValid,
+    hasError: formHasError,
+    valueChangeHandler: formChange,
+    inputBlurHandler: formBlur,
+    reset: formReset,
+  } = useForm(initialFormState, validation);
 
   const [filesState, dispatchFiles] = useReducer(filesReducer, {
     value: "",
@@ -144,50 +158,25 @@ const NewArticle = () => {
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      setFormIsValid(
-        keyIsValid &&
-          headingIsValid &&
-          briefTextIsValid &&
-          textIsValid &&
-          fileDescriptionIsValid &&
-          categoryIsValid &&
-          priorityIsValid &&
-          filesIsValid
-      );
+      setFormIsValid(isFormValid && filesIsValid);
     }, 500);
 
     return () => {
       clearTimeout(identifier);
     };
-  }, [
-    keyIsValid,
-    headingIsValid,
-    briefTextIsValid,
-    textIsValid,
-    fileDescriptionIsValid,
-    categoryIsValid,
-    priorityIsValid,
-    filesIsValid,
-  ]);
+  }, [isFormValid, filesIsValid]);
 
   const formIsSubmitted = () => {
     dispatch(contentActions.setArticleIsSent());
-    //setIsSubmitting(false);
     dispatch(modalActions.setCloseModal());
-    dispatch(modalActions.setOpenModal({type: 'isSubmitted'}));
-    resetKeyHandler();
-    resetHeadingHandler();
-    resetBriefTextHandler();
-    resettextHandler();
-    resetCategoryHandler();
-    resetPriorityHandler();
+    dispatch(modalActions.setOpenModal({ type: "isSubmitted" }));
+    formReset();
     resetFilesHandler();
-    resetFileDescriptionHandler();
   };
-  
+
   const errorHandler = (error) => {
     dispatch(modalActions.setCloseModal());
-    dispatch(modalActions.setOpenModal({type: 'error', text: error.message}))
+    dispatch(modalActions.setOpenModal({ type: "error", text: error.message }));
   };
 
   useEffect(() => {
@@ -202,12 +191,12 @@ const NewArticle = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    dispatch(modalActions.setOpenModal({type: 'submitting'}));
+    dispatch(modalActions.setOpenModal({ type: "submitting" }));
 
     const articleDate = new Date();
     const newArticle = {};
 
-    const key = `${enteredKey}-${articleDate.getDate()}${
+    const key = `${formValue.key}-${articleDate.getDate()}${
       articleDate.getMonth() + 1
     }${articleDate.getFullYear()}-${articleDate.getHours()}${articleDate.getMinutes()}`;
 
@@ -234,12 +223,12 @@ const NewArticle = () => {
       const urls = await uploadFiles();
 
       newArticle.key = key;
-      newArticle.priority = +selectedPriority;
-      newArticle.category = selectedCategory;
+      newArticle.priority = +formValue.priority;
+      newArticle.category = formValue.category;
       newArticle.date = +articleDate;
-      newArticle.heading = enteredHeading;
-      newArticle.briefText = enteredBriefText;
-      newArticle.text = enteredText.split("\n");
+      newArticle.heading = formValue.heading;
+      newArticle.briefText = formValue.briefText;
+      newArticle.text = formValue.text.split("\n");
       newArticle.comments = [];
 
       newArticle.images = urls.map((el, index) => {
@@ -249,7 +238,7 @@ const NewArticle = () => {
         };
 
         if (index === 0) {
-          imageData.text = enteredFileDescription;
+          imageData.text = formValue.descriprion;
         }
         return imageData;
       });
@@ -268,7 +257,7 @@ const NewArticle = () => {
             <h2>Добавить новость</h2>
             <form onSubmit={submitHandler}>
               <div className={styles.control}>
-                {keyHasError && (
+                {formHasError.key && (
                   <p className={styles["invalid-info"]}>
                     Ключ может содержать только латинские буквы в нижнем
                     регистре, цифры, символы &quot;-&quot; и &quot;_&quot; без
@@ -278,14 +267,15 @@ const NewArticle = () => {
                 <label htmlFor="article_key">Ключ</label>
                 <input
                   type="text"
+                  name="key"
                   id="article_key"
-                  value={enteredKey}
-                  onChange={keyChangeHandler}
-                  onBlur={validateKeyHandler}
+                  value={formValue.key}
+                  onChange={formChange}
+                  onBlur={formBlur}
                 />
               </div>
               <div className={styles.control}>
-                {headingHasError && (
+                {formHasError.heading && (
                   <p className={styles["invalid-info"]}>
                     Заголовок может содержать только буквы, цифры, пробелы и
                     символы -.,!?%;:«»„”. Минимальное число символов — 50,
@@ -295,14 +285,15 @@ const NewArticle = () => {
                 <label htmlFor="article_heading">Заголовок</label>
                 <input
                   type="text"
+                  name="heading"
                   id="article_heading"
-                  value={enteredHeading}
-                  onChange={headingChangeHandler}
-                  onBlur={validateHeadingHandler}
+                  value={formValue.heading}
+                  onChange={formChange}
+                  onBlur={formBlur}
                 />
               </div>
               <div className={styles.control}>
-                {briefTextHasError && (
+                {formHasError.briefText && (
                   <p className={styles["invalid-info"]}>
                     Краткое описание может содержать только буквы, цифры,
                     пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
@@ -312,14 +303,15 @@ const NewArticle = () => {
                 <label htmlFor="article_brief_text">Краткое описание</label>
                 <textarea
                   className={styles.brief}
+                  name="briefText"
                   id="article_brief_text"
-                  value={enteredBriefText}
-                  onChange={briefTextChangeHandler}
-                  onBlur={validateBriefTextHandler}
+                  value={formValue.briefText}
+                  onChange={formChange}
+                  onBlur={formBlur}
                 />
               </div>
               <div className={styles.control}>
-                {textHasError && (
+                {formHasError.text && (
                   <p className={styles["invalid-info"]}>
                     Текст новости может содержать только буквы, цифры, пробелы и
                     символы -.,!?%;:«»„”. Минимальное число символов — 300.
@@ -328,14 +320,15 @@ const NewArticle = () => {
                 <label htmlFor="article_text">Текст новости</label>
                 <textarea
                   className={styles["article-text"]}
+                  name="text"
                   id="article_text"
-                  value={enteredText}
-                  onChange={textChangeHandler}
-                  onBlur={validateTextHandler}
+                  value={formValue.text}
+                  onChange={formChange}
+                  onBlur={formBlur}
                 />
               </div>
               <div className={styles.select}>
-                {categoryHasError && (
+                {formHasError.category && (
                   <p className={styles["invalid-info"]}>
                     Выберите категорию новости.
                   </p>
@@ -344,9 +337,9 @@ const NewArticle = () => {
                 <select
                   id="category"
                   name="category"
-                  value={selectedCategory}
-                  onChange={categoryChangeHandler}
-                  onBlur={validateCategoryHandler}
+                  value={formValue.category}
+                  onChange={formChange}
+                  onBlur={formBlur}
                 >
                   <option value="" hidden disabled>
                     Выберите категорию
@@ -359,7 +352,7 @@ const NewArticle = () => {
                 </select>
               </div>
               <div className={styles.select}>
-                {priorityHasError && (
+                {formHasError.priority && (
                   <p className={styles["invalid-info"]}>
                     Выберите приоритет новости.
                   </p>
@@ -368,9 +361,9 @@ const NewArticle = () => {
                 <select
                   id="priority"
                   name="priority"
-                  value={selectedPriority}
-                  onChange={priorityChangeHandler}
-                  onBlur={validatePriorityHandler}
+                  value={formValue.priority}
+                  onChange={formChange}
+                  onBlur={formBlur}
                 >
                   <option value="" hidden disabled>
                     Выберите приоритет
@@ -398,7 +391,7 @@ const NewArticle = () => {
                   onBlur={validateFilesHandler}
                 />
                 <div className={styles.control}>
-                  {fileDescriptionHasError && (
+                  {formHasError.descriprion && (
                     <p className={styles["invalid-info"]}>
                       Описание изображения может содержать только буквы, цифры,
                       пробелы и символы -.,!?%;:«»„”. Минимальное число символов
@@ -411,10 +404,11 @@ const NewArticle = () => {
                   <textarea
                     className={styles.brief}
                     id="files_description"
+                    name="description"
                     required
-                    value={enteredFileDescription}
-                    onChange={fileDescriptionChangeHandler}
-                    onBlur={validateFileDescriptionHandler}
+                    value={formValue.description}
+                    onChange={formChange}
+                    onBlur={formBlur}
                   />
                 </div>
               </div>
