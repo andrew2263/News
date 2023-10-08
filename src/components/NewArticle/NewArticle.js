@@ -10,6 +10,7 @@ import { contentActions } from "../../store/content-slice";
 import { modalActions } from "../../store/modal-slice";
 
 import Container from "../Layout/Container";
+import Input from "../UI/Input/Input";
 
 import useForm from "../../hooks/use-form";
 import { sendArticle } from "../../store/helper";
@@ -44,7 +45,7 @@ const isText = (value) => {
   return /[\w\s\p{P}]/gu.test(value) && value.toString().length >= 300;
 };
 
-const isNotEmpty = (value) => (!!value);
+const isNotEmpty = (value) => !!value;
 
 const isDescription = (value) => {
   return (
@@ -256,77 +257,60 @@ const NewArticle = () => {
           <article>
             <h2>Добавить новость</h2>
             <form onSubmit={submitHandler}>
-              <div className={styles.control}>
-                {formHasError.key && (
-                  <p className={styles["invalid-info"]}>
-                    Ключ может содержать только латинские буквы в нижнем
-                    регистре, цифры, символы &quot;-&quot; и &quot;_&quot; без
-                    пробелов. Минимальное число символов — 5, максимальное — 50.
-                  </p>
-                )}
-                <label htmlFor="article_key">Ключ</label>
-                <input
-                  type="text"
-                  name="key"
-                  id="article_key"
-                  value={formValue.key}
-                  onChange={formChange}
-                  onBlur={formBlur}
-                />
-              </div>
-              <div className={styles.control}>
-                {formHasError.heading && (
-                  <p className={styles["invalid-info"]}>
-                    Заголовок может содержать только буквы, цифры, пробелы и
-                    символы -.,!?%;:«»„”. Минимальное число символов — 50,
-                    максимальное — 100.
-                  </p>
-                )}
-                <label htmlFor="article_heading">Заголовок</label>
-                <input
-                  type="text"
-                  name="heading"
-                  id="article_heading"
-                  value={formValue.heading}
-                  onChange={formChange}
-                  onBlur={formBlur}
-                />
-              </div>
-              <div className={styles.control}>
-                {formHasError.briefText && (
-                  <p className={styles["invalid-info"]}>
-                    Краткое описание может содержать только буквы, цифры,
-                    пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
-                    120, максимальное — 250.
-                  </p>
-                )}
-                <label htmlFor="article_brief_text">Краткое описание</label>
-                <textarea
-                  className={styles.brief}
-                  name="briefText"
-                  id="article_brief_text"
-                  value={formValue.briefText}
-                  onChange={formChange}
-                  onBlur={formBlur}
-                />
-              </div>
-              <div className={styles.control}>
-                {formHasError.text && (
-                  <p className={styles["invalid-info"]}>
-                    Текст новости может содержать только буквы, цифры, пробелы и
-                    символы -.,!?%;:«»„”. Минимальное число символов — 300.
-                  </p>
-                )}
-                <label htmlFor="article_text">Текст новости</label>
-                <textarea
-                  className={styles["article-text"]}
-                  name="text"
-                  id="article_text"
-                  value={formValue.text}
-                  onChange={formChange}
-                  onBlur={formBlur}
-                />
-              </div>
+              <Input
+                type="text"
+                name="key"
+                id="article_key"
+                value={formValue.key}
+                onChange={formChange}
+                onBlur={formBlur}
+                label="Ключ"
+                hasError={formHasError.key}
+                hasErrorMessage='Ключ может содержать только латинские буквы в нижнем
+              регистре, цифры, символы "-" и "_" без
+              пробелов. Минимальное число символов — 5, максимальное — 50.'
+              />
+              <Input
+                type="text"
+                name="heading"
+                id="article_heading"
+                value={formValue.heading}
+                onChange={formChange}
+                onBlur={formBlur}
+                label="Заголовок"
+                hasError={formHasError.heading}
+                hasErrorMessage="Заголовок может содержать только буквы, цифры, пробелы и
+                символы -.,!?%;:«»„”. Минимальное число символов — 50,
+                максимальное — 100."
+              />
+              <Input
+                className={styles.brief}
+                name="briefText"
+                id="article_brief_text"
+                value={formValue.briefText}
+                onChange={formChange}
+                onBlur={formBlur}
+                label="Краткое описание"
+                isTextarea
+                hasError={formHasError.briefText}
+                hasErrorMessage="Краткое описание может содержать только буквы, цифры,
+                пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
+                120, максимальное — 250."
+              />
+              <Input
+                className={styles["article-text"]}
+                name="text"
+                id="article_text"
+                value={formValue.text}
+                onChange={formChange}
+                onBlur={formBlur}
+                label="Текст новости"
+                isTextarea
+                hasError={formHasError.text}
+                hasErrorMessage="Краткое описание может содержать только буквы, цифры,
+              пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
+              120, максимальное — 250."
+              />
               <div className={styles.select}>
                 {formHasError.category && (
                   <p className={styles["invalid-info"]}>
@@ -390,27 +374,20 @@ const NewArticle = () => {
                   onChange={filesChangeHandler}
                   onBlur={validateFilesHandler}
                 />
-                <div className={styles.control}>
-                  {formHasError.descriprion && (
-                    <p className={styles["invalid-info"]}>
-                      Описание изображения может содержать только буквы, цифры,
-                      пробелы и символы -.,!?%;:«»„”. Минимальное число символов
-                      — 50, максимальное — 200.
-                    </p>
-                  )}
-                  <label htmlFor="files_description">
-                    Описание изображения
-                  </label>
-                  <textarea
-                    className={styles.brief}
-                    id="files_description"
-                    name="description"
-                    required
-                    value={formValue.description}
-                    onChange={formChange}
-                    onBlur={formBlur}
-                  />
-                </div>
+                <Input
+                  className={styles.brief}
+                  id="files_description"
+                  name="description"
+                  value={formValue.description}
+                  onChange={formChange}
+                  onBlur={formBlur}
+                  label="Описание изображения"
+                  isTextarea
+                  hasError={formHasError.descriprion}
+                  hasErrorMessage="Описание изображения может содержать только буквы, цифры,
+                пробелы и символы -.,!?%;:«»„”. Минимальное число символов
+                — 50, максимальное — 200."
+                />
               </div>
               <button
                 type="submit"

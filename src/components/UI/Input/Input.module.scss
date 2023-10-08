@@ -1,0 +1,38 @@
+.input_container {
+  margin: 10px 0;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #94928b;
+
+    &:hover {
+      border-color: #686b6f;
+    }
+
+    &:focus {
+      border-color: #1a41cf;
+    }
+  }
+
+  input {
+    height: 20px;
+  }
+
+  textarea {
+    resize: none;
+    font-family: "Arial", sans-serif;
+    font-size: 14px;
+  }
+
+  .invalid-info {
+    color: #f00;
+    font-size: 14px;
+  }
+}
