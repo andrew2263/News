@@ -11,11 +11,31 @@ import { modalActions } from "../../store/modal-slice";
 
 import Container from "../Layout/Container";
 import Input from "../UI/Input/Input";
+import Select from "../UI/Select/Select";
 
 import useForm from "../../hooks/use-form";
 import { sendArticle } from "../../store/helper";
+import { MAIN_RUBRICS, OTHER_RUBRICS } from "../../constants/NewsRubrics.Constant";
 
 import styles from "./NewArticle.module.scss";
+
+const categoryOptions = MAIN_RUBRICS.map((el) => ({
+  value: el.category,
+  text: el.name,
+  label: <div>{el.name}</div>,
+}));
+
+const priorityOptions = [1, 2, 3, 4].map((el) => ({
+  value: el,
+  text: el.toString(),
+  label: <div>{el}</div>,
+}));
+
+const rubricOptions = OTHER_RUBRICS.map((el) => ({
+  value: el.category,
+  text: el.name,
+  label: <div>{el.name}</div>
+}));
 
 const isKey = (value) => {
   return (
@@ -64,6 +84,8 @@ const NewArticle = () => {
 
   const content = useSelector((state) => state.content.content);
   const isAdded = useSelector((state) => state.content.articleAdded);
+
+  const [rubrics, setRubrics] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -137,6 +159,12 @@ const NewArticle = () => {
     isValid: undefined,
     isTouched: false,
   });
+
+  const rubricsChange = (value) => {
+    setRubrics(value);
+  };
+
+  console.log(rubrics);
 
   const filesChangeHandler = (event) => {
     dispatchFiles({
@@ -231,6 +259,7 @@ const NewArticle = () => {
       newArticle.briefText = formValue.briefText;
       newArticle.text = formValue.text.split("\n");
       newArticle.comments = [];
+      newArticle.rubrics = rubrics.map((el) => (el.value));
 
       newArticle.images = urls.map((el, index) => {
         const imageData = {
@@ -311,7 +340,7 @@ const NewArticle = () => {
               пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
               120, максимальное — 250."
               />
-              <div className={styles.select}>
+              {/* <div className={styles.select}>
                 {formHasError.category && (
                   <p className={styles["invalid-info"]}>
                     Выберите категорию новости.
@@ -334,8 +363,39 @@ const NewArticle = () => {
                   <option value="world">В мире</option>
                   <option value="sport">Спорт</option>
                 </select>
-              </div>
-              <div className={styles.select}>
+              </div> */}
+              <Select
+                id="category"
+                name="category"
+                value={formValue.category}
+                onChange={formChange}
+                changeBlur={formBlur}
+                label="Категория"
+                initialOptions={categoryOptions}
+                hasError={formHasError.category}
+                hasErrorMessage="Выберите категорию новости."
+              />
+              <Select
+                id="priority"
+                name="priority"
+                value={formValue.priority}
+                onChange={formChange}
+                changeBlur={formBlur}
+                label="Приоритет"
+                initialOptions={priorityOptions}
+                hasError={formHasError.priority}
+                hasErrorMessage="Выберите приоритет новости."
+              />
+              <Select
+                isMulti
+                id="rubrics"
+                name="rubrics"
+                value={rubrics}
+                onChange={rubricsChange}
+                label="Рубрики"
+                initialOptions={rubricOptions}
+              />
+              {/* <div className={styles.select}>
                 {formHasError.priority && (
                   <p className={styles["invalid-info"]}>
                     Выберите приоритет новости.
@@ -357,7 +417,7 @@ const NewArticle = () => {
                   <option value="2">2</option>
                   <option value="1">1</option>
                 </select>
-              </div>
+              </div> */}
               <div className={styles.fileInput}>
                 {!filesIsValid && filesIsTouched && (
                   <p className={styles["invalid-info"]}>

@@ -1,152 +1,67 @@
-// @import '../../Themes/Colors.scss';
+.select {
+  &_container {
+    margin: 10px 0;
+  }
 
-.select-position {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  position: relative;
+  &_wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
 
-  &__container {
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  &_value_container {
     display: flex;
     flex-direction: row;
     align-items: center;
     position: relative;
+    height: 20px;
+    width: 300px;
 
-    &.input-custom-label {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      position: relative;
-      height: 44px;
-      & .input-custom-label__label {
-        cursor: text;
-        line-height: 1;
-        position: absolute;
-        top: 50%;
-        left: 10px;
-        font-size: 16px;
-        color: #e9eaec;
-        transform: translateY(-50%);
-        z-index: 3;
-
-        @media (min-width: 640px) {
-          font-size: 14px;
-        }
-
-        &._active {
-          top: 5px;
-          left: 10px;
-          font-size: 12px;
-          transform: translateY(0);
-        }
-        &:hover ~ input:not(:disabled):not(:focus) {
-          border: 1px solid #686b6f;
-        }
-      }
-      & .input-component__container__input {
-        height: 100% !important;
-        padding: 0;
-        margin: 0;
-        padding: 22px 10px 8px;
-      }
+    &_multi {
+      height: auto;
+      min-width: 300px;
+      width: auto;
     }
 
-    &__input {
-      flex: 1;
-      box-sizing: border-box;
-      cursor: pointer;
-      font-family: "SourceSansPro";
-      background-color: #ffffff;
-      width: 100%;
+    input {
       height: 100%;
-      border: 1px solid #e2e5e9;
-      font-size: 16px;
-      font-weight: normal;
-      outline: none;
-      padding: 22px 30px 8px 10px;
-      text-overflow: ellipsis;
-
-      @media (min-width: 640px) {
-        font-size: 14px;
-      }
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #94928b;
 
       &:hover {
-        border: 1px solid #686b6f;
+        border-color: #686b6f;
       }
 
       &:focus {
-        border: 1px solid #166aff;
-      }
-
-      &_ftl:hover {
-        border-top-color: #686b6f;
-        border-radius: 0;
-      }
-
-      &_ftl:focus {
-        border-top-color: #166aff;
-        border-radius: 0;
-      }
-
-      &_error {
-        border-color: #ff0000;
-
-        &:hover,
-        &:focus {
-          border-color: #ff0000;
-        }
-      }
-
-      &_error_ftl {
-        border-top: 1px solid transparent;
-        border-left: 1px solid #ff0000;
-        border-bottom: 1px solid #ff0000;
-        border-right: 1px solid #ff0000;
-        border-radius: 0;
-
-        &:hover,
-        &:focus {
-          border-top: 1px solid transparent;
-          border-left: 1px solid #ff0000;
-          border-bottom: 1px solid #ff0000;
-          border-right: 1px solid #ff0000;
-          border-radius: 0;
-        }
-      }
-
-      &_ftl {
-        border-top-color: transparent;
-        border-radius: 0;
-      }
-
-      // &_wtop {
-      //   border-top-color: transparent;
-      // }
-
-      &::placeholder {
-        color: #e9eaec;
-        font-size: 16px;
-
-        @media (min-width: 640px) {
-          font-size: 14px;
-        }
-      }
-
-      &.capitalize {
-        text-transform: capitalize;
+        border-color: #1a41cf;
       }
     }
   }
 
-  &__indicators {
+  &_multi_option {
+    padding: 10px 5px;
+    background-color: #ddd;
+    font-size: 14px;
+    border-radius: 10px;
+    display: flex;
+    gap: 10px;
+  }
+
+  &_indicators {
     position: absolute;
     right: 0;
     bottom: 0;
-    padding: 5px 11px 5px 0;
+    padding-right: 8px;
     color: #87949e;
   }
 
-  &__indicator {
+  &_indicator {
     width: 15px;
     height: 15px;
 
@@ -155,7 +70,7 @@
     }
   }
 
-  &__drop {
+  &_drop {
     position: absolute;
     box-sizing: border-box;
     top: 115%;
@@ -170,7 +85,7 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     outline: none;
 
-    &__item {
+    &_item {
       box-sizing: border-box;
       width: 100%;
       display: flex;
@@ -181,10 +96,16 @@
       outline: none;
 
       &:hover,
-      &:focus {
+      &:focus,
+      &_selected {
         background-color: rgba(231, 231, 231, 0.2);
         color: #2f323a;
       }
     }
+  }
+
+  .invalid-info {
+    color: #f00;
+    font-size: 14px;
   }
 }
