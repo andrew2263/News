@@ -26,6 +26,7 @@ const Select = (props) => {
 
   const [showOptions, setShowOptions] = useState(false);
   const [options, setOptions] = useState(initialOptions);
+  const [selectedInex, setSelectedIndex] = useState(-1);
 
   useOutsideClick(selectRef, () => {
     setShowOptions(false);
@@ -77,12 +78,22 @@ const Select = (props) => {
     const value = event.target?.value;
 
     setOptions(filterOprions(initialOptions, value.toLowerCase()));
+    onChange(event);
   };
 
-  const selectOptionHandler = (index) => {
-    onSelectOption(options[index]);
-    setOptions(initialOptions.filter((option, i) => i !== index));
-    setShowOptions(false);
+  const removeSelectedOprion = (options, value) => {
+    return options.filter((option) => option.value !== value);
+  };
+
+  const selectOptionHandler = (value) => {
+    onSelectOption(options.find((el) => el.value === value));
+    // setOptions(initialOptions.filter((option, i) => i !== index));
+    if (isMulti) {
+      setOptions((prevOptions) => removeSelectedOprion(prevOptions, value));
+    } else {
+      setOptions(removeSelectedOprion(initialOptions, value));
+      setShowOptions(false);
+    }
   };
 
   const handleDeleteItem = (val) => {
@@ -96,7 +107,40 @@ const Select = (props) => {
     }
 
     if (event.key === "Enter" || event.key === "Return") {
-      setShowOptions((prev) => !prev);
+      if (selectedInex === -1) {
+        setShowOptions((prev) => !prev);
+      } else {
+        selectOptionHandler(options[selectedInex].value);
+      }
+    }
+
+    if (event.key === "ArrowDown") {
+      setSelectedIndex((prevIndex) => {
+        setShowOptions(true);
+        if (prevIndex + 1 < options.length) {
+          event.preventDefault();
+          return prevIndex + 1;
+        } else if (options.length) {
+          return 0;
+        } else {
+          return -1;
+        }
+      });
+    }
+
+    if (event.key === "ArrowUp") {
+      setSelectedIndex((prevIndex) => {
+        if (showOptions && prevIndex > 0) {
+          event.preventDefault();
+          return prevIndex - 1;
+        } else if (showOptions) {
+          setShowOptions(false);
+          event.preventDefault();
+          return -1;
+        } else {
+          return -1;
+        }
+      })
     }
   };
 
@@ -109,8 +153,23 @@ const Select = (props) => {
           className={`${styles["select_value_container"]} ${
             isMulti && styles["select_value_container_multi"]
           }`}
-          contentEditable={isMulti ? true : false}
-          onFocus={isMulti && changeFocus}
+          // contentEditable={isMulti ? true : false}
+          tabIndex={isMulti && 0}
+          onFocus={(e) => {
+            if (isMulti) {
+              changeFocus(e);
+            }
+          }}
+          onBlur={(e) => {
+            if (isMulti) {
+              changeBlur(e);
+            }
+          }}
+          onKeyDown={(e) => {
+            if (isMulti) {
+              keyDownHandler(e);
+            }
+          }}
         >
           {!isMulti ? (
             <input
@@ -135,6 +194,9 @@ const Select = (props) => {
                     onClick={(e) => {
                       e.preventDefault();
                       handleDeleteItem(el);
+                    }}
+                    onFocus={(e) => {
+                      e.stopPropagation();
                     }}
                   >
                     X
@@ -165,10 +227,13 @@ const Select = (props) => {
             <div className={styles["select_drop"]}>
               {options.map((el, index) => (
                 <div
-                  className={styles["select_drop_item"]}
+                  className={`${styles["select_drop_item"]} ${
+                    index === selectedInex &&
+                    styles["select_drop_item_selected"]
+                  }`}
                   key={index}
                   onClick={() => {
-                    selectOptionHandler(index);
+                    selectOptionHandler(el.value);
                   }}
                 >
                   {el.label}

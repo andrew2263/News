@@ -23,9 +23,24 @@
     width: 300px;
 
     &_multi {
+      border: 1px solid #94928b;
+      border-radius: 5px;
+      background-color: #ffffff;
       height: auto;
       min-width: 300px;
       width: auto;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 5px 30px 5px 5px;
+      cursor: pointer;
+
+      &:hover {
+        border-color: #686b6f;
+      }
+
+      &:focus {
+        border-color: #1a41cf;
+      }
     }
 
     input {
@@ -45,12 +60,24 @@
   }
 
   &_multi_option {
-    padding: 10px 5px;
-    background-color: #ddd;
-    font-size: 14px;
+    padding: 2px 6px;
+    background-color: #e7e7e7;
+    font-size: 12px;
     border-radius: 10px;
     display: flex;
+    align-items: center;
     gap: 10px;
+
+    button {
+      padding: 0;
+      font-size: 8px;
+      line-height: 8px;
+      height: 12px;
+      width: 12px;
+      border-color: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+    }
   }
 
   &_indicators {
@@ -98,7 +125,7 @@
       &:hover,
       &:focus,
       &_selected {
-        background-color: rgba(231, 231, 231, 0.2);
+        background-color: rgba(231, 231, 231, 0.45);
         color: #2f323a;
       }
     }
