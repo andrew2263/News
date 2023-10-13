@@ -27,6 +27,8 @@ const Select = (props) => {
   const [showOptions, setShowOptions] = useState(false);
   const [options, setOptions] = useState(initialOptions);
   const [selectedInex, setSelectedIndex] = useState(-1);
+  const [multiInputValue, setMultiInputValue] = useState("");
+  const [filteredOptions, setFilteredOptions] = useState([]);
 
   useOutsideClick(selectRef, () => {
     setShowOptions(false);
@@ -45,6 +47,16 @@ const Select = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isMulti) {
+      const filtOptions = initialOptions.filter(
+        (option) => !value.some((val) => val.value === option.value)
+      );
+
+      setFilteredOptions(value.length ? filtOptions : initialOptions);
+    }
+  }, [value.length]);
+
   const changeFocus = () => {
     if (onFocus) {
       onFocus();
@@ -53,7 +65,7 @@ const Select = (props) => {
     setShowOptions(true);
   };
 
-  const filterOprions = (options, value) =>
+  const filterOptions = (options, value) =>
     options.filter((option) => option.text.toLowerCase().includes(value));
 
   const onSelectOption = (val) => {
@@ -77,21 +89,29 @@ const Select = (props) => {
   const inputChangeHandler = (event) => {
     const value = event.target?.value;
 
-    setOptions(filterOprions(initialOptions, value.toLowerCase()));
-    onChange(event);
+    if (isMulti) {
+      setOptions(filterOptions(filteredOptions, value.toLowerCase()));
+
+      setMultiInputValue(value);
+    }
+
+    if (!isMulti) {
+      setOptions(filterOptions(initialOptions, value.toLowerCase()));
+      onChange(event);
+    }
   };
 
-  const removeSelectedOprion = (options, value) => {
+  const removeSelectedOption = (options, value) => {
     return options.filter((option) => option.value !== value);
   };
 
   const selectOptionHandler = (value) => {
     onSelectOption(options.find((el) => el.value === value));
-    // setOptions(initialOptions.filter((option, i) => i !== index));
     if (isMulti) {
-      setOptions((prevOptions) => removeSelectedOprion(prevOptions, value));
+      setOptions(removeSelectedOption(filteredOptions, value));
+      setMultiInputValue("");
     } else {
-      setOptions(removeSelectedOprion(initialOptions, value));
+      setOptions(removeSelectedOption(initialOptions, value));
       setShowOptions(false);
     }
   };
@@ -109,7 +129,7 @@ const Select = (props) => {
     if (event.key === "Enter" || event.key === "Return") {
       if (selectedInex === -1) {
         setShowOptions((prev) => !prev);
-      } else {
+      } else if (showOptions) {
         selectOptionHandler(options[selectedInex].value);
       }
     }
@@ -140,7 +160,7 @@ const Select = (props) => {
         } else {
           return -1;
         }
-      })
+      });
     }
   };
 
@@ -153,23 +173,7 @@ const Select = (props) => {
           className={`${styles["select_value_container"]} ${
             isMulti && styles["select_value_container_multi"]
           }`}
-          // contentEditable={isMulti ? true : false}
-          tabIndex={isMulti && 0}
-          onFocus={(e) => {
-            if (isMulti) {
-              changeFocus(e);
-            }
-          }}
-          onBlur={(e) => {
-            if (isMulti) {
-              changeBlur(e);
-            }
-          }}
-          onKeyDown={(e) => {
-            if (isMulti) {
-              keyDownHandler(e);
-            }
-          }}
+          // tabIndex={isMulti && 0}
         >
           {!isMulti ? (
             <input
@@ -185,27 +189,45 @@ const Select = (props) => {
               ref={inputRef}
             />
           ) : (
-            <React.Fragment>
-              {value.map((el, i) => (
-                <div key={i} className={styles["select_multi_option"]}>
-                  <div>{el.text}</div>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleDeleteItem(el);
-                    }}
-                    onFocus={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    X
-                  </button>
-                </div>
-              ))}
-            </React.Fragment>
+            <div
+              className={`${styles["select_multi"]} ${
+                className ? className : ""
+              }`}
+              tabIndex={0}
+              onFocus={changeFocus}
+              onBlur={changeBlur}
+              onKeyDown={keyDownHandler}
+            >
+              <React.Fragment>
+                {value.map((el, i) => (
+                  <div key={i} className={styles["select_multi_option"]}>
+                    <div>{el.text}</div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleDeleteItem(el);
+                      }}
+                      onFocus={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+              </React.Fragment>
+              <div>
+                <input
+                  onChange={inputChangeHandler}
+                  value={multiInputValue}
+                  name={name}
+                  type={inputType}
+                  onBlur={() => setMultiInputValue("")}
+                />
+              </div>
+            </div>
           )}
-
           <div className={styles["select_indicators"]}>
             <svg
               height="20"

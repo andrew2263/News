@@ -11,6 +11,7 @@ import NewsContent from "./components/NewsContent/NewsContent";
 import NewArticle from "./components/NewArticle/NewArticle";
 
 import { MAIN_RUBRICS } from "./constants/NewsRubrics.Constant";
+import { sortDateDesc } from "./helpers/sortDateDesc";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ function App() {
               }))
             : [],
         };
-      });
+      }).sort(sortDateDesc);
 
       dispatch(contentActions.loadContentHandler(contentData));
     } catch (error) {

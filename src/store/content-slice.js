@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { sortDateDesc } from "../helpers/sortDateDesc";
 
 const contentSlice = createSlice({
   name: "content",
@@ -42,7 +43,7 @@ const contentSlice = createSlice({
 
       updatedContent = [...updatedContent, article];
 
-      state.content = updatedContent;
+      state.content = updatedContent.sort(sortDateDesc);
 
       state.articleAdded = true;
   

@@ -164,8 +164,6 @@ const NewArticle = () => {
     setRubrics(value);
   };
 
-  console.log(rubrics);
-
   const filesChangeHandler = (event) => {
     dispatchFiles({
       type: "USER_INPUT",
@@ -201,6 +199,7 @@ const NewArticle = () => {
     dispatch(modalActions.setOpenModal({ type: "isSubmitted" }));
     formReset();
     resetFilesHandler();
+    setRubrics([]);
   };
 
   const errorHandler = (error) => {
@@ -340,30 +339,6 @@ const NewArticle = () => {
               пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
               120, максимальное — 250."
               />
-              {/* <div className={styles.select}>
-                {formHasError.category && (
-                  <p className={styles["invalid-info"]}>
-                    Выберите категорию новости.
-                  </p>
-                )}
-                <label htmlFor="category">Категория</label>
-                <select
-                  id="category"
-                  name="category"
-                  value={formValue.category}
-                  onChange={formChange}
-                  onBlur={formBlur}
-                >
-                  <option value="" hidden disabled>
-                    Выберите категорию
-                  </option>
-                  <option value="politics">Политика</option>
-                  <option value="war">Война Россия — Украина</option>
-                  <option value="economics">Экономика</option>
-                  <option value="world">В мире</option>
-                  <option value="sport">Спорт</option>
-                </select>
-              </div> */}
               <Select
                 id="category"
                 name="category"
@@ -395,29 +370,6 @@ const NewArticle = () => {
                 label="Рубрики"
                 initialOptions={rubricOptions}
               />
-              {/* <div className={styles.select}>
-                {formHasError.priority && (
-                  <p className={styles["invalid-info"]}>
-                    Выберите приоритет новости.
-                  </p>
-                )}
-                <label htmlFor="priority">Приоритет</label>
-                <select
-                  id="priority"
-                  name="priority"
-                  value={formValue.priority}
-                  onChange={formChange}
-                  onBlur={formBlur}
-                >
-                  <option value="" hidden disabled>
-                    Выберите приоритет
-                  </option>
-                  <option value="4">4</option>
-                  <option value="3">3</option>
-                  <option value="2">2</option>
-                  <option value="1">1</option>
-                </select>
-              </div> */}
               <div className={styles.fileInput}>
                 {!filesIsValid && filesIsTouched && (
                   <p className={styles["invalid-info"]}>

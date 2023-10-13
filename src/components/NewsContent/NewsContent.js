@@ -16,8 +16,6 @@ import { scrollToTop } from "../../helpers/scrollToTop";
 
 import styles from "./NewsContent.module.scss";
 
-const sortDateDesc = (el1, el2) => el2.date - el1.date;
-
 const NewsContent = (props) => {
   useEffect(() => {
     document.title = "Новости Молдовы — Moldova News";
@@ -28,7 +26,7 @@ const NewsContent = (props) => {
 
   const stateContent = useSelector((state) => state.content.content);
 
-  const content = [...stateContent].sort(sortDateDesc);
+  const content = [...stateContent];
 
   const isContent = content.length ? true : false;
 

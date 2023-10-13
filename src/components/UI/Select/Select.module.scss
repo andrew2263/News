@@ -1,5 +1,6 @@
 .select {
   &_container {
+    box-sizing: border-box;
     margin: 10px 0;
   }
 
@@ -23,24 +24,10 @@
     width: 300px;
 
     &_multi {
-      border: 1px solid #94928b;
-      border-radius: 5px;
-      background-color: #ffffff;
       height: auto;
+      min-height: 32px;
       min-width: 300px;
       width: auto;
-      flex-wrap: wrap;
-      gap: 5px;
-      padding: 5px 30px 5px 5px;
-      cursor: pointer;
-
-      &:hover {
-        border-color: #686b6f;
-      }
-
-      &:focus {
-        border-color: #1a41cf;
-      }
     }
 
     input {
@@ -59,24 +46,52 @@
     }
   }
 
-  &_multi_option {
-    padding: 2px 6px;
-    background-color: #e7e7e7;
-    font-size: 12px;
-    border-radius: 10px;
+  &_multi {
+    height: 100%;
+    width: 100%;
+    border: 1px solid #94928b;
+    border-radius: 5px;
+    background-color: #ffffff;
+    padding: 5px 30px 5px 5px;
+    cursor: pointer;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 5px;
+    cursor: pointer;
 
-    button {
-      padding: 0;
-      font-size: 8px;
-      line-height: 8px;
-      height: 12px;
-      width: 12px;
-      border-color: transparent;
-      border-radius: 4px;
-      cursor: pointer;
+    &:hover {
+      border-color: #686b6f;
+    }
+
+    &:focus {
+      border-color: #1a41cf;
+    }
+
+    input {
+      border: none;
+      width: 120px;
+      outline: none;
+    }
+
+    &_option {
+      padding: 2px 6px;
+      background-color: #e7e7e7;
+      font-size: 12px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      button {
+        padding: 0;
+        font-size: 8px;
+        line-height: 8px;
+        height: 12px;
+        width: 12px;
+        border-color: transparent;
+        border-radius: 4px;
+        cursor: pointer;
+      }
     }
   }
 

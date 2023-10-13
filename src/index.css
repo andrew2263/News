@@ -68,7 +68,12 @@
   unicode-range: u+0030-0039, u+0400-045f, u+0490-0491, u+04b0-04b1, u+2116;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
+  box-sizing: border-box;
   margin: 0;
   min-width: 1180px;
   font-family: 'Onest', 'Helvetica', sans-serif;
