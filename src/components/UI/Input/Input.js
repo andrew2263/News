@@ -7,7 +7,7 @@ const Input = (props) => {
     type,
     name,
     id,
-    value,
+    value = "",
     onChange,
     onBlur,
     label,

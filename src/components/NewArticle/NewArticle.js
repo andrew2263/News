@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useReducer, useEffect, useCallback } from "react";
 
 import { storage } from "../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -160,9 +160,9 @@ const NewArticle = () => {
     isTouched: false,
   });
 
-  const rubricsChange = (value) => {
+  const rubricsChange = useCallback((value) => {
     setRubrics(value);
-  };
+  }, [rubrics]);
 
   const filesChangeHandler = (event) => {
     dispatchFiles({
@@ -285,7 +285,7 @@ const NewArticle = () => {
           <article>
             <h2>Добавить новость</h2>
             <form onSubmit={submitHandler}>
-              <Input
+             <Input
                 type="text"
                 name="key"
                 id="article_key"
@@ -386,6 +386,7 @@ const NewArticle = () => {
                   onChange={filesChangeHandler}
                   onBlur={validateFilesHandler}
                 />
+                </div>
                 <Input
                   className={styles.brief}
                   id="files_description"
@@ -399,12 +400,12 @@ const NewArticle = () => {
                   hasErrorMessage="Описание изображения может содержать только буквы, цифры,
                 пробелы и символы -.,!?%;:«»„”. Минимальное число символов
                 — 50, максимальное — 200."
-                />
-              </div>
+                /> 
               <button
                 type="submit"
                 className={styles.submit}
                 disabled={!formIsValid}
+                // disabled
               >
                 Добавить новость
               </button>
@@ -416,4 +417,4 @@ const NewArticle = () => {
   );
 };
 
-export default NewArticle;
+export default React.memo(NewArticle);

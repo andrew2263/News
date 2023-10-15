@@ -12,7 +12,7 @@ const Select = (props) => {
     onChange,
     name,
     inputType,
-    value,
+    value = "",
     className,
     onFocus,
     initialOptions,
@@ -55,7 +55,7 @@ const Select = (props) => {
 
       setFilteredOptions(value.length ? filtOptions : initialOptions);
     }
-  }, [value.length]);
+  }, [value?.length]);
 
   const changeFocus = () => {
     if (onFocus) {
@@ -173,7 +173,6 @@ const Select = (props) => {
           className={`${styles["select_value_container"]} ${
             isMulti && styles["select_value_container_multi"]
           }`}
-          // tabIndex={isMulti && 0}
         >
           {!isMulti ? (
             <input

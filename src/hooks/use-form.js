@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useReducer, useCallback, useState, useEffect } from "react";
 
 const formStateReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
@@ -35,30 +35,42 @@ const formStateReducer = (state, action) => {
 
 const useForm = (initialFormState, validateValue) => {
   const [formState, dispatch] = useReducer(formStateReducer, initialFormState);
+  const [formValid, setFormValid] = useState(false);
+  const [formValue, setFormValue] = useState({});
+  const [formHasError, setFormHasError] = useState({});
 
-  const valueChangeHandler = (event) => {
-    dispatch({ type: 'USER_INPUT', target: event.target, validate: validateValue });
-  };
+  const valueChangeHandler = useCallback((event) => {
+    dispatch({
+      type: "USER_INPUT",
+      target: event.target,
+      validate: validateValue,
+    });
+  }, []);
 
-  const inputBlurHandler = (event) => {
-    dispatch({ type: 'INPUT_BLUR', target: event.target });
-  };
+  const inputBlurHandler = useCallback((event) => {
+    dispatch({ type: "INPUT_BLUR", target: event.target });
+  }, []);
 
   const reset = () => {
-    dispatch({ type: 'RESET', payload: initialFormState });
+    dispatch({ type: "RESET", payload: initialFormState });
   };
 
   const formFields = Object.keys(formState);
 
-  const formValue = {};
-  const formHasError = {};
+  useEffect(() => {
+    const newFormValue = {};
+    const newFormHasError = {};
 
-  formFields.forEach((field) => {
-    formValue[field] = formState[field].value;
-    formHasError[field] = formState[field].hasError;
-  });
+    formFields.forEach((field) => {
+      newFormValue[field] = formState[field].value;
+      newFormHasError[field] = formState[field].hasError;
+    });
 
-  const formValid = Object.values(formState).every((el) => el.valid);
+    setFormHasError(newFormHasError);
+    setFormValue(newFormValue);
+
+    setFormValid(Object.values(formState).every((el) => el.valid));
+  }, [formState]);
 
   return {
     value: formValue,
