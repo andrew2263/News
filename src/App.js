@@ -4,14 +4,17 @@ import { Route, Switch } from "react-router-dom";
 
 import { contentActions } from "./store/content-slice";
 import { modalActions } from "./store/modal-slice";
+import { authActions } from "./store/auth-slice";
 
 import Layout from "./components/Layout/Layout";
 import Article from "./components/Article/Article";
 import NewsContent from "./components/NewsContent/NewsContent";
 import NewArticle from "./components/NewArticle/NewArticle";
+import AuthPage from "./components/Auth/AuthPage";
 
 import { MAIN_RUBRICS } from "./constants/NewsRubrics.Constant";
 import { sortDateDesc } from "./helpers/sortDateDesc";
+import { calculateRemainingTime } from "./helpers/authHelper";
 
 function App() {
   const dispatch = useDispatch();
@@ -54,6 +57,29 @@ function App() {
     fetchContentHandler();
   }, [fetchContentHandler]);
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedExpirationTime = localStorage.getItem("expirationTime");
+
+    if (storedToken && storedExpirationTime) {
+      const remainingTime = calculateRemainingTime(storedExpirationTime);
+
+      if (remainingTime > 0) {
+        dispatch(authActions.login({ token: storedToken }));
+        const logoutTimer = setTimeout(
+          () => dispatch(authActions.logout()),
+          remainingTime
+        );
+
+        return () => {
+          clearTimeout(logoutTimer);
+        };
+      } else {
+        dispatch(authActions.logout());
+      }
+    }
+  }, [dispatch]);
+
   return (
     <Layout>
       <Switch>
@@ -73,6 +99,9 @@ function App() {
         </Route>
         <Route path="/newArticle">
           <NewArticle />
+        </Route>
+        <Route path="/auth">
+          <AuthPage />
         </Route>
       </Switch>
     </Layout>

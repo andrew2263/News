@@ -405,7 +405,6 @@ const NewArticle = () => {
                 type="submit"
                 className={styles.submit}
                 disabled={!formIsValid}
-                // disabled
               >
                 Добавить новость
               </button>

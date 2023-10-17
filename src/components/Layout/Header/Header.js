@@ -5,6 +5,7 @@ import logo from "../../../logo.png";
 import Container from "../Container";
 import HeaderMenu from "../../UI/HeaderMenu";
 import Info from "../Info";
+import AuthChecker from "../../Auth/AuthChecker";
 
 import { MAIN_RUBRICS } from "../../../constants/NewsRubrics.Constant";
 
@@ -70,9 +71,7 @@ const Header = () => {
               ))}
             </ul>
             <div className={styles["header__add"]}>
-              <NavLink to="/newArticle" activeClassName={styles.active}>
-                Добавить новость
-              </NavLink>
+              <AuthChecker />
             </div>
           </nav>
         </Container>
