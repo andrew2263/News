@@ -15,7 +15,18 @@ import Select from "../UI/Select/Select";
 
 import useForm from "../../hooks/use-form";
 import { sendArticle } from "../../store/helper";
-import { MAIN_RUBRICS, OTHER_RUBRICS } from "../../constants/NewsRubrics.Constant";
+import {
+  MAIN_RUBRICS,
+  OTHER_RUBRICS,
+} from "../../constants/NewsRubrics.Constant";
+import {
+  isKey,
+  isHeading,
+  isBriefText,
+  isText,
+  isNotEmpty,
+  isDescription,
+} from "../../helpers/validationHelper";
 
 import styles from "./NewArticle.module.scss";
 
@@ -34,46 +45,8 @@ const priorityOptions = [1, 2, 3, 4].map((el) => ({
 const rubricOptions = OTHER_RUBRICS.map((el) => ({
   value: el.category,
   text: el.name,
-  label: <div>{el.name}</div>
+  label: <div>{el.name}</div>,
 }));
-
-const isKey = (value) => {
-  return (
-    /^[a-z0-9-_]+$/.test(value) &&
-    value.toString().length >= 5 &&
-    value.toString().length <= 50
-  );
-};
-
-const isHeading = (value) => {
-  return (
-    /[\w\s\p{P}]/gu.test(value) &&
-    value.toString().length >= 50 &&
-    value.toString().length <= 100
-  );
-};
-
-const isBriefText = (value) => {
-  return (
-    /[\w\s\p{P}]/gu.test(value) &&
-    value.toString().length >= 70 &&
-    value.toString().length <= 250
-  );
-};
-
-const isText = (value) => {
-  return /[\w\s\p{P}]/gu.test(value) && value.toString().length >= 300;
-};
-
-const isNotEmpty = (value) => !!value;
-
-const isDescription = (value) => {
-  return (
-    /[\w\s\p{P}]/gu.test(value) &&
-    value.toString().length >= 50 &&
-    value.toString().length <= 200
-  );
-};
 
 const NewArticle = () => {
   const [formIsValid, setFormIsValid] = useState(false);
@@ -160,9 +133,12 @@ const NewArticle = () => {
     isTouched: false,
   });
 
-  const rubricsChange = useCallback((value) => {
-    setRubrics(value);
-  }, [rubrics]);
+  const rubricsChange = useCallback(
+    (value) => {
+      setRubrics(value);
+    },
+    [rubrics]
+  );
 
   const filesChangeHandler = (event) => {
     dispatchFiles({
@@ -258,7 +234,7 @@ const NewArticle = () => {
       newArticle.briefText = formValue.briefText;
       newArticle.text = formValue.text.split("\n");
       newArticle.comments = [];
-      newArticle.rubrics = rubrics.map((el) => (el.value));
+      newArticle.rubrics = rubrics.map((el) => el.value);
 
       newArticle.images = urls.map((el, index) => {
         const imageData = {
@@ -285,7 +261,7 @@ const NewArticle = () => {
           <article>
             <h2>Добавить новость</h2>
             <form onSubmit={submitHandler}>
-             <Input
+              <Input
                 type="text"
                 name="key"
                 id="article_key"
@@ -293,6 +269,7 @@ const NewArticle = () => {
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Ключ"
+                required
                 hasError={formHasError.key}
                 hasErrorMessage='Ключ может содержать только латинские буквы в нижнем
               регистре, цифры, символы "-" и "_" без
@@ -306,6 +283,7 @@ const NewArticle = () => {
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Заголовок"
+                required
                 hasError={formHasError.heading}
                 hasErrorMessage="Заголовок может содержать только буквы, цифры, пробелы и
                 символы -.,!?%;:«»„”. Минимальное число символов — 50,
@@ -319,6 +297,7 @@ const NewArticle = () => {
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Краткое описание"
+                required
                 isTextarea
                 hasError={formHasError.briefText}
                 hasErrorMessage="Краткое описание может содержать только буквы, цифры,
@@ -333,6 +312,7 @@ const NewArticle = () => {
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Текст новости"
+                required
                 isTextarea
                 hasError={formHasError.text}
                 hasErrorMessage="Краткое описание может содержать только буквы, цифры,
@@ -346,6 +326,7 @@ const NewArticle = () => {
                 onChange={formChange}
                 changeBlur={formBlur}
                 label="Категория"
+                required
                 initialOptions={categoryOptions}
                 hasError={formHasError.category}
                 hasErrorMessage="Выберите категорию новости."
@@ -357,6 +338,7 @@ const NewArticle = () => {
                 onChange={formChange}
                 changeBlur={formBlur}
                 label="Приоритет"
+                required
                 initialOptions={priorityOptions}
                 hasError={formHasError.priority}
                 hasErrorMessage="Выберите приоритет новости."
@@ -386,21 +368,22 @@ const NewArticle = () => {
                   onChange={filesChangeHandler}
                   onBlur={validateFilesHandler}
                 />
-                </div>
-                <Input
-                  className={styles.brief}
-                  id="files_description"
-                  name="description"
-                  value={formValue.description}
-                  onChange={formChange}
-                  onBlur={formBlur}
-                  label="Описание изображения"
-                  isTextarea
-                  hasError={formHasError.descriprion}
-                  hasErrorMessage="Описание изображения может содержать только буквы, цифры,
+              </div>
+              <Input
+                className={styles.brief}
+                id="files_description"
+                name="description"
+                value={formValue.description}
+                onChange={formChange}
+                onBlur={formBlur}
+                label="Описание изображения"
+                isTextarea
+                required
+                hasError={formHasError.descriprion}
+                hasErrorMessage="Описание изображения может содержать только буквы, цифры,
                 пробелы и символы -.,!?%;:«»„”. Минимальное число символов
                 — 50, максимальное — 200."
-                /> 
+              />
               <button
                 type="submit"
                 className={styles.submit}

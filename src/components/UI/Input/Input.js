@@ -16,6 +16,8 @@ const Input = (props) => {
     hasError,
     hasErrorMessage,
     placeholder,
+    disabled,
+    required = false,
   } = props;
 
   return (
@@ -35,6 +37,8 @@ const Input = (props) => {
           onChange={onChange}
           onBlur={onBlur}
           placeholder={placeholder}
+          disabled={disabled}
+          required={required}
         />
       ) : (
         <input
@@ -46,6 +50,8 @@ const Input = (props) => {
           onBlur={onBlur}
           type={type}
           placeholder={placeholder}
+          disabled={disabled}
+          required={required}
         />
       )}
     </div>

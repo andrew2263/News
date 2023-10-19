@@ -2,10 +2,18 @@ import { useReducer, useCallback, useState, useEffect } from "react";
 
 const formStateReducer = (state, action) => {
   if (action.type === "USER_INPUT") {
-    const { name, value } = action.target;
+    const { name, value, required } = action.target;
 
-    const valid = action.validate[name](value);
-    const hasError = !valid && state[name].isTouched;
+    let valid;
+
+    if (!value) {
+      const isEmptyValid = required ? false : true;
+      valid = action.validate[name](value) || isEmptyValid;
+    } else {
+      valid = action.validate[name](value);
+    }
+
+    const hasError = !valid && state[name].touched;
 
     return {
       ...state,

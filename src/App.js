@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import { contentActions } from "./store/content-slice";
 import { modalActions } from "./store/modal-slice";
@@ -19,6 +19,8 @@ import { calculateRemainingTime } from "./helpers/authHelper";
 function App() {
   const dispatch = useDispatch();
 
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   const fetchContentHandler = useCallback(async () => {
     try {
       const response = await fetch(
@@ -31,18 +33,20 @@ function App() {
 
       const responseData = await response.json();
 
-      const contentData = responseData.map((el) => {
-        return {
-          ...el,
-          date: Number(new Date(el.date)),
-          comments: el.comments?.length
-            ? el.comments.map((comment) => ({
-                ...comment,
-                date: Number(new Date(comment.date)),
-              }))
-            : [],
-        };
-      }).sort(sortDateDesc);
+      const contentData = responseData
+        .map((el) => {
+          return {
+            ...el,
+            date: Number(new Date(el.date)),
+            comments: el.comments?.length
+              ? el.comments.map((comment) => ({
+                  ...comment,
+                  date: Number(new Date(comment.date)),
+                }))
+              : [],
+          };
+        })
+        .sort(sortDateDesc);
 
       dispatch(contentActions.loadContentHandler(contentData));
     } catch (error) {
@@ -101,7 +105,7 @@ function App() {
           <NewArticle />
         </Route>
         <Route path="/auth">
-          <AuthPage />
+          {!isLoggedIn ? <AuthPage /> : <Redirect to="/" />}
         </Route>
       </Switch>
     </Layout>

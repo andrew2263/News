@@ -21,7 +21,7 @@ const Auth = () => {
           </button>
         </>
       ) : (
-        <NavLink to="/auth">Авторизация</NavLink>
+        <NavLink to="/auth?mode=signIn">Авторизация</NavLink>
       )}
     </div>
   );
