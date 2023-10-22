@@ -99,9 +99,8 @@ const SignUpForm = () => {
   };
 
   const {
-    value: signupFormValue,
+    formState: signupFormState,
     isValid: signupFormValid,
-    hasError: signupFormHasError,
     valueChangeHandler: signupFormChange,
     inputBlurHandler: signupFormBlur,
     reset: signupFormReset,
@@ -121,35 +120,155 @@ const SignUpForm = () => {
     dynamicLinkDomain: 'example.page.link'
     */
   };
+/*
+  const createUser = async (email, password, controller) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const response = createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      resolve(response);
+      } catch (error) {
+        if (controller.signal.aborted) {
+          reject(new Error('Request was aborted!'));
+        } else {
+          reject (error);
+        }
+      }
+    });
+    */
+   /*
+      createUserWithEmailAndPassword(auth, email, password)
+        .ther((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          if (controller.signal.aborted) {
+            reject(new Error("Request was aborted!"));
+          } else {
+            reject(error);
+          }
+        });
+    });
+  };
 
+  const addUserToDatabase = async (user, controller) => {
+    const addResponse = await fetch(
+      "https://news-acc8f-default-rtdb.firebaseio.com/users.json",
+      {
+        method: "POST",
+        body: JSON.stringify(user),
+      },
+      controller.signal
+    );
+    if (!addResponse.ok) {
+      throw new Error(`Ошибка при создании нового пользователя`);
+    }
+  };
+
+  const sendVerificationLink = async (email, settings, controller) => {
+    return new Promise((resolve, reject) => {
+      sendSignInLinkToEmail(auth, email, settings)
+        .ther((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          if (controller.signal.aborted) {
+            reject(new Error("Request was aborted!"));
+          } else {
+            reject(error);
+          }
+        });
+    });
+  };
+*/
   const signupSubmitHandler = async (event) => {
     event.preventDefault();
     event.stopPropagation();
 
     setIsLoading(true);
 
+    const birthday = Number(new Date(signupFormState.birthday?.value.toString()));
+
     const newUser = {
-      email: signupFormValue.email,
-      nickname: signupFormValue.nickname,
-      firstName: signupFormValue?.firstName,
-      lastName: signupFormValue?.lastName,
-      role: signupFormValue.role,
-      birthday: signupFormValue?.birthday,
-      gender: signupFormValue?.gender,
+      email: signupFormState.email.value,
+      nickname: signupFormState.nickname.value,
+      firstName: signupFormState.firstName?.value,
+      lastName: signupFormState.lastName?.value,
+      role: signupFormState.role.value,
+      birthday,
+      gender: signupFormState.gender?.value,
     };
+/*
+    const controller = new AbortController();
+    
+    const createUserPromise = createUser(signupFormValue?.email, signupFormValue?.password, controller);
+    const addNewUserToDatabasePromise = addUserToDatabase(newUser, controller);
+    const sendVerificationLinkPromise = sendVerificationLink(signupFormValue.email,
+      actionCodeSettings, controller);
+    
+    try {
+      await Promise.all([createUserPromise, addNewUserToDatabasePromise, sendVerificationLinkPromise]);
+      alert("Link sent to email");
+      signupFormReset();
+    } catch (error) {
+      alert(error);
+    } finally {
+      controller.abort();
+    }
+*/
 
-    await fetch('https://news-acc8f-default-rtdb.firebaseio.com/users.json', {
-      method: 'POST',
-      body: JSON.stringify(newUser)
-    });
+    try {
+      const createNewUser = await createUserWithEmailAndPassword(
+        auth,
+        signupFormState.email.value,
+        signupFormState.password.value
+      );
 
+      if (!createNewUser.ok) {
+        throw new Error(`Ошибка при создании нового пользователя`);
+      }
+
+      const addNewUserToDatabase = await fetch(
+        "https://news-acc8f-default-rtdb.firebaseio.com/users.json",
+        {
+          method: "POST",
+          body: JSON.stringify(newUser),
+        }
+      );
+
+      if (!addNewUserToDatabase.ok) {
+        throw new Error(`Ошибка при создании нового пользователя`);
+      }
+
+      const sendVerificationLink = await sendSignInLinkToEmail(
+        auth,
+        signupFormState.email.value,
+        actionCodeSettings
+      );
+
+      if (sendVerificationLink.ok) {
+        alert("Link sent to email");
+        signupFormReset();
+      } else {
+        throw new Error(`Ошибка при создании нового пользователя`);
+      }
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert(`Error ${errorCode}: ${errorMessage}`);
+    }
+
+    /*
     createUserWithEmailAndPassword(
       auth,
       signupFormValue?.email,
       signupFormValue?.password
     )
       .then(() => {
-        window.localStorage.setItem("emailForSignIn", signupFormValue?.email);
+        //window.localStorage.setItem("emailForSignIn", signupFormValue?.email);
         sendSignInLinkToEmail(
           auth,
           signupFormValue.email,
@@ -164,6 +283,8 @@ const SignUpForm = () => {
         const errorMessage = error.message;
         alert(`Error ${errorCode}: ${errorMessage}`);
       });
+*/
+    setIsLoading(false);
   };
 
   return (
@@ -175,11 +296,11 @@ const SignUpForm = () => {
           id="email"
           name="email"
           label="E-mail"
-          value={signupFormValue.email}
+          value={signupFormState.email.value}
           onChange={signupFormChange}
           onBlur={signupFormBlur}
           required
-          hasError={signupFormHasError.email}
+          hasError={signupFormState.email.hasError}
           hasErrorMessage="Ведите валидный e-mail"
         />
         <Input
@@ -187,11 +308,11 @@ const SignUpForm = () => {
           id="password"
           name="password"
           label="Password"
-          value={signupFormValue.password}
+          value={signupFormState.password.value}
           onChange={signupFormChange}
           onBlur={signupFormBlur}
           required
-          hasError={signupFormHasError.password}
+          hasError={signupFormState.password.hasError}
           hasErrorMessage="Пароль должен содержать минимум 8 символов, в том числе буквы, цифры, спецсимволы"
         />
         <Input
@@ -199,11 +320,11 @@ const SignUpForm = () => {
           id="nickname"
           name="nickname"
           label="Nickname"
-          value={signupFormValue.nickname}
+          value={signupFormState.nickname.value}
           onChange={signupFormChange}
           onBlur={signupFormBlur}
           required
-          hasError={signupFormHasError.nickname}
+          hasError={signupFormState.nickname.hasError}
           hasErrorMessage="Nickname должен содержать от 2 до 70 символов"
         />
         <Input
@@ -211,10 +332,10 @@ const SignUpForm = () => {
           id="firstName"
           name="firstName"
           label="Имя"
-          value={signupFormValue.firstName}
+          value={signupFormState.firstName.value}
           onChange={signupFormChange}
           onBlur={signupFormBlur}
-          hasError={signupFormHasError.firstName}
+          hasError={signupFormState.firstName.hasError}
           hasErrorMessage="Имя должно содержать от 2 до 70 символов"
         />
         <Input
@@ -222,21 +343,21 @@ const SignUpForm = () => {
           id="lastName"
           name="lastName"
           label="Фамилия"
-          value={signupFormValue.lastName}
+          value={signupFormState.lastName.value}
           onChange={signupFormChange}
           onBlur={signupFormBlur}
-          hasError={signupFormHasError.lastName}
+          hasError={signupFormState.lastName.hasError}
           hasErrorMessage="Фамилия должна содержать от 2 до 70 символов"
         />
         <Select
           id="role"
           name="role"
-          value={signupFormValue.role}
+          value={signupFormState.role.value}
           onChange={signupFormChange}
           changeBlur={signupFormBlur}
           label="Роль"
           initialOptions={roleOptions}
-          hasError={signupFormHasError.role}
+          hasError={signupFormState.role.hasError}
           hasErrorMessage="Выберите роль"
           required
         />
@@ -245,21 +366,21 @@ const SignUpForm = () => {
           id="birthday"
           name="birthday"
           label="Дата рождения"
-          value={signupFormValue.birthday}
+          value={signupFormState.birthday.value}
           onChange={signupFormChange}
           onBlur={signupFormBlur}
-          hasError={signupFormHasError.birthday}
+          hasError={signupFormState.birthday.hasError}
           hasErrorMessage="Дата рождения должна быть между 01.01.1920 и 01.01.2006"
         />
         <Select
           id="gender"
           name="gender"
-          value={signupFormValue.gender}
+          value={signupFormState.gender.value}
           onChange={signupFormChange}
           changeBlur={signupFormBlur}
           label="Пол"
           initialOptions={genderOptions}
-          hasError={signupFormHasError.gender}
+          hasError={signupFormState.gender.hasError}
           hasErrorMessage="Выберите пол"
         />
         <button

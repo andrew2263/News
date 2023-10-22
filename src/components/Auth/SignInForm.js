@@ -39,9 +39,8 @@ const SignInForm = () => {
   };
 
   const {
-    value: loginFormValue,
     isValid: loginFormValid,
-    hasError: loginFormHasError,
+    formState,
     valueChangeHandler: loginFormChange,
     inputBlurHandler: loginFormBlur,
     reset: loginFormReset,
@@ -52,7 +51,7 @@ const SignInForm = () => {
 
     setIsLoading(true);
 
-    signInWithEmailAndPassword(auth, loginFormValue.email, loginFormValue.password)
+    signInWithEmailAndPassword(auth, formState.email.value, formState.password.value)
       .then((userCredential) => {
         const user = userCredential.user;
         const expirationTime = new Date(user.stsTokenManager.expirationTime);
@@ -78,11 +77,11 @@ const SignInForm = () => {
           id="email"
           name="email"
           label="E-mail"
-          value={loginFormValue.email}
+          value={formState.email.value}
           onChange={loginFormChange}
           onBlur={loginFormBlur}
           required
-          hasError={loginFormHasError.email}
+          hasError={formState.email.hasError}
           hasErrorMessage="Ведите валидный e-mail"
         />
         <Input
@@ -90,11 +89,11 @@ const SignInForm = () => {
           id="password"
           name="password"
           label="Password"
-          value={loginFormValue.password}
+          value={formState.password.value}
           onChange={loginFormChange}
           onBlur={loginFormBlur}
           required
-          hasError={loginFormHasError.password}
+          hasError={formState.password.hasError}
           hasErrorMessage="Введите пароль"
         />
         <button

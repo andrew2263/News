@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -33,6 +34,9 @@ const Header = () => {
       )}
       <header className={styles.header}>
         <Container>
+          <div className={styles["header__auth"]}>
+            <AuthChecker />
+          </div>
           <div className={styles["header__top"]}>
             <button
               className={styles["header__info"]}
@@ -42,22 +46,10 @@ const Header = () => {
               <span></span>
               <span></span>
             </button>
-            <div>
+            <div className={styles["header__logo"]}>
               <NavLink to="/">
                 <img src={logo} alt="Moldova News" />
               </NavLink>
-            </div>
-            <div>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://nochi.com/weather/chisinau-17412"
-              >
-                <img
-                  src="https://w.bookcdn.com/weather/picture/28_17412_1_20_3498db_250_2980b9_ffffff_ffffff_1_2071c9_ffffff_0_6.png?scode=32665&domid=589&anc_id=29365"
-                  alt="booked.net"
-                />
-              </a>
             </div>
           </div>
           <nav className={styles["header__nav"]}>
@@ -70,10 +62,22 @@ const Header = () => {
               </li>
               ))}
             </ul>
-            <div className={styles["header__add"]}>
+            {/*<div className={styles["header__add"]}>
               <AuthChecker />
-            </div>
+              </div>*/}
           </nav>
+          <div className={styles['header__weather']}>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://nochi.com/weather/chisinau-17412"
+              >
+                <img
+                  src="https://w.bookcdn.com/weather/picture/28_17412_1_20_3498db_250_2980b9_ffffff_ffffff_1_2071c9_ffffff_0_6.png?scode=32665&domid=589&anc_id=29365"
+                  alt="booked.net"
+                />
+              </a>
+        </div>
         </Container>
       </header>
     </React.Fragment>

@@ -5,13 +5,15 @@ import { useSelector } from "react-redux";
 
 import useAuth from "../../hooks/use-auth";
 
+import styles from "./AuthChecker.module.scss";
+
 const Auth = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const { logoutHandler } = useAuth();
 
   return (
-    <div>
+    <div className={styles["auth-checker"]}>
       {/*<NavLink to="/auth" activeClassName={styles.active}>*/}
       {isLoggedIn ? (
         <>

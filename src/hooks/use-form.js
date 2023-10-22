@@ -26,12 +26,26 @@ const formStateReducer = (state, action) => {
     };
   }
   if (action.type === "INPUT_BLUR") {
-    const { name } = action.target;
+    const { name, value, required } = action.target;
+
+    let valid;
+
+    if (!value) {
+      const isEmptyValid = required ? false : true;
+      valid = action.validate[name](value) || isEmptyValid;
+    } else {
+      valid = action.validate[name](value);
+    }
+
+    const hasError = !valid;
+
     return {
       ...state,
       [name]: {
         ...state[name],
         touched: true,
+        valid,
+        hasError,
       },
     };
   }
@@ -44,8 +58,6 @@ const formStateReducer = (state, action) => {
 const useForm = (initialFormState, validateValue) => {
   const [formState, dispatch] = useReducer(formStateReducer, initialFormState);
   const [formValid, setFormValid] = useState(false);
-  const [formValue, setFormValue] = useState({});
-  const [formHasError, setFormHasError] = useState({});
 
   const valueChangeHandler = useCallback((event) => {
     dispatch({
@@ -56,34 +68,24 @@ const useForm = (initialFormState, validateValue) => {
   }, []);
 
   const inputBlurHandler = useCallback((event) => {
-    dispatch({ type: "INPUT_BLUR", target: event.target });
+    dispatch({
+      type: "INPUT_BLUR",
+      target: event.target,
+      validate: validateValue,
+    });
   }, []);
 
   const reset = () => {
     dispatch({ type: "RESET", payload: initialFormState });
   };
 
-  const formFields = Object.keys(formState);
-
   useEffect(() => {
-    const newFormValue = {};
-    const newFormHasError = {};
-
-    formFields.forEach((field) => {
-      newFormValue[field] = formState[field].value;
-      newFormHasError[field] = formState[field].hasError;
-    });
-
-    setFormHasError(newFormHasError);
-    setFormValue(newFormValue);
-
     setFormValid(Object.values(formState).every((el) => el.valid));
   }, [formState]);
 
   return {
-    value: formValue,
+    formState,
     isValid: formValid,
-    hasError: formHasError,
     valueChangeHandler,
     inputBlurHandler,
     reset,

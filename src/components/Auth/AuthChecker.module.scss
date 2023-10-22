@@ -1,0 +1,21 @@
+.auth-checker {
+  display: flex;
+  gap: 30px;
+
+  button {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    font-weight: 500;
+    font-size: 16px;
+    color: #e2e2f7;
+    transition: all 300ms;
+
+    &:hover,
+    &:focus {
+      color: #dadaf0;
+      opacity: 0.8;
+      transition: all 300ms;
+    }
+  }
+}

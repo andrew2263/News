@@ -118,9 +118,10 @@ const NewArticle = () => {
   };
 
   const {
-    value: formValue,
+    //value: formValue,
+    formState,
     isValid: isFormValid,
-    hasError: formHasError,
+    //hasError: formHasError,
     valueChangeHandler: formChange,
     inputBlurHandler: formBlur,
     reset: formReset,
@@ -200,7 +201,7 @@ const NewArticle = () => {
     const articleDate = new Date();
     const newArticle = {};
 
-    const key = `${formValue.key}-${articleDate.getDate()}${
+    const key = `${formState.key.value}-${articleDate.getDate()}${
       articleDate.getMonth() + 1
     }${articleDate.getFullYear()}-${articleDate.getHours()}${articleDate.getMinutes()}`;
 
@@ -227,12 +228,12 @@ const NewArticle = () => {
       const urls = await uploadFiles();
 
       newArticle.key = key;
-      newArticle.priority = +formValue.priority;
-      newArticle.category = formValue.category;
+      newArticle.priority = +formState.priority.value;
+      newArticle.category = formState.category.value;
       newArticle.date = +articleDate;
-      newArticle.heading = formValue.heading;
-      newArticle.briefText = formValue.briefText;
-      newArticle.text = formValue.text.split("\n");
+      newArticle.heading = formState.heading.value;
+      newArticle.briefText = formState.briefText.value;
+      newArticle.text = formState.text.value.split("\n");
       newArticle.comments = [];
       newArticle.rubrics = rubrics.map((el) => el.value);
 
@@ -243,7 +244,7 @@ const NewArticle = () => {
         };
 
         if (index === 0) {
-          imageData.text = formValue.descriprion;
+          imageData.text = formState.descriprion.value;
         }
         return imageData;
       });
@@ -265,12 +266,12 @@ const NewArticle = () => {
                 type="text"
                 name="key"
                 id="article_key"
-                value={formValue.key}
+                value={formState.key.value}
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Ключ"
                 required
-                hasError={formHasError.key}
+                hasError={formState.key.hasError}
                 hasErrorMessage='Ключ может содержать только латинские буквы в нижнем
               регистре, цифры, символы "-" и "_" без
               пробелов. Минимальное число символов — 5, максимальное — 50.'
@@ -279,12 +280,12 @@ const NewArticle = () => {
                 type="text"
                 name="heading"
                 id="article_heading"
-                value={formValue.heading}
+                value={formState.heading.value}
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Заголовок"
                 required
-                hasError={formHasError.heading}
+                hasError={formState.heading.hasError}
                 hasErrorMessage="Заголовок может содержать только буквы, цифры, пробелы и
                 символы -.,!?%;:«»„”. Минимальное число символов — 50,
                 максимальное — 100."
@@ -293,13 +294,13 @@ const NewArticle = () => {
                 className={styles.brief}
                 name="briefText"
                 id="article_brief_text"
-                value={formValue.briefText}
+                value={formState.briefText.value}
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Краткое описание"
                 required
                 isTextarea
-                hasError={formHasError.briefText}
+                hasError={formState.briefText.hasError}
                 hasErrorMessage="Краткое описание может содержать только буквы, цифры,
                 пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
                 120, максимальное — 250."
@@ -308,13 +309,13 @@ const NewArticle = () => {
                 className={styles["article-text"]}
                 name="text"
                 id="article_text"
-                value={formValue.text}
+                value={formState.text.value}
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Текст новости"
                 required
                 isTextarea
-                hasError={formHasError.text}
+                hasError={formState.text.hasError}
                 hasErrorMessage="Краткое описание может содержать только буквы, цифры,
               пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
               120, максимальное — 250."
@@ -322,25 +323,25 @@ const NewArticle = () => {
               <Select
                 id="category"
                 name="category"
-                value={formValue.category}
+                value={formState.category.value}
                 onChange={formChange}
                 changeBlur={formBlur}
                 label="Категория"
                 required
                 initialOptions={categoryOptions}
-                hasError={formHasError.category}
+                hasError={formState.category.hasError}
                 hasErrorMessage="Выберите категорию новости."
               />
               <Select
                 id="priority"
                 name="priority"
-                value={formValue.priority}
+                value={formState.priority.value}
                 onChange={formChange}
                 changeBlur={formBlur}
                 label="Приоритет"
                 required
                 initialOptions={priorityOptions}
-                hasError={formHasError.priority}
+                hasError={formState.priority.hasError}
                 hasErrorMessage="Выберите приоритет новости."
               />
               <Select
@@ -373,13 +374,13 @@ const NewArticle = () => {
                 className={styles.brief}
                 id="files_description"
                 name="description"
-                value={formValue.description}
+                value={formState.description.value}
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Описание изображения"
                 isTextarea
                 required
-                hasError={formHasError.descriprion}
+                hasError={formState.description.hasError}
                 hasErrorMessage="Описание изображения может содержать только буквы, цифры,
                 пробелы и символы -.,!?%;:«»„”. Минимальное число символов
                 — 50, максимальное — 200."
