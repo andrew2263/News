@@ -5,11 +5,11 @@ import Input from "../UI/Input/Input";
 import Select from "../UI/Select/Select";
 
 import useForm from "../../hooks/use-form";
-import { auth } from "../../firebase";
 import {
   createUserWithEmailAndPassword,
   sendSignInLinkToEmail,
 } from "firebase/auth";
+import { auth, functions, httpsCallable } from "../../firebase";
 import {
   isEmail,
   isPassword,
@@ -106,6 +106,8 @@ const SignUpForm = () => {
     reset: signupFormReset,
   } = useForm(initialFormState, validation);
 
+  const addUserFunction = httpsCallable(functions, "newUserAdd");
+
   const actionCodeSettings = {
     url: "http://localhost:3000/auth",
     handleCodeInApp: true,
@@ -120,77 +122,16 @@ const SignUpForm = () => {
     dynamicLinkDomain: 'example.page.link'
     */
   };
-/*
-  const createUser = async (email, password, controller) => {
-    return new Promise((resolve, reject) => {
-      try {
-        const response = createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      resolve(response);
-      } catch (error) {
-        if (controller.signal.aborted) {
-          reject(new Error('Request was aborted!'));
-        } else {
-          reject (error);
-        }
-      }
-    });
-    */
-   /*
-      createUserWithEmailAndPassword(auth, email, password)
-        .ther((response) => {
-          resolve(response);
-        })
-        .catch((error) => {
-          if (controller.signal.aborted) {
-            reject(new Error("Request was aborted!"));
-          } else {
-            reject(error);
-          }
-        });
-    });
-  };
 
-  const addUserToDatabase = async (user, controller) => {
-    const addResponse = await fetch(
-      "https://news-acc8f-default-rtdb.firebaseio.com/users.json",
-      {
-        method: "POST",
-        body: JSON.stringify(user),
-      },
-      controller.signal
-    );
-    if (!addResponse.ok) {
-      throw new Error(`Ошибка при создании нового пользователя`);
-    }
-  };
-
-  const sendVerificationLink = async (email, settings, controller) => {
-    return new Promise((resolve, reject) => {
-      sendSignInLinkToEmail(auth, email, settings)
-        .ther((response) => {
-          resolve(response);
-        })
-        .catch((error) => {
-          if (controller.signal.aborted) {
-            reject(new Error("Request was aborted!"));
-          } else {
-            reject(error);
-          }
-        });
-    });
-  };
-*/
   const signupSubmitHandler = async (event) => {
     event.preventDefault();
     event.stopPropagation();
 
     setIsLoading(true);
 
-    const birthday = Number(new Date(signupFormState.birthday?.value.toString()));
+    const birthday = Number(
+      new Date(signupFormState.birthday?.value.toString())
+    );
 
     const newUser = {
       email: signupFormState.email.value,
@@ -201,90 +142,32 @@ const SignUpForm = () => {
       birthday,
       gender: signupFormState.gender?.value,
     };
-/*
-    const controller = new AbortController();
-    
-    const createUserPromise = createUser(signupFormValue?.email, signupFormValue?.password, controller);
-    const addNewUserToDatabasePromise = addUserToDatabase(newUser, controller);
-    const sendVerificationLinkPromise = sendVerificationLink(signupFormValue.email,
-      actionCodeSettings, controller);
-    
-    try {
-      await Promise.all([createUserPromise, addNewUserToDatabasePromise, sendVerificationLinkPromise]);
-      alert("Link sent to email");
-      signupFormReset();
-    } catch (error) {
-      alert(error);
-    } finally {
-      controller.abort();
-    }
-*/
 
     try {
-      const createNewUser = await createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         auth,
         signupFormState.email.value,
         signupFormState.password.value
       );
 
-      if (!createNewUser.ok) {
-        throw new Error(`Ошибка при создании нового пользователя`);
-      }
+      await addUserFunction(newUser);
 
-      const addNewUserToDatabase = await fetch(
-        "https://news-acc8f-default-rtdb.firebaseio.com/users.json",
-        {
-          method: "POST",
-          body: JSON.stringify(newUser),
-        }
-      );
-
-      if (!addNewUserToDatabase.ok) {
-        throw new Error(`Ошибка при создании нового пользователя`);
-      }
-
-      const sendVerificationLink = await sendSignInLinkToEmail(
+      await sendSignInLinkToEmail(
         auth,
         signupFormState.email.value,
         actionCodeSettings
       );
-
-      if (sendVerificationLink.ok) {
-        alert("Link sent to email");
-        signupFormReset();
-      } else {
-        throw new Error(`Ошибка при создании нового пользователя`);
-      }
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       alert(`Error ${errorCode}: ${errorMessage}`);
     }
 
-    /*
-    createUserWithEmailAndPassword(
-      auth,
-      signupFormValue?.email,
-      signupFormValue?.password
-    )
-      .then(() => {
-        //window.localStorage.setItem("emailForSignIn", signupFormValue?.email);
-        sendSignInLinkToEmail(
-          auth,
-          signupFormValue.email,
-          actionCodeSettings
-        ).then(() => {
-          alert("Link sent to email");
-          signupFormReset();
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(`Error ${errorCode}: ${errorMessage}`);
-      });
-*/
     setIsLoading(false);
+    signupFormReset();
+    alert(
+      "User was added successfully! Verification link was sent on your e-mail."
+    );
   };
 
   return (
@@ -391,7 +274,7 @@ const SignUpForm = () => {
           Создать аккаунт
         </button>
         {isLoading && <p>Sending request...</p>}
-        <NavLink to="/auth?mode=signIn">Войти</NavLink>
+        {!isLoading && <NavLink to="/auth?mode=signIn">Войти</NavLink>}
       </form>
     </React.Fragment>
   );

@@ -55,7 +55,7 @@ const SignInForm = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         const expirationTime = new Date(user.stsTokenManager.expirationTime);
-        loginHandler(user.accessToken, expirationTime.toISOString());
+        loginHandler(user.accessToken, expirationTime.toISOString(), formState.email.value);
         history.replace("/");
         loginFormReset();
       })

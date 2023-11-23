@@ -16,7 +16,9 @@ const authSlice = createSlice({
     login(state, action) {
       state.token = action.payload.token;
       state.isLoggedIn = true;
-      state.me = action.payload.me;
+    },
+    setMe(state, action) {
+      state.me = action.payload;
     },
   }
 });
