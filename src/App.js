@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
+import { auth, functions, httpsCallable } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 import { contentActions } from "./store/content-slice";
 import { modalActions } from "./store/modal-slice";
@@ -20,6 +22,8 @@ function App() {
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  const getUserByEmailFunction = httpsCallable(functions, "getUserByEmail");
 
   const fetchContentHandler = useCallback(async () => {
     try {
@@ -57,6 +61,21 @@ function App() {
     }
   }, []);
 
+  const getCurrentUser = useCallback(async () => {
+    return new Promise((resolve) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        unsubscribe(); // Отменяем подписку после первого вызова
+        resolve(user);
+      });
+    });
+  }, []);
+
+  const getMe = async () => {
+    const user = await getCurrentUser();
+    const me = await getUserByEmailFunction(user.email);
+    dispatch(authActions.setMe(me));
+  };
+
   useEffect(() => {
     fetchContentHandler();
   }, [fetchContentHandler]);
@@ -69,6 +88,7 @@ function App() {
       const remainingTime = calculateRemainingTime(storedExpirationTime);
 
       if (remainingTime > 0) {
+        getMe();
         dispatch(authActions.login({ token: storedToken }));
         const logoutTimer = setTimeout(
           () => dispatch(authActions.logout()),
