@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { app } from "../../firebase";
 import { getDatabase, ref, set } from "firebase/database";
@@ -15,6 +15,9 @@ const CommentsList = (props) => {
   const params = useParams();
 
   const dispatch = useDispatch();
+
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const me = useSelector((state) => state.auth.me);
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -63,13 +66,16 @@ const CommentsList = (props) => {
               <div className={styles["comments-list__namedate"]}>
                 <p className={styles["comments-list__name"]}>{comment.name}</p>
                 <div className={styles["comments-list__deldate"]}>
-                  <button
-                    className={styles["comments-list__delbutton"]}
-                    type="button"
-                    value={comment.id}
-                    onClick={deleteHandler}
-                    disabled={isUpdating || errorMessage}
-                  />
+                  {(me.role === "Администратор" ||
+                    (isLoggedIn && me.id === comment.user.id)) && (
+                    <button
+                      className={styles["comments-list__delbutton"]}
+                      type="button"
+                      value={comment.id}
+                      onClick={deleteHandler}
+                      disabled={isUpdating || errorMessage}
+                    />
+                  )}
                   <p className={styles["comments-list__date"]}>
                     {parseDateMonthString(new Date(comment.date))}
                   </p>

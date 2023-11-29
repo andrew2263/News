@@ -22,12 +22,13 @@ const Input = (props) => {
 
   return (
     <div className={styles["input_container"]}>
-      {hasError && (
-        <p className={styles["invalid-info"]}>
-          {hasErrorMessage}
-        </p>
+      {hasError && <p className={styles["invalid-info"]}>{hasErrorMessage}</p>}
+      {label && (
+        <label htmlFor={id}>
+          {label}
+          {required && <span className={styles.required}>&nbsp;&nbsp;*</span>}
+        </label>
       )}
-      <label htmlFor={id}>{label}</label>
       {isTextarea ? (
         <textarea
           className={`${styles.textarea} ${className ? className : ""}`}

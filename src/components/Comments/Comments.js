@@ -72,6 +72,7 @@ const Comments = () => {
                 ""
               )}
               {!isComments && <p>Комментариев пока нет.</p>}
+              <p>Оставьте ваш комментарий:</p>
               <NewComment id={lastId + 1} index={commentIndex} />
             </article>
           </Container>

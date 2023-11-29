@@ -13,7 +13,7 @@ const NewsRubrics = (props) => {
   const rubricsContent = (
     <ul className={styles["rubric-list"]}>
       {MAIN_RUBRICS.map((el) => (
-        <li className={styles["rubric-item"]} key={el.category}>
+        <li className={styles["rubric-item"]} key={el.value}>
           <NavLink
             to={el.link}
             activeClassName={styles.active}

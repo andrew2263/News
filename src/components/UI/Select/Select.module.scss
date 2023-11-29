@@ -146,9 +146,13 @@
       }
     }
   }
+}
 
-  .invalid-info {
-    color: #f00;
-    font-size: 14px;
-  }
+.invalid-info {
+  color: #f00;
+  font-size: 14px;
+}
+
+.required {
+  color: #f00;
 }

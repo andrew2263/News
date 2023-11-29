@@ -1,6 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+import Input from "../UI/Input/Input";
 
 import { app } from "../../firebase";
 import { getDatabase, ref, set } from "firebase/database";
@@ -10,7 +12,6 @@ import { contentActions } from "../../store/content-slice";
 import styles from "./NewComment.module.scss";
 
 const NewComment = (props) => {
-  
   const params = useParams();
 
   const { newsId } = params;
@@ -18,6 +19,8 @@ const NewComment = (props) => {
   const dispatch = useDispatch();
 
   const content = useSelector((state) => state.content.content);
+  const me = useSelector((state) => state.auth.me);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const updateCommentsPath = `content/${props.index}/comments`;
 
@@ -26,35 +29,37 @@ const NewComment = (props) => {
 
   const [errorMessage, setErrorMessage] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
-
-  const nameInputRef = useRef();
-  const textInputRef = useRef();
+  const [userName, setUserName] = useState("");
+  const [commentText, setCommentText] = useState("");
 
   const articleComments = [...content[props.index].comments];
 
   const cleanFormHandler = () => {
-    nameInputRef.current.value = "";
-    textInputRef.current.value = "";
+    setUserName("");
+    setCommentText("");
+  };
+
+  const nameChangeHandler = (e) => {
+    setUserName(e.target.value);
+  };
+
+  const textChangeHandler = (e) => {
+    setCommentText(e.target.value);
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
-
-    const enteredName = nameInputRef.current.value;
-    const enteredText = textInputRef.current.value;
     const comment = {
       id: props.id,
-      name: enteredName,
-      text: enteredText,
+      name: isLoggedIn ? me.nickname : userName,
+      text: commentText,
       date: Number(new Date()),
+      user: isLoggedIn ? me : null,
     };
-    const updatedComments = [
-      ...articleComments,
-      comment,
-    ];
+    const updatedComments = [...articleComments, comment];
     setIsUpdating(true);
     dispatch(contentActions.changeCommentHandler({ newsId, updatedComments }));
-    
+
     set(databaseRef, updatedComments)
       .then(() => {
         cleanFormHandler();
@@ -63,7 +68,9 @@ const NewComment = (props) => {
       .catch((error) => {
         console.error(error);
         dispatch(contentActions.setPrevContent());
-        setErrorMessage(`${ error.message }: Добавить комментарий не удалось. Обновите страницу и повторите попытку.`);
+        setErrorMessage(
+          `${error.message}: Добавить комментарий не удалось. Обновите страницу и повторите попытку.`
+        );
         setIsUpdating(false);
       });
   };
@@ -78,21 +85,33 @@ const NewComment = (props) => {
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       {isUpdating && <p>Комментарий добавляется...</p>}
       <form onSubmit={submitHandler}>
-        <div className={styles.name}>
-          <label htmlFor="name">Введите имя</label>
-          <input
-          id="name"
-          type="text"
-          ref={nameInputRef}
-          required
+        {!isLoggedIn ? (
+          <Input
+            type="text"
+            name="userName"
+            id="userName"
+            value={userName}
+            onChange={nameChangeHandler}
+            required
+            placeholder="Ведите имя"
           />
-        </div>
-        <textarea
-          className={styles.text}
-          placeholder="Ведите комментарий"
-          ref={textInputRef}
-          required
-        />
+        ) : (
+          <div className={styles['loggedIn-userName']}>
+            <p>Ваш никнейм:</p>
+            <p>{me.nickname}</p>
+          </div>
+        )}
+        <Input
+            type="text"
+            name="commentText"
+            id="commentText"
+            value={commentText}
+            onChange={textChangeHandler}
+            isTextarea
+            required
+            className={styles.text}
+            placeholder="Ведите комментарий"
+          />
         <div>
           <button
             type="submit"

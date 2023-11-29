@@ -54,7 +54,7 @@ const Header = () => {
           <nav className={styles["header__nav"]}>
             <ul className={styles["header__list"]}>
               {MAIN_RUBRICS.map((el) => (
-                <li className={styles["header__item"]} key={el.category}>
+                <li className={styles["header__item"]} key={el.value}>
                 <NavLink to={el.link} activeClassName={styles.active}>
                   {el.name}
                 </NavLink>

@@ -15,7 +15,8 @@ import {
   isPassword,
   isName,
   isBirthday,
-  isNotEmpty,
+  isRole,
+  isGender,
 } from "../../helpers/validationHelper";
 import { ROLES, GENDERS } from "../../constants/SignUpOptions.Constant";
 
@@ -93,9 +94,9 @@ const SignUpForm = () => {
     nickname: isName,
     firstName: isName,
     lastName: isName,
-    role: isNotEmpty,
+    role: isRole,
     birthday: isBirthday,
-    gender: isNotEmpty,
+    gender: isGender,
   };
 
   const {
