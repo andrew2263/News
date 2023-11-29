@@ -15,7 +15,18 @@ import Select from "../UI/Select/Select";
 
 import useForm from "../../hooks/use-form";
 import { sendArticle } from "../../store/helper";
-import { MAIN_RUBRICS, OTHER_RUBRICS } from "../../constants/NewsRubrics.Constant";
+import {
+  MAIN_RUBRICS,
+  OTHER_RUBRICS,
+} from "../../constants/NewsRubrics.Constant";
+import {
+  isKey,
+  isHeading,
+  isBriefText,
+  isText,
+  isNotEmpty,
+  isDescription,
+} from "../../helpers/validationHelper";
 
 import styles from "./NewArticle.module.scss";
 
@@ -34,46 +45,8 @@ const priorityOptions = [1, 2, 3, 4].map((el) => ({
 const rubricOptions = OTHER_RUBRICS.map((el) => ({
   value: el.category,
   text: el.name,
-  label: <div>{el.name}</div>
+  label: <div>{el.name}</div>,
 }));
-
-const isKey = (value) => {
-  return (
-    /^[a-z0-9-_]+$/.test(value) &&
-    value.toString().length >= 5 &&
-    value.toString().length <= 50
-  );
-};
-
-const isHeading = (value) => {
-  return (
-    /[\w\s\p{P}]/gu.test(value) &&
-    value.toString().length >= 50 &&
-    value.toString().length <= 100
-  );
-};
-
-const isBriefText = (value) => {
-  return (
-    /[\w\s\p{P}]/gu.test(value) &&
-    value.toString().length >= 70 &&
-    value.toString().length <= 250
-  );
-};
-
-const isText = (value) => {
-  return /[\w\s\p{P}]/gu.test(value) && value.toString().length >= 300;
-};
-
-const isNotEmpty = (value) => !!value;
-
-const isDescription = (value) => {
-  return (
-    /[\w\s\p{P}]/gu.test(value) &&
-    value.toString().length >= 50 &&
-    value.toString().length <= 200
-  );
-};
 
 const NewArticle = () => {
   const [formIsValid, setFormIsValid] = useState(false);
@@ -145,9 +118,10 @@ const NewArticle = () => {
   };
 
   const {
-    value: formValue,
+    //value: formValue,
+    formState,
     isValid: isFormValid,
-    hasError: formHasError,
+    //hasError: formHasError,
     valueChangeHandler: formChange,
     inputBlurHandler: formBlur,
     reset: formReset,
@@ -160,9 +134,12 @@ const NewArticle = () => {
     isTouched: false,
   });
 
-  const rubricsChange = useCallback((value) => {
-    setRubrics(value);
-  }, [rubrics]);
+  const rubricsChange = useCallback(
+    (value) => {
+      setRubrics(value);
+    },
+    [rubrics]
+  );
 
   const filesChangeHandler = (event) => {
     dispatchFiles({
@@ -224,7 +201,7 @@ const NewArticle = () => {
     const articleDate = new Date();
     const newArticle = {};
 
-    const key = `${formValue.key}-${articleDate.getDate()}${
+    const key = `${formState.key.value}-${articleDate.getDate()}${
       articleDate.getMonth() + 1
     }${articleDate.getFullYear()}-${articleDate.getHours()}${articleDate.getMinutes()}`;
 
@@ -251,14 +228,14 @@ const NewArticle = () => {
       const urls = await uploadFiles();
 
       newArticle.key = key;
-      newArticle.priority = +formValue.priority;
-      newArticle.category = formValue.category;
+      newArticle.priority = +formState.priority.value;
+      newArticle.category = formState.category.value;
       newArticle.date = +articleDate;
-      newArticle.heading = formValue.heading;
-      newArticle.briefText = formValue.briefText;
-      newArticle.text = formValue.text.split("\n");
+      newArticle.heading = formState.heading.value;
+      newArticle.briefText = formState.briefText.value;
+      newArticle.text = formState.text.value.split("\n");
       newArticle.comments = [];
-      newArticle.rubrics = rubrics.map((el) => (el.value));
+      newArticle.rubrics = rubrics.map((el) => el.value);
 
       newArticle.images = urls.map((el, index) => {
         const imageData = {
@@ -267,7 +244,7 @@ const NewArticle = () => {
         };
 
         if (index === 0) {
-          imageData.text = formValue.descriprion;
+          imageData.text = formState.descriprion.value;
         }
         return imageData;
       });
@@ -285,15 +262,16 @@ const NewArticle = () => {
           <article>
             <h2>Добавить новость</h2>
             <form onSubmit={submitHandler}>
-             <Input
+              <Input
                 type="text"
                 name="key"
                 id="article_key"
-                value={formValue.key}
+                value={formState.key.value}
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Ключ"
-                hasError={formHasError.key}
+                required
+                hasError={formState.key.hasError}
                 hasErrorMessage='Ключ может содержать только латинские буквы в нижнем
               регистре, цифры, символы "-" и "_" без
               пробелов. Минимальное число символов — 5, максимальное — 50.'
@@ -302,11 +280,12 @@ const NewArticle = () => {
                 type="text"
                 name="heading"
                 id="article_heading"
-                value={formValue.heading}
+                value={formState.heading.value}
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Заголовок"
-                hasError={formHasError.heading}
+                required
+                hasError={formState.heading.hasError}
                 hasErrorMessage="Заголовок может содержать только буквы, цифры, пробелы и
                 символы -.,!?%;:«»„”. Минимальное число символов — 50,
                 максимальное — 100."
@@ -315,12 +294,13 @@ const NewArticle = () => {
                 className={styles.brief}
                 name="briefText"
                 id="article_brief_text"
-                value={formValue.briefText}
+                value={formState.briefText.value}
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Краткое описание"
+                required
                 isTextarea
-                hasError={formHasError.briefText}
+                hasError={formState.briefText.hasError}
                 hasErrorMessage="Краткое описание может содержать только буквы, цифры,
                 пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
                 120, максимальное — 250."
@@ -329,12 +309,13 @@ const NewArticle = () => {
                 className={styles["article-text"]}
                 name="text"
                 id="article_text"
-                value={formValue.text}
+                value={formState.text.value}
                 onChange={formChange}
                 onBlur={formBlur}
                 label="Текст новости"
+                required
                 isTextarea
-                hasError={formHasError.text}
+                hasError={formState.text.hasError}
                 hasErrorMessage="Краткое описание может содержать только буквы, цифры,
               пробелы и символы -.,!?%;:«»„”. Минимальное число символов —
               120, максимальное — 250."
@@ -342,23 +323,25 @@ const NewArticle = () => {
               <Select
                 id="category"
                 name="category"
-                value={formValue.category}
+                value={formState.category.value}
                 onChange={formChange}
                 changeBlur={formBlur}
                 label="Категория"
+                required
                 initialOptions={categoryOptions}
-                hasError={formHasError.category}
+                hasError={formState.category.hasError}
                 hasErrorMessage="Выберите категорию новости."
               />
               <Select
                 id="priority"
                 name="priority"
-                value={formValue.priority}
+                value={formState.priority.value}
                 onChange={formChange}
                 changeBlur={formBlur}
                 label="Приоритет"
+                required
                 initialOptions={priorityOptions}
-                hasError={formHasError.priority}
+                hasError={formState.priority.hasError}
                 hasErrorMessage="Выберите приоритет новости."
               />
               <Select
@@ -386,26 +369,26 @@ const NewArticle = () => {
                   onChange={filesChangeHandler}
                   onBlur={validateFilesHandler}
                 />
-                </div>
-                <Input
-                  className={styles.brief}
-                  id="files_description"
-                  name="description"
-                  value={formValue.description}
-                  onChange={formChange}
-                  onBlur={formBlur}
-                  label="Описание изображения"
-                  isTextarea
-                  hasError={formHasError.descriprion}
-                  hasErrorMessage="Описание изображения может содержать только буквы, цифры,
+              </div>
+              <Input
+                className={styles.brief}
+                id="files_description"
+                name="description"
+                value={formState.description.value}
+                onChange={formChange}
+                onBlur={formBlur}
+                label="Описание изображения"
+                isTextarea
+                required
+                hasError={formState.description.hasError}
+                hasErrorMessage="Описание изображения может содержать только буквы, цифры,
                 пробелы и символы -.,!?%;:«»„”. Минимальное число символов
                 — 50, максимальное — 200."
-                /> 
+              />
               <button
                 type="submit"
                 className={styles.submit}
                 disabled={!formIsValid}
-                // disabled
               >
                 Добавить новость
               </button>

@@ -19,6 +19,7 @@ const Select = (props) => {
     changeBlur,
     hasError,
     hasErrorMessage,
+    required = false,
   } = props;
 
   const inputRef = useRef(null);
@@ -46,6 +47,12 @@ const Select = (props) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!value.length) {
+      setOptions(initialOptions);
+    }
+  }, [value]);
 
   useEffect(() => {
     if (isMulti) {
@@ -127,6 +134,8 @@ const Select = (props) => {
     }
 
     if (event.key === "Enter" || event.key === "Return") {
+      event.stopPropagation();
+      event.preventDefault();
       if (selectedInex === -1) {
         setShowOptions((prev) => !prev);
       } else if (showOptions) {
@@ -186,6 +195,7 @@ const Select = (props) => {
               onKeyDown={keyDownHandler}
               onFocus={changeFocus}
               ref={inputRef}
+              required={required}
             />
           ) : (
             <div
@@ -223,6 +233,7 @@ const Select = (props) => {
                   name={name}
                   type={inputType}
                   onBlur={() => setMultiInputValue("")}
+                  required={required}
                 />
               </div>
             </div>
