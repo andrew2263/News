@@ -83,6 +83,7 @@ const SignInForm = () => {
           required
           hasError={formState.email.hasError}
           hasErrorMessage="Ведите валидный e-mail"
+          isSighIn
         />
         <Input
           type="password"
@@ -95,6 +96,7 @@ const SignInForm = () => {
           required
           hasError={formState.password.hasError}
           hasErrorMessage="Введите пароль"
+          isSighIn
         />
         <button
           type="submit"

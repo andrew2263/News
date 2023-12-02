@@ -18,6 +18,7 @@ const Input = (props) => {
     placeholder,
     disabled,
     required = false,
+    isSighIn = false,
   } = props;
 
   return (
@@ -26,7 +27,7 @@ const Input = (props) => {
       {label && (
         <label htmlFor={id}>
           {label}
-          {required && <span className={styles.required}>&nbsp;&nbsp;*</span>}
+          {required && !isSighIn && <span className={styles.required}>&nbsp;&nbsp;*</span>}
         </label>
       )}
       {isTextarea ? (
