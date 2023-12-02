@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import Container from "../Layout/Container";
 import NewsImage from "../NewsContent/NewsImage";
+import Reactions from "../UI/Reactions/Reactions";
 
 import { parseDateMonthString } from "../../helpers/parseDateMonth";
 import { OTHER_RUBRICS } from "../../constants/NewsRubrics.Constant";
@@ -34,9 +35,9 @@ const ArticleContent = () => {
   }, [item, isContent]);
 
   const articleText = (text) =>
-    text.map((text) => {
+    text.map((text, index) => {
       return (
-        <p key={Math.random()} className={styles["article__text"]}>
+        <p key={index} className={styles["article__text"]}>
           {text}
         </p>
       );
@@ -87,14 +88,15 @@ const ArticleContent = () => {
                   {item.rubrics.map((rubric) => (
                     <li className={styles["article__rubrics-item"]} key={rubric}>
                       <NavLink
-                        to={`/rubrics${OTHER_RUBRICS.find((el) => el.category === rubric)?.link}`}
+                        to={`/rubrics${OTHER_RUBRICS.find((el) => el.value === rubric)?.link}`}
                       >
-                        {OTHER_RUBRICS.find((el) => el.category === rubric)?.name}
+                        {OTHER_RUBRICS.find((el) => el.value === rubric)?.name}
                       </NavLink>
                     </li>
                   ))}
                 </ul>
               )}
+              <Reactions reactions={item?.reactions} addReactionHandler={() => {}} />
             </article>
           </Container>
         </section>

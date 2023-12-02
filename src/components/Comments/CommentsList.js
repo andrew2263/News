@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Input from "../UI/Input/Input";
+import Reactions from "../UI/Reactions/Reactions";
 
 import { app } from "../../firebase";
 import { getDatabase, ref, set } from "firebase/database";
@@ -10,6 +11,7 @@ import { getDatabase, ref, set } from "firebase/database";
 import { contentActions } from "../../store/content-slice";
 
 import { parseDateMonthString } from "../../helpers/parseDateMonth";
+import { checkifReacted, getReaction } from "../../helpers/reactionHelper";
 
 import styles from "./CommentsList.module.scss";
 
@@ -26,13 +28,14 @@ const CommentsList = (props) => {
 
   const { newsId } = params;
 
-  const updateCommentsPath = `content/${props.index}/comments`;
-
   const database = getDatabase(app);
-  const databaseRef = ref(database, updateCommentsPath);
 
   const deleteHandler = async (event) => {
     event.preventDefault();
+
+    const updateCommentsPath = `content/${props.index}/comments`;
+    const databaseRef = ref(database, updateCommentsPath);
+
     setIsUpdating(true);
     const updatedComments = props.commentData.filter((comment) => {
       return Number(comment.id) !== Number(event.target.value);
@@ -57,6 +60,32 @@ const CommentsList = (props) => {
       });
   };
 
+  const editCommentHandler = async (comment, editedValue, commentIndex) => {
+    const editCommentPath = `content/${props.index}/comments/${commentIndex}`;
+    const databaseRef = ref(database, editCommentPath);
+
+    const editedComment = {
+      ...comment,
+      ...editedValue,
+    };
+
+    dispatch(
+      contentActions.editCommentHandler({ commentIndex, newsId, editedComment })
+    );
+
+    set(databaseRef, editedComment)
+      .then(() => {
+        // setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        dispatch(contentActions.setPrevContent());
+        setErrorMessage(
+          `${error.message}: Отредактировать комментарий не удалось. Обновите страницу и повторите попытку.`
+        );
+      });
+  };
+
   return (
     <>
       {isUpdating && <p>Комментарий удаляется...</p>}
@@ -68,15 +97,12 @@ const CommentsList = (props) => {
               <Comment
                 comment={comment}
                 me={me}
-                newsId={newsId}
                 isLoggedIn={isLoggedIn}
                 deleteHandler={deleteHandler}
                 isUpdating={isUpdating}
                 errorMessage={errorMessage}
-                setErrorMessage={setErrorMessage}
-                comments={props.commentData}
-                databaseRef={databaseRef}
                 index={index}
+                editCommentHandler={editCommentHandler}
               />
             </li>
           );
@@ -89,23 +115,18 @@ const CommentsList = (props) => {
 const Comment = (props) => {
   const {
     comment,
-    comments,
     me,
-    newsId,
     isLoggedIn,
     deleteHandler,
     isUpdating,
     errorMessage,
-    setErrorMessage,
-    databaseRef,
     index,
+    isEditing = false,
+    editCommentHandler,
   } = props;
 
   const [openEdit, setOpenEdit] = useState(false);
   const [commentText, setCommentText] = useState(comment.text);
-  const [isEditing, setIsEditing] = useState(false);
-
-  const dispatch = useDispatch();
 
   const openEditHandler = () => {
     setOpenEdit(true);
@@ -120,32 +141,44 @@ const Comment = (props) => {
     setOpenEdit(false);
   };
 
-  const editCommentHandler = () => {
-    const editedComment = {
-      ...comment,
+  const saveEditHandler = () => {
+    setOpenEdit(false);
+    const editedValue = {
       text: commentText,
       isEdited: true,
       editDate: Number(new Date()),
     };
+    editCommentHandler(comment, editedValue, index);
+  };
 
-    setOpenEdit(false);
-    setIsEditing(true);
-    const updatedComments = [...comments];
-    updatedComments[index] = editedComment;
-    dispatch(contentActions.changeCommentHandler({ newsId, updatedComments }));
+  const addReactionHandler = (type) => {
+    const reactions = comment?.reactions;
 
-    set(databaseRef, updatedComments)
-      .then(() => {
-        setIsEditing(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        dispatch(contentActions.setPrevContent());
-        setErrorMessage(
-          `${error.message}: Отредактировать комментарий не удалось. Обновите страницу и повторите попытку.`
-        );
-        setIsEditing(false);
-      });
+    let myReaction = null;
+    let oldReaction = {};
+
+    if (reactions) {
+      const reactionValues = Object.values(reactions);
+      const reactionTypes = Object.keys(reactions);
+
+      myReaction = checkifReacted(reactionTypes, reactionValues, me);
+    }
+
+    if (myReaction) {
+      oldReaction = getReaction(reactions, myReaction.type, me, true);
+    }
+
+    const isSameType = myReaction?.type === type;
+
+    const newReaction = getReaction(reactions, type, me, false, isSameType);
+
+    const editedValue = {
+      reactions: !myReaction
+        ? { ...reactions, ...newReaction }
+        : { ...reactions, ...oldReaction, ...newReaction },
+    };
+
+    editCommentHandler(comment, editedValue, index);
   };
 
   const isMyComment = isLoggedIn && me.id === comment.user.id;
@@ -198,7 +231,13 @@ const Comment = (props) => {
             </div>
           </div>
           {!openEdit ? (
-            <p>{commentText}</p>
+            <>
+              <p>{commentText}</p>
+              <Reactions
+                reactions={comment?.reactions}
+                addReactionHandler={addReactionHandler}
+              />
+            </>
           ) : (
             <>
               <Input
@@ -214,7 +253,7 @@ const Comment = (props) => {
               <div className={styles["comments-list__edit-buttons"]}>
                 <button
                   type="button"
-                  onClick={editCommentHandler}
+                  onClick={saveEditHandler}
                   disabled={!commentText.length}
                   className={styles["comments-list__save-edit"]}
                 >
