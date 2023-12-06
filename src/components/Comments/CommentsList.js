@@ -11,7 +11,7 @@ import { getDatabase, ref, set } from "firebase/database";
 import { contentActions } from "../../store/content-slice";
 
 import { parseDateMonthString } from "../../helpers/parseDateMonth";
-import { checkifReacted, getReaction } from "../../helpers/reactionHelper";
+import { getEditedValue } from "../../helpers/reactionHelper";
 
 import styles from "./CommentsList.module.scss";
 
@@ -74,9 +74,7 @@ const CommentsList = (props) => {
     );
 
     set(databaseRef, editedComment)
-      .then(() => {
-        // setIsEditing(false);
-      })
+      .then(() => {})
       .catch((error) => {
         console.error(error);
         dispatch(contentActions.setPrevContent());
@@ -121,7 +119,6 @@ const Comment = (props) => {
     isUpdating,
     errorMessage,
     index,
-    isEditing = false,
     editCommentHandler,
   } = props;
 
@@ -151,32 +148,9 @@ const Comment = (props) => {
     editCommentHandler(comment, editedValue, index);
   };
 
-  const addReactionHandler = (type) => {
+  const addReactionHandler = (type, myReaction) => {
     const reactions = comment?.reactions;
-
-    let myReaction = null;
-    let oldReaction = {};
-
-    if (reactions) {
-      const reactionValues = Object.values(reactions);
-      const reactionTypes = Object.keys(reactions);
-
-      myReaction = checkifReacted(reactionTypes, reactionValues, me);
-    }
-
-    if (myReaction) {
-      oldReaction = getReaction(reactions, myReaction.type, me, true);
-    }
-
-    const isSameType = myReaction?.type === type;
-
-    const newReaction = getReaction(reactions, type, me, false, isSameType);
-
-    const editedValue = {
-      reactions: !myReaction
-        ? { ...reactions, ...newReaction }
-        : { ...reactions, ...oldReaction, ...newReaction },
-    };
+    const editedValue = getEditedValue(reactions, type, me, myReaction);
 
     editCommentHandler(comment, editedValue, index);
   };
@@ -185,90 +159,84 @@ const Comment = (props) => {
 
   return (
     <>
-      {isEditing ? (
-        <p>Комментарий редактируется...</p>
+      <div className={styles["comments-list__namedate"]}>
+        <p className={styles["comments-list__name"]}>{comment.name}</p>
+        <div className={styles["comments-list__deldate"]}>
+          {!openEdit && isMyComment && (
+            <button
+              type="button"
+              className={styles["comments-list__editbutton"]}
+              onClick={openEditHandler}
+            >
+              <img src="/images/edit_image.svg" alt="Edit" />
+              <span className={styles.hint}>Редактировать комментарий</span>
+            </button>
+          )}
+          {!openEdit && (me.role === "Администратор" || isMyComment) && (
+            <button
+              className={styles["comments-list__delbutton"]}
+              type="button"
+              value={comment.id}
+              onClick={deleteHandler}
+              disabled={isUpdating || errorMessage}
+              data-hint="Удалить комментарий"
+            >
+              <img src="/images/delete.svg" alt="Edit" />
+              <span className={styles.hint}>Удалить комментарий</span>
+            </button>
+          )}
+          <p className={styles["comments-list__date"]}>
+            {parseDateMonthString(new Date(comment.date))}
+            {comment.isEdited && (
+              <span>
+                {" "}
+                (отредактирован)
+                <span className={styles.hint}>
+                  Отредактирован{" "}
+                  {parseDateMonthString(new Date(comment.editDate))}
+                </span>
+              </span>
+            )}
+          </p>
+        </div>
+      </div>
+      {!openEdit ? (
+        <>
+          <p>{commentText}</p>
+          <Reactions
+            reactions={comment?.reactions}
+            addReactionHandler={addReactionHandler}
+          />
+        </>
       ) : (
         <>
-          <div className={styles["comments-list__namedate"]}>
-            <p className={styles["comments-list__name"]}>{comment.name}</p>
-            <div className={styles["comments-list__deldate"]}>
-              {!openEdit && isMyComment && (
-                <button
-                  type="button"
-                  className={styles["comments-list__editbutton"]}
-                  onClick={openEditHandler}
-                >
-                  <img src="/images/edit_image.svg" alt="Edit" />
-                  <span className={styles.hint}>Редактировать комментарий</span>
-                </button>
-              )}
-              {!openEdit && (me.role === "Администратор" || isMyComment) && (
-                <button
-                  className={styles["comments-list__delbutton"]}
-                  type="button"
-                  value={comment.id}
-                  onClick={deleteHandler}
-                  disabled={isUpdating || errorMessage}
-                  data-hint="Удалить комментарий"
-                >
-                  <img src="/images/delete.svg" alt="Edit" />
-                  <span className={styles.hint}>Удалить комментарий</span>
-                </button>
-              )}
-              <p className={styles["comments-list__date"]}>
-                {parseDateMonthString(new Date(comment.date))}
-                {comment.isEdited && (
-                  <span>
-                    {" "}
-                    (отредактирован)
-                    <span className={styles.hint}>
-                      Отредактирован{" "}
-                      {parseDateMonthString(new Date(comment.editDate))}
-                    </span>
-                  </span>
-                )}
-              </p>
-            </div>
+          <Input
+            type="text"
+            name="editCommentText"
+            id="editCommentText"
+            value={commentText}
+            onChange={editTextHandler}
+            isTextarea
+            required
+            placeholder="Введите комментарий"
+          />
+          <div className={styles["comments-list__edit-buttons"]}>
+            <button
+              type="button"
+              onClick={saveEditHandler}
+              disabled={!commentText.length}
+              className={styles["comments-list__save-edit"]}
+            >
+              Сохранить комментарий
+            </button>
+            <button
+              type="button"
+              onClick={cancelEditHandler}
+              className={styles["comments-list__cancel-edit"]}
+            >
+              Отменить изменения
+            </button>
           </div>
-          {!openEdit ? (
-            <>
-              <p>{commentText}</p>
-              <Reactions
-                reactions={comment?.reactions}
-                addReactionHandler={addReactionHandler}
-              />
-            </>
-          ) : (
-            <>
-              <Input
-                type="text"
-                name="editCommentText"
-                id="editCommentText"
-                value={commentText}
-                onChange={editTextHandler}
-                isTextarea
-                required
-                placeholder="Введите комментарий"
-              />
-              <div className={styles["comments-list__edit-buttons"]}>
-                <button
-                  type="button"
-                  onClick={saveEditHandler}
-                  disabled={!commentText.length}
-                  className={styles["comments-list__save-edit"]}
-                >
-                  Сохранить комментарий
-                </button>
-                <button
-                  type="button"
-                  onClick={cancelEditHandler}
-                  className={styles["comments-list__cancel-edit"]}
-                >
-                  Отменить изменения
-                </button>
-              </div>
-            </>
-          )}
         </>
       )}
     </>

@@ -13,7 +13,7 @@ export const checkifReacted = (keys, values, me) => {
   return null;
 };
 
-export const getReaction = (reactions, type, me, isOld, isSameType = false) => {
+const getReaction = (reactions, type, me, isOld, isSameType = false) => {
   const reactionsCount = reactions?.[type]?.count
       ? reactions?.[type]?.count
       : 0;
@@ -31,4 +31,31 @@ export const getReaction = (reactions, type, me, isOld, isSameType = false) => {
   };
 
   return reaction;
-}
+};
+
+export const getEditedValue = (reactions, type, me, myReaction) => {
+  // let myReaction = null;
+
+  //   if (reactions) {
+  //     const reactionValues = Object.values(reactions);
+  //     const reactionTypes = Object.keys(reactions);
+
+  //     myReaction = checkifReacted(reactionTypes, reactionValues, me);
+  //   }
+
+    const oldReaction = myReaction
+      ? getReaction(reactions, myReaction.type, me, true)
+      : {};
+
+    const isSameType = myReaction?.type === type;
+
+    const newReaction = getReaction(reactions, type, me, false, isSameType);
+
+    const editedValue = {
+      reactions: !myReaction
+        ? { ...reactions, ...newReaction }
+        : { ...reactions, ...oldReaction, ...newReaction },
+    };
+
+    return editedValue;
+};

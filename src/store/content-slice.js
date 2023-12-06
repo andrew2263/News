@@ -48,6 +48,14 @@ const contentSlice = createSlice({
       state.articleAdded = true;
   
     },
+    editArticleHandler(state, action) {
+      const {
+        itemIndex,
+        editedArticle
+      } = action.payload;
+
+      state.content[itemIndex] = editedArticle;
+    },
     loadContentHandler(state, action) {
       const data = action.payload;
       state.content = data;
