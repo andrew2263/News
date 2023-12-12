@@ -24,14 +24,15 @@ import {
   isHeading,
   isBriefText,
   isText,
-  isNotEmpty,
+  isCategory,
+  isPriority,
   isDescription,
 } from "../../helpers/validationHelper";
 
 import styles from "./NewArticle.module.scss";
 
 const categoryOptions = MAIN_RUBRICS.map((el) => ({
-  value: el.category,
+  value: el.value,
   text: el.name,
   label: <div>{el.name}</div>,
 }));
@@ -43,7 +44,7 @@ const priorityOptions = [1, 2, 3, 4].map((el) => ({
 }));
 
 const rubricOptions = OTHER_RUBRICS.map((el) => ({
-  value: el.category,
+  value: el.value,
   text: el.name,
   label: <div>{el.name}</div>,
 }));
@@ -112,16 +113,14 @@ const NewArticle = () => {
     heading: isHeading,
     briefText: isBriefText,
     text: isText,
-    category: isNotEmpty,
-    priority: isNotEmpty,
+    category: isCategory,
+    priority: isPriority,
     description: isDescription,
   };
 
   const {
-    //value: formValue,
     formState,
     isValid: isFormValid,
-    //hasError: formHasError,
     valueChangeHandler: formChange,
     inputBlurHandler: formBlur,
     reset: formReset,
@@ -330,7 +329,7 @@ const NewArticle = () => {
                 required
                 initialOptions={categoryOptions}
                 hasError={formState.category.hasError}
-                hasErrorMessage="Выберите категорию новости."
+                hasErrorMessage="Выберите категорию новости из выпадающего списка."
               />
               <Select
                 id="priority"
@@ -342,7 +341,7 @@ const NewArticle = () => {
                 required
                 initialOptions={priorityOptions}
                 hasError={formState.priority.hasError}
-                hasErrorMessage="Выберите приоритет новости."
+                hasErrorMessage="Выберите приоритет новости из выпадающего списка."
               />
               <Select
                 isMulti

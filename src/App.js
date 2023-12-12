@@ -111,8 +111,8 @@ function App() {
           <NewsContent category="all" />
         </Route>
         {MAIN_RUBRICS.map((el) => (
-          <Route path={el.link} key={el.category} exact>
-            <NewsContent category={el.category} />
+          <Route path={el.link} key={el.value} exact>
+            <NewsContent category={el.value} />
           </Route>
         ))}
         <Route path="/rubrics/:rubric">

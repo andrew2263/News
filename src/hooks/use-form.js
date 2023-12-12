@@ -6,11 +6,15 @@ const formStateReducer = (state, action) => {
 
     let valid;
 
+    const isSameValue = name === "repeatPassword";
+
     if (!value) {
       const isEmptyValid = required ? false : true;
-      valid = action.validate[name](value) || isEmptyValid;
+      valid =
+        action.validate[name](value, isSameValue && state?.password) ||
+        isEmptyValid;
     } else {
-      valid = action.validate[name](value);
+      valid = action.validate[name](value, isSameValue && state?.password);
     }
 
     const hasError = !valid && state[name].touched;
@@ -30,11 +34,15 @@ const formStateReducer = (state, action) => {
 
     let valid;
 
+    const isSameValue = name === "repeatPassword";
+
     if (!value) {
       const isEmptyValid = required ? false : true;
-      valid = action.validate[name](value) || isEmptyValid;
+      valid =
+        action.validate[name](value, isSameValue && state?.password) ||
+        isEmptyValid;
     } else {
-      valid = action.validate[name](value);
+      valid = action.validate[name](value, isSameValue && state?.password);
     }
 
     const hasError = !valid;

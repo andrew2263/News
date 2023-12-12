@@ -7,6 +7,7 @@ import Backdrop from "./Backdrop";
 import ModalSubmitting from "./ModalStatus/ModalSubmitting";
 import ModalError from "./ModalStatus/ModalError";
 import ModalIsSubmitted from "./ModalStatus/ModalSubmitted";
+import AuthModal from "./ModalStatus/AuthModal";
 
 import styles from "./Modal.module.scss";
 
@@ -25,30 +26,29 @@ const Modal = (props) => {
   const modalText = useSelector((state) => state.modal.text);
 
   const getModalContent = (type) => {
-    switch(type) {
-      case 'submitting':
+    switch (type) {
+      case "submitting":
         return <ModalSubmitting />;
-      case 'error':
+      case "error":
         return <ModalError errorMessage={modalText} />;
-      case 'isSubmitted':
+      case "isSubmitted":
         return <ModalIsSubmitted onClose={props.onClose} />;
+      case "auth":
+        return <AuthModal />;
       default:
         return <ModalError error={modalText} />;
     }
-  }
+  };
 
   const modalContent = getModalContent(modalType);
 
   return (
     <React.Fragment>
       {ReactDOM.createPortal(
-        <Backdrop onClose={props.onClose}>
-          ReactDOM.createPortal(
-            <ModalOverlayStatus>
-              {modalContent}
-            </ModalOverlayStatus>
-          )
-        </Backdrop>,
+        <>
+          <Backdrop onClose={props.onClose} />
+          <ModalOverlayStatus>{modalContent}</ModalOverlayStatus>
+        </>,
         potralElement
       )}
     </React.Fragment>

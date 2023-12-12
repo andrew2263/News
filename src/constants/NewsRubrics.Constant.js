@@ -1,27 +1,27 @@
 export const MAIN_RUBRICS = [
   {
     link: '/politics',
-    category: 'politics',
+    value: 'politics',
     name: 'Политика'
   },
   {
     link: '/economics',
-    category: 'economics',
+    value: 'economics',
     name: 'Экономика'
   },
   {
     link: '/war',
-    category: 'war',
+    value: 'war',
     name: 'Война Россия — Украина'
   },
   {
     link: '/world',
-    category: 'world',
+    value: 'world',
     name: 'В мире'
   },
   {
     link: '/sport',
-    category: 'sport',
+    value: 'sport',
     name: 'Спорт'
   }
 ];
@@ -29,122 +29,122 @@ export const MAIN_RUBRICS = [
 export const OTHER_RUBRICS = [
   {
     link: '/fuel',
-    category: 'fuel',
+    value: 'fuel',
     name: 'Цены на топливо'
   },
   {
     link: '/war',
-    category: 'war',
+    value: 'war',
     name: 'Россия — Украина'
   },
   {
     link: '/karabakh',
-    category: 'karabakh',
+    value: 'karabakh',
     name: 'Нагорный Карабах'
   },
   {
     link: '/foreign',
-    category: 'foreign',
+    value: 'foreign',
     name: 'Внешняя политика'
   },
   {
     link: '/government',
-    category: 'government',
+    value: 'government',
     name: 'Правительство'
   },
   {
     link: '/sandu',
-    category: 'sandu',
+    value: 'sandu',
     name: 'Майя Санду'
   },
   {
     link: '/medicine',
-    category: 'medicine',
+    value: 'medicine',
     name: 'Медицина'
   },
   {
     link: '/nowar',
-    category: 'nowar',
+    value: 'nowar',
     name: 'Нет войне'
   },
   {
     link: '/gas',
-    category: 'gas',
+    value: 'gas',
     name: 'Цены на газ'
   },
   {
     link: '/auto',
-    category: 'auto',
+    value: 'auto',
     name: 'Автомобили'
   },
   {
     link: '/usa',
-    category: 'usa',
+    value: 'usa',
     name: 'США'
   },
   {
     link: '/europe',
-    category: 'europe',
+    value: 'europe',
     name: 'Европа'
   },
   {
     link: '/accidents',
-    category: 'accidents',
+    value: 'accidents',
     name: 'ДТП в Молдове'
   },
   {
     link: '/transport',
-    category: 'transport',
+    value: 'transport',
     name: 'Транспорт'
   },
   {
     link: '/tech',
-    category: 'tech',
+    value: 'tech',
     name: 'Технологии'
   },
   {
     link: '/chisinau',
-    category: 'chisinau',
+    value: 'chisinau',
     name: 'Кишинёв'
   },
   {
     link: '/transnistria',
-    category: 'transnistria',
+    value: 'transnistria',
     name: 'Приднестровье'
   },
   {
     link: '/romania',
-    category: 'romania',
+    value: 'romania',
     name: 'Румыния'
   },
   {
     link: '/aeroport',
-    category: 'aeroport',
+    value: 'aeroport',
     name: 'Аэропорт'
   },
   {
     link: '/gagauz',
-    category: 'gagauz',
+    value: 'gagauz',
     name: 'Гагаузия'
   },
   {
     link: '/corn',
-    category: 'corn',
+    value: 'corn',
     name: 'Зерно'
   },
   {
     link: '/wine',
-    category: 'wine',
+    value: 'wine',
     name: 'Вино'
   },
   {
     link: '/nature',
-    category: 'nature',
+    value: 'nature',
     name: 'Природа'
   },
   {
     link: '/football',
-    category: 'football',
+    value: 'football',
     name: 'Футбол'
   },
 ];

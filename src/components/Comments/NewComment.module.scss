@@ -6,6 +6,12 @@
   }
 }
 
+.loggedIn-userName {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
 .text {
   resize: none;
   width: 100%;

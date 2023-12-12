@@ -48,6 +48,14 @@ const contentSlice = createSlice({
       state.articleAdded = true;
   
     },
+    editArticleHandler(state, action) {
+      const {
+        itemIndex,
+        editedArticle
+      } = action.payload;
+
+      state.content[itemIndex] = editedArticle;
+    },
     loadContentHandler(state, action) {
       const data = action.payload;
       state.content = data;
@@ -61,9 +69,20 @@ const contentSlice = createSlice({
     changeCommentHandler(state, action) {
       state.prevContent = [...state.content];
 
-      const commentIndex = state.content.findIndex((elem) => elem.key === action.payload.newsId);
+      const articleIndex = state.content.findIndex((elem) => elem.key === action.payload.newsId);
 
-      state.content[commentIndex].comments = action.payload.updatedComments;
+      state.content[articleIndex].comments = action.payload.updatedComments;
+    },
+    editCommentHandler(state, action) {
+      const {
+        commentIndex,
+        newsId,
+        editedComment
+      } = action.payload;
+
+      const articleIndex = state.content.findIndex((elem) => elem.key === newsId);
+
+      state.content[articleIndex].comments[commentIndex] = editedComment;
     },
     setErrorMessage(state, action) {
       state.errorMessage = action.payload.errorMessage;

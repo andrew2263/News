@@ -7,17 +7,19 @@ import useAuth from "../../hooks/use-auth";
 
 import styles from "./AuthChecker.module.scss";
 
-const Auth = () => {
+const AuthChecker = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const me = useSelector((state) => state.auth.me);
 
   const { logoutHandler } = useAuth();
 
   return (
     <div className={styles["auth-checker"]}>
-      {/*<NavLink to="/auth" activeClassName={styles.active}>*/}
       {isLoggedIn ? (
         <>
-          <NavLink to="/newArticle">Добавить новость</NavLink>
+          {me.role === "Администратор" && (
+            <NavLink to="/newArticle">Добавить новость</NavLink>
+          )}
           <button type="button" onClick={logoutHandler}>
             Выход
           </button>
@@ -29,4 +31,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default AuthChecker;

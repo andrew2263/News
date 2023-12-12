@@ -44,9 +44,9 @@ const NewsContent = (props) => {
 
   const isAll = props.category === "all";
 
-  const categoryheading = MAIN_RUBRICS.find((el) => el.category === props.category)?.name;
+  const categoryheading = MAIN_RUBRICS.find((el) => el.value === props.category)?.name;
 
-  const rubricHeading = `Сюжет: ${OTHER_RUBRICS.find((el) => el.category === params?.rubric)?.name}`;
+  const rubricHeading = `Сюжет: ${OTHER_RUBRICS.find((el) => el.value === params?.rubric)?.name}`;
 
   const newsContent = isAll
     ? content

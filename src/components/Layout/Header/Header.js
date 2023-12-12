@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import logo from "../../../logo.png";
 import Container from "../Container";
@@ -8,11 +9,15 @@ import Info from "../Info";
 import AuthChecker from "../../Auth/AuthChecker";
 
 import { MAIN_RUBRICS } from "../../../constants/NewsRubrics.Constant";
+import { getTimeOfDay } from "../../../helpers/getTimeOfDay";
 
 import styles from "./Header.module.scss";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const me = useSelector((state) => state.auth.me);
 
   const openInfoHandler = () => {
     setIsOpen(true);
@@ -33,7 +38,10 @@ const Header = () => {
       )}
       <header className={styles.header}>
         <Container>
-          <div className={styles["header__auth"]}>
+          <div className={`${styles["header__auth"]} ${isLoggedIn && me.firstName ? styles["header__auth_login"] : ''}`}>
+            {isLoggedIn && me.firstName && (
+              <p>{`${getTimeOfDay(new Date())}, ${me?.firstName} ${me?.lastName}`}</p>
+            )}
             <AuthChecker />
           </div>
           <div className={styles["header__top"]}>
@@ -54,16 +62,13 @@ const Header = () => {
           <nav className={styles["header__nav"]}>
             <ul className={styles["header__list"]}>
               {MAIN_RUBRICS.map((el) => (
-                <li className={styles["header__item"]} key={el.category}>
+                <li className={styles["header__item"]} key={el.value}>
                 <NavLink to={el.link} activeClassName={styles.active}>
                   {el.name}
                 </NavLink>
               </li>
               ))}
             </ul>
-            {/*<div className={styles["header__add"]}>
-              <AuthChecker />
-              </div>*/}
           </nav>
           <div className={styles['header__weather']}>
               <a

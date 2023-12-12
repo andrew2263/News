@@ -177,7 +177,12 @@ const Select = (props) => {
     <div className={styles["select_container"]} ref={selectRef}>
       {hasError && <p className={styles["invalid-info"]}>{hasErrorMessage}</p>}
       <div className={styles["select_wrapper"]}>
-        <label htmlFor={id}>{label}</label>
+        {label && (
+          <label htmlFor={id}>
+            {label}
+            {required && <span className={styles.required}>&nbsp;&nbsp;*</span>}
+          </label>
+        )}
         <div
           className={`${styles["select_value_container"]} ${
             isMulti && styles["select_value_container_multi"]

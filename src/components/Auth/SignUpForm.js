@@ -15,7 +15,9 @@ import {
   isPassword,
   isName,
   isBirthday,
-  isNotEmpty,
+  isRole,
+  isGender,
+  isSameValue,
 } from "../../helpers/validationHelper";
 import { ROLES, GENDERS } from "../../constants/SignUpOptions.Constant";
 
@@ -44,6 +46,12 @@ const SignUpForm = () => {
       hasError: false,
     },
     password: {
+      value: "",
+      touched: false,
+      valid: false,
+      hasError: false,
+    },
+    repeatPassword: {
       value: "",
       touched: false,
       valid: false,
@@ -90,12 +98,13 @@ const SignUpForm = () => {
   const validation = {
     email: isEmail,
     password: isPassword,
+    repeatPassword: isSameValue,
     nickname: isName,
     firstName: isName,
     lastName: isName,
-    role: isNotEmpty,
+    role: isRole,
     birthday: isBirthday,
-    gender: isNotEmpty,
+    gender: isGender,
   };
 
   const {
@@ -187,7 +196,6 @@ const SignUpForm = () => {
           hasErrorMessage="Ведите валидный e-mail"
         />
         <Input
-          type="password"
           id="password"
           name="password"
           label="Password"
@@ -195,8 +203,21 @@ const SignUpForm = () => {
           onChange={signupFormChange}
           onBlur={signupFormBlur}
           required
+          isPassword
           hasError={signupFormState.password.hasError}
           hasErrorMessage="Пароль должен содержать минимум 8 символов, в том числе буквы, цифры, спецсимволы"
+        />
+        <Input
+          id="repeatPassword"
+          name="repeatPassword"
+          label="Repeat password"
+          value={signupFormState.repeatPassword.value}
+          onChange={signupFormChange}
+          onBlur={signupFormBlur}
+          required
+          isPassword
+          hasError={signupFormState.repeatPassword.hasError}
+          hasErrorMessage="Пароли должны совпадать"
         />
         <Input
           type="text"

@@ -1,12 +1,19 @@
 import React, { useEffect } from "react";
 import { useParams, NavLink } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Container from "../Layout/Container";
 import NewsImage from "../NewsContent/NewsImage";
+import Reactions from "../UI/Reactions/Reactions";
+
+import { app } from "../../firebase";
+import { getDatabase, ref, set } from "firebase/database";
+
+import { contentActions } from "../../store/content-slice";
 
 import { parseDateMonthString } from "../../helpers/parseDateMonth";
+import { getEditedValue } from "../../helpers/reactionHelper";
 import { OTHER_RUBRICS } from "../../constants/NewsRubrics.Constant";
 
 import styles from "./ArticleContent.module.scss";
@@ -16,16 +23,17 @@ const ArticleContent = () => {
   const { newsId } = params;
 
   const content = useSelector((state) => state.content.content);
+  const me = useSelector((state) => state.auth.me);
+
+  const dispatch = useDispatch();
+
+  const database = getDatabase(app);
 
   const isContent = content.length ? true : false;
 
-  const item = isContent
-    ? content[
-        content.findIndex((el) => {
-          return el.key === newsId;
-        })
-      ]
-    : "";
+  const itemIndex = content?.findIndex((el) => el.key === newsId);
+
+  const item = content?.[itemIndex];
 
   useEffect(() => {
     document.title = isContent
@@ -34,13 +42,42 @@ const ArticleContent = () => {
   }, [item, isContent]);
 
   const articleText = (text) =>
-    text.map((text) => {
+    text.map((text, index) => {
       return (
-        <p key={Math.random()} className={styles["article__text"]}>
+        <p key={index} className={styles["article__text"]}>
           {text}
         </p>
       );
     });
+
+  const editArticleHandler = (editedValue) => {
+    const editArticlePath = `content/${itemIndex}`;
+    const databaseRef = ref(database, editArticlePath);
+
+    const editedArticle = {
+      ...item,
+      ...editedValue,
+    };
+
+    dispatch(contentActions.editArticleHandler({ itemIndex, editedArticle }));
+
+    set(databaseRef, editedArticle)
+    .then(() => {})
+      .catch((error) => {
+        console.error(error);
+        dispatch(contentActions.setPrevContent());
+        // setErrorMessage(
+        //   `${error.message}: Отредактировать комментарий не удалось. Обновите страницу и повторите попытку.`
+        // );
+      });
+  }
+  
+  const addReactionHandler = (type, myReaction) => {
+    const reactions = item?.reactions;
+    const editedValue = getEditedValue(reactions, type, me, myReaction);
+
+    editArticleHandler(editedValue);
+  };
 
   return (
     <React.Fragment>
@@ -85,16 +122,25 @@ const ArticleContent = () => {
               {item?.rubrics && (
                 <ul className={styles["article__rubrics-list"]}>
                   {item.rubrics.map((rubric) => (
-                    <li className={styles["article__rubrics-item"]} key={rubric}>
+                    <li
+                      className={styles["article__rubrics-item"]}
+                      key={rubric}
+                    >
                       <NavLink
-                        to={`/rubrics${OTHER_RUBRICS.find((el) => el.category === rubric)?.link}`}
+                        to={`/rubrics${
+                          OTHER_RUBRICS.find((el) => el.value === rubric)?.link
+                        }`}
                       >
-                        {OTHER_RUBRICS.find((el) => el.category === rubric)?.name}
+                        {OTHER_RUBRICS.find((el) => el.value === rubric)?.name}
                       </NavLink>
                     </li>
                   ))}
                 </ul>
               )}
+              <Reactions
+                reactions={item?.reactions}
+                addReactionHandler={addReactionHandler}
+              />
             </article>
           </Container>
         </section>
