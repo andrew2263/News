@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./Input.module.scss";
 
@@ -19,7 +19,16 @@ const Input = (props) => {
     disabled,
     required = false,
     isSighIn = false,
+    isPassword = false,
   } = props;
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const passwordType = showPassword ? "text" : "password";
+
+  const toggleShowPassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   return (
     <div className={styles["input_container"]}>
@@ -27,7 +36,9 @@ const Input = (props) => {
       {label && (
         <label htmlFor={id}>
           {label}
-          {required && !isSighIn && <span className={styles.required}>&nbsp;&nbsp;*</span>}
+          {required && !isSighIn && (
+            <span className={styles.required}>&nbsp;&nbsp;*</span>
+          )}
         </label>
       )}
       {isTextarea ? (
@@ -44,17 +55,31 @@ const Input = (props) => {
         />
       ) : (
         <input
-          className={`${styles.input} ${className ? className : ""}`}
+          className={`${styles.input} ${className ? className : ""} ${
+            isPassword ? styles["input-password"] : ""
+          }`}
           name={name}
           id={id}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
-          type={type}
+          type={!isPassword ? type : passwordType}
           placeholder={placeholder}
           disabled={disabled}
           required={required}
         />
+      )}
+      {isPassword && (
+        <button
+          className={styles["show-password"]}
+          type="button"
+          onClick={toggleShowPassword}
+        >
+          <img
+            src={showPassword ? "/images/eye-slash.svg" : "/images/eye.svg"}
+            alt="show"
+          />
+        </button>
       )}
     </div>
   );

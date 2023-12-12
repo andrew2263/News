@@ -107,6 +107,15 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 15px;
+
+    &_login {
+      justify-content: space-between;
+
+      p {
+        margin: 0;
+        color: #e2e2f7;
+      }
+    }
     
     a {
       font-size: 16px;

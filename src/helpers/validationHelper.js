@@ -75,6 +75,10 @@ export const isPassword = (value) => {
   );
 };
 
+export const isSameValue = (value, field) => {
+  return value === field?.value;
+};
+
 export const isName = (value) => {
   return (
     /[\w\s\p{L}]/gu.test(value) &&

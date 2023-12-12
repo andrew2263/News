@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useHistory, NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import Input from "../UI/Input/Input";
+import { modalActions } from "../../store/modal-slice";
 
 import useForm from "../../hooks/use-form";
 import useAuth from "../../hooks/use-auth";
@@ -11,12 +13,18 @@ import { isEmail, isNotEmpty } from "../../helpers/validationHelper";
 
 import styles from "./AuthPage.module.scss";
 
-const SignInForm = () => {
+const SignInForm = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const history = useHistory();
 
   const { loginHandler } = useAuth();
+
+  const dispatch = useDispatch();
+
+  const closeModalHandler = () => {
+    dispatch(modalActions.setCloseModal());
+  };
 
   const initialFormState = {
     email: {
@@ -51,11 +59,19 @@ const SignInForm = () => {
 
     setIsLoading(true);
 
-    signInWithEmailAndPassword(auth, formState.email.value, formState.password.value)
+    signInWithEmailAndPassword(
+      auth,
+      formState.email.value,
+      formState.password.value
+    )
       .then((userCredential) => {
         const user = userCredential.user;
         const expirationTime = new Date(user.stsTokenManager.expirationTime);
-        loginHandler(user.accessToken, expirationTime.toISOString(), formState.email.value);
+        loginHandler(
+          user.accessToken,
+          expirationTime.toISOString(),
+          formState.email.value
+        );
         history.replace("/");
         loginFormReset();
       })
@@ -65,7 +81,17 @@ const SignInForm = () => {
         alert(`Error ${errorCode}: ${errorMessage}`);
       });
 
+    if (props.isModal) {
+      closeModalHandler();
+    }
+
     setIsLoading(false);
+  };
+
+  const clickHandler = () => {
+    if (props.isModal) {
+      closeModalHandler();
+    }
   };
 
   return (
@@ -86,7 +112,6 @@ const SignInForm = () => {
           isSighIn
         />
         <Input
-          type="password"
           id="password"
           name="password"
           label="Password"
@@ -94,6 +119,7 @@ const SignInForm = () => {
           onChange={loginFormChange}
           onBlur={loginFormBlur}
           required
+          isPassword
           hasError={formState.password.hasError}
           hasErrorMessage="Введите пароль"
           isSighIn
@@ -106,7 +132,9 @@ const SignInForm = () => {
           Войти
         </button>
         {isLoading && <p>Sending request...</p>}
-        <NavLink to="/auth?mode=signUp">Создать новый аккаунт</NavLink>
+        <NavLink to="/auth?mode=signUp" onClick={clickHandler}>
+          Создать новый аккаунт
+        </NavLink>
       </form>
     </React.Fragment>
   );

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { checkifReacted } from "../../../helpers/reactionHelper";
 
 import styles from "./Reactions.module.scss";
+import { modalActions } from "../../../store/modal-slice";
 
 const Reactions = (props) => {
   const { reactions, addReactionHandler } = props;
@@ -21,6 +22,8 @@ const Reactions = (props) => {
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const me = useSelector((state) => state.auth.me);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (timeoutId) {
@@ -72,8 +75,9 @@ const Reactions = (props) => {
       }, 1000);
 
       setTimeoutId(timeout);
+    } else {
+      dispatch(modalActions.setOpenModal({ type: "auth" }));
     }
-    return;
   };
 
   return (

@@ -1,5 +1,6 @@
 .input_container {
   margin: 10px 0;
+  position: relative;
 
   label {
     display: block;
@@ -32,6 +33,10 @@
     font-size: 14px;
   }
 
+  .input-password {
+    padding-right: 35px;
+  }
+
   .invalid-info {
     color: #f00;
     font-size: 14px;
@@ -39,5 +44,14 @@
 
   .required {
     color: #f00;
+  }
+
+  .show-password {
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    position: absolute;
+    right: 8px;
+    bottom: 5px;
   }
 }

@@ -155,7 +155,7 @@ const Comment = (props) => {
     editCommentHandler(comment, editedValue, index);
   };
 
-  const isMyComment = isLoggedIn && me.id === comment.user.id;
+  const isMyComment = isLoggedIn && me.id === comment?.user?.id;
 
   return (
     <>
