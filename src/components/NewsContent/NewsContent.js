@@ -12,6 +12,7 @@ import {
   parseDateMonthString,
   dateWithoutTime,
 } from "../../helpers/parseDateMonth";
+import { sortDateDesc } from "../../helpers/sortDateDesc";
 import { scrollToTop } from "../../helpers/scrollToTop";
 
 import styles from "./NewsContent.module.scss";
@@ -26,7 +27,7 @@ const NewsContent = (props) => {
 
   const stateContent = useSelector((state) => state.content.content);
 
-  const content = [...stateContent];
+  const content = [...stateContent].sort(sortDateDesc);
 
   const isContent = content.length ? true : false;
 

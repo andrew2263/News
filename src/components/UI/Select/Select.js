@@ -57,7 +57,7 @@ const Select = (props) => {
   useEffect(() => {
     if (isMulti) {
       const filtOptions = initialOptions.filter(
-        (option) => !value.some((val) => val.value === option.value)
+        (option) => value && !value?.some((val) => val.value === option.value)
       );
 
       setFilteredOptions(value.length ? filtOptions : initialOptions);
@@ -213,7 +213,7 @@ const Select = (props) => {
               onKeyDown={keyDownHandler}
             >
               <React.Fragment>
-                {value.map((el, i) => (
+                {value && value.map((el, i) => (
                   <div key={i} className={styles["select_multi_option"]}>
                     <div>{el.text}</div>
                     <button

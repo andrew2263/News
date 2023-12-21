@@ -15,13 +15,14 @@ import NewArticle from "./components/NewArticle/NewArticle";
 import AuthPage from "./components/Auth/AuthPage";
 
 import { MAIN_RUBRICS } from "./constants/NewsRubrics.Constant";
-import { sortDateDesc } from "./helpers/sortDateDesc";
+//import { sortDateDesc } from "./helpers/sortDateDesc";
 import { calculateRemainingTime } from "./helpers/authHelper";
 
 function App() {
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const me = useSelector((state) => state.auth.me);
 
   const getUserByEmailFunction = httpsCallable(functions, "getUserByEmail");
 
@@ -49,8 +50,8 @@ function App() {
                 }))
               : [],
           };
-        })
-        .sort(sortDateDesc);
+        });
+        //.sort(sortDateDesc);
 
       dispatch(contentActions.loadContentHandler(contentData));
     } catch (error) {
@@ -117,6 +118,9 @@ function App() {
         ))}
         <Route path="/rubrics/:rubric">
           <NewsContent isRubric />
+        </Route>
+        <Route path="/edit/:newsId" exact>
+          {isLoggedIn && me.role === 'Администратор' ? <NewArticle edit /> : <Redirect to="/" /> }
         </Route>
         <Route path="/:category/:newsId">
           <Article />
