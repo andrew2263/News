@@ -22,7 +22,7 @@ export const editArticleHandler = (index, editedArticle, onSuccess, onError) => 
 
   set(databaseRef, editedArticle)
     .then(() => {
-      onSuccess();
+      onSuccess(editedArticle);
     })
     .catch((error) => {
       console.error(error);
