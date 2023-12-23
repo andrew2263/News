@@ -1,11 +1,13 @@
+/*eslint-disable */
 import React, { useState, useEffect } from "react";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, useHistory } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 
 import Container from "../Layout/Container";
 import NewsImage from "../NewsContent/NewsImage";
 import Reactions from "../UI/Reactions/Reactions";
+import ArticleForm from "../NewArticle/ArticleForm";
 
 import { contentActions } from "../../store/content-slice";
 import { modalActions } from "../../store/modal-slice";
@@ -16,13 +18,15 @@ import { getEditedValue } from "../../helpers/reactionHelper";
 import { OTHER_RUBRICS } from "../../constants/NewsRubrics.Constant";
 import { articleValidation } from "../../helpers/validationHelper";
 import { getInitialEditArticleFormState } from "../../helpers/getInitialFormState";
+import { sendArticle } from "../../store/helper";
 
 import styles from "./ArticleContent.module.scss";
-import ArticleForm from "../NewArticle/ArticleForm";
 
 const ArticleContent = () => {
   const params = useParams();
   const { newsId } = params;
+
+  const history = useHistory();
 
   const [isEdit, setIsEdit] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -116,6 +120,10 @@ const ArticleContent = () => {
     setIsEdit(true);
   };
 
+  const cancelEditHandler = () => {
+    setIsEdit(false);
+  }
+
   const onEditArticle = (newArticle) => {
     const description = newArticle.images;
 
@@ -142,7 +150,21 @@ const ArticleContent = () => {
     editArticleHandler(itemIndex, editedArticle, onSuccessEditArticle, onErrorEditArticle);
   }
 
-  const onDeleteArticle = () => {};
+  const onDeleteArticle = async () => {
+    history.goBack();
+    dispatch(modalActions.setOpenModal({ type: "deleting" }));
+    const updatedContent = [...content];
+    updatedContent.splice(itemIndex, 1);
+    await sendArticle(updatedContent, () => {
+      dispatch(contentActions.deleteArticleHandler({ deletedArticle: item }));
+      dispatch(modalActions.setCloseModal());
+      dispatch(modalActions.setOpenModal({ type: "isDeleted" }));
+    }).catch((error) => {
+      dispatch(modalActions.setCloseModal());
+      dispatch(modalActions.setOpenModal({ type: "error", text: error.message }));
+      //dispatch(contentActions.setPrevContent());
+    });
+  };
 
   return (
     <React.Fragment>
@@ -247,6 +269,7 @@ const ArticleContent = () => {
               articleRubrics={articleRubrics}
               isSubmitted={isSubmitted}
               setIsSubmitted={setIsSubmitted}
+              cancelHandler={cancelEditHandler}
             />
           )}
         </Container>

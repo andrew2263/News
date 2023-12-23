@@ -43,6 +43,7 @@ const ArticleForm = (props) => {
     articleRubrics = [],
     isSubmitted,
     setIsSubmitted,
+    cancelHandler,
   } = props;
 
   const [formIsValid, setFormIsValid] = useState(false);
@@ -304,9 +305,16 @@ const ArticleForm = (props) => {
                 пробелы и знаки препинания. Минимальное число символов
                 — 50, максимальное — 200."
       />
-      <button type="submit" className={styles.submit} disabled={!formIsValid}>
-        {`${!edit ? "Добавить" : "Редактироать"} новость`}
-      </button>
+      <div className={styles.buttons}>
+        <button type="submit" className={styles.submit} disabled={!formIsValid}>
+          {`${!edit ? "Добавить" : "Редактироать"} новость`}
+        </button>
+        {edit && (
+          <button type="button" className={styles.cancel} onClick={cancelHandler}>
+            Отменить изменения
+          </button>
+        )}
+      </div>
     </form>
   );
 };
