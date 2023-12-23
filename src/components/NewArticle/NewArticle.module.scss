@@ -39,30 +39,41 @@
   }
 }
 
-.submit {
-  margin: 10px 0;
-  padding: 10px 30px;
-  border: none;
-  background-color: #505590;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: all 0.5s;
+.buttons {
+  display: flex;
+  gap: 30px;
 
-  &:hover {
-    opacity: 0.6;
+  button {
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
     transition: all 0.5s;
+
+    &:hover {
+      opacity: 0.6;
+      transition: all 0.5s;
+    }
+  
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   }
 
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  .submit {
+    padding: 10px 30px;
+    border: none;
+    background-color: #505590;
+    color: #fff;
   }
 
-  &-msg {
-    font-size: 18px;
+  .cancel {
+    padding: 6px 26px;
+    border: 2px solid #505590;
+    background-color: #fff;
+    color: #505590;
   }
 }
 

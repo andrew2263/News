@@ -15,7 +15,6 @@ import NewArticle from "./components/NewArticle/NewArticle";
 import AuthPage from "./components/Auth/AuthPage";
 
 import { MAIN_RUBRICS } from "./constants/NewsRubrics.Constant";
-import { sortDateDesc } from "./helpers/sortDateDesc";
 import { calculateRemainingTime } from "./helpers/authHelper";
 
 function App() {
@@ -49,8 +48,8 @@ function App() {
                 }))
               : [],
           };
-        })
-        .sort(sortDateDesc);
+        });
+        //.sort(sortDateDesc);
 
       dispatch(contentActions.loadContentHandler(contentData));
     } catch (error) {

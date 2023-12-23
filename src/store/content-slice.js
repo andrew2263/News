@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { sortDateDesc } from "../helpers/sortDateDesc";
+//import { sortDateDesc } from "../helpers/sortDateDesc";
 
 const contentSlice = createSlice({
   name: "content",
@@ -7,14 +7,14 @@ const contentSlice = createSlice({
     content: [],
     prevContent: [],
     articleAdded: false,
-    errorMessage: '',
+    errorMessage: "",
   },
   reducers: {
     addArticle(state, action) {
       const lastPriorityItem = {
-        '1': 0,
-        '2': 2,
-        '3': 3,
+        1: 0,
+        2: 2,
+        3: 3,
       };
 
       const article = action.payload;
@@ -43,18 +43,27 @@ const contentSlice = createSlice({
 
       updatedContent = [...updatedContent, article];
 
-      state.content = updatedContent.sort(sortDateDesc);
+      state.content = updatedContent;
 
       state.articleAdded = true;
-  
     },
     editArticleHandler(state, action) {
-      const {
-        itemIndex,
-        editedArticle
-      } = action.payload;
+      const { editedArticle } = action.payload;
+
+      const itemIndex = state.content.findIndex(
+        (el) => el.key === editedArticle.key
+      );
 
       state.content[itemIndex] = editedArticle;
+    },
+    deleteArticleHandler(state, action) {
+      const { deletedArticle } = action.payload;
+
+      const itemIndex = state.content.findIndex(
+        (el) => el.key === deletedArticle.key
+      );
+
+      state.content.splice(itemIndex, 1);
     },
     loadContentHandler(state, action) {
       const data = action.payload;
@@ -69,24 +78,24 @@ const contentSlice = createSlice({
     changeCommentHandler(state, action) {
       state.prevContent = [...state.content];
 
-      const articleIndex = state.content.findIndex((elem) => elem.key === action.payload.newsId);
+      const articleIndex = state.content.findIndex(
+        (elem) => elem.key === action.payload.newsId
+      );
 
       state.content[articleIndex].comments = action.payload.updatedComments;
     },
     editCommentHandler(state, action) {
-      const {
-        commentIndex,
-        newsId,
-        editedComment
-      } = action.payload;
+      const { commentIndex, newsId, editedComment } = action.payload;
 
-      const articleIndex = state.content.findIndex((elem) => elem.key === newsId);
+      const articleIndex = state.content.findIndex(
+        (elem) => elem.key === newsId
+      );
 
       state.content[articleIndex].comments[commentIndex] = editedComment;
     },
     setErrorMessage(state, action) {
       state.errorMessage = action.payload.errorMessage;
-    }
+    },
   },
 });
 

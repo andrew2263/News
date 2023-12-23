@@ -34,15 +34,6 @@ const getReaction = (reactions, type, me, isOld, isSameType = false) => {
 };
 
 export const getEditedValue = (reactions, type, me, myReaction) => {
-  // let myReaction = null;
-
-  //   if (reactions) {
-  //     const reactionValues = Object.values(reactions);
-  //     const reactionTypes = Object.keys(reactions);
-
-  //     myReaction = checkifReacted(reactionTypes, reactionValues, me);
-  //   }
-
     const oldReaction = myReaction
       ? getReaction(reactions, myReaction.type, me, true)
       : {};

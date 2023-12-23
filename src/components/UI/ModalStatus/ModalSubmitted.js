@@ -3,16 +3,20 @@ import { NavLink } from "react-router-dom";
 
 import styles from "./ModalStatus.module.scss";
 
-const ModalIsSubmitted = (props) => (
+const ModalIsSubmitted = ({ onClose, deleted = false }) => (
   <React.Fragment>
-    <p className={styles["submit-msg"]}>Форма отправлена</p>
+    <p className={styles["submit-msg"]}>
+      {!deleted ? "Форма отправлена" : "Новость удалена"}
+    </p>
     <div className={styles["modal-buttons"]}>
-      <button className={styles["modal-button"]} onClick={props.onClose}>
+      <button className={styles["modal-button"]} onClick={onClose}>
         OK
       </button>
-      <NavLink className={styles["modal-button"]} to="/">
-        Перейти к новостям
-      </NavLink>
+      {!deleted && (
+        <NavLink className={styles["modal-button"]} to="/">
+          Перейти к новостям
+        </NavLink>
+      )}
     </div>
   </React.Fragment>
 );

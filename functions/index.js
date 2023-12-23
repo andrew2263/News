@@ -145,3 +145,30 @@ exports.getUserByEmail = functions.https.onCall(async (email) => {
     throw new functions.https.HttpsError("internal", "Internal Server Error");
   }
 });
+
+exports.getArticleByKey = functions.https.onCall(async (key) => {
+  if (!key) {
+    throw new functions.https.HttpsError(
+        "invalid-argument",
+        "Bad Request: Missing ID or Data",
+    );
+  }
+
+  const contentRef = admin.database().ref("/content");
+
+  const snapshot = await contentRef
+      .orderByChild("key")
+      .equalTo(key)
+      .once("value");
+
+  if (snapshot.exists()) {
+    /*
+    const val = snapshot.val();
+    const id = Object.keys(val)[0];
+    return id;
+    */
+    return snapshot.val();
+  } else {
+    throw new functions.https.HttpsError("internal", "Internal Server Error");
+  }
+});

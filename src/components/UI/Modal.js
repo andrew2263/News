@@ -29,10 +29,14 @@ const Modal = (props) => {
     switch (type) {
       case "submitting":
         return <ModalSubmitting />;
+      case "deleting":
+        return <ModalSubmitting deleting />;
       case "error":
         return <ModalError errorMessage={modalText} />;
       case "isSubmitted":
         return <ModalIsSubmitted onClose={props.onClose} />;
+      case "isDeleted":
+        return <ModalIsSubmitted onClose={props.onClose} deleted />;
       case "auth":
         return <AuthModal />;
       default:

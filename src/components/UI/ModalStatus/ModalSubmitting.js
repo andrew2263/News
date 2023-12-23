@@ -1,9 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import styles from './ModalStatus.module.scss';
+import styles from "./ModalStatus.module.scss";
 
-const ModalSubmitting = () => (
-  <p className={styles["submit-msg"]}>Форма отправляется...</p>
+const ModalSubmitting = ({ deleting = false }) => (
+  <p className={styles["submit-msg"]}>
+    {!deleting ? "Форма отправляется..." : "Новость удаляется..."}
+  </p>
 );
 
 export default ModalSubmitting;

@@ -92,3 +92,13 @@ export const isBirthday = (value) => {
 
   return date > -1577923200000 && date < 1136073600000;
 };
+
+export const articleValidation = {
+  key: isKey,
+  heading: isHeading,
+  briefText: isBriefText,
+  text: isText,
+  category: isCategory,
+  priority: isPriority,
+  description: isDescription,
+};
