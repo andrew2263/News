@@ -88,7 +88,7 @@ export const isName = (value) => {
 };
 
 export const isBirthday = (value) => {
-  const date = Number(new Date(value.toString()));
+  const date = Number(new Date(value?.toString()));
 
   return date > -1577923200000 && date < 1136073600000;
 };

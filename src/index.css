@@ -73,9 +73,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+main {
+  flex: 1 1;
+  background-color: #ddd;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 section {
   padding: 40px;
-  background-color: #ddd;
 }
 
 article {

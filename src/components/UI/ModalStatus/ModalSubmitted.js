@@ -13,7 +13,7 @@ const ModalIsSubmitted = ({ onClose, deleted = false }) => (
         OK
       </button>
       {!deleted && (
-        <NavLink className={styles["modal-button"]} to="/">
+        <NavLink className={styles["modal-button"]} onClick={onClose} to="/">
           Перейти к новостям
         </NavLink>
       )}

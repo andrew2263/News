@@ -91,14 +91,15 @@
     text-decoration: none;
     font-size: 20px;
     font-weight: 500;
-    color: #e2e2f7;
+    color: #dadaf0;
     transition: all 300ms;
 
     &:hover,
     &:active,
     &.active {
-      color: #dadaf0;
+      color: #e2e2f7;
       opacity: 0.8;
+      text-decoration: underline;
       transition: all 300ms;
     }
   }
