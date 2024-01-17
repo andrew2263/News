@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-//import { sortDateDesc } from "../helpers/sortDateDesc";
 
 const contentSlice = createSlice({
   name: "content",
@@ -11,40 +10,10 @@ const contentSlice = createSlice({
   },
   reducers: {
     addArticle(state, action) {
-      const lastPriorityItem = {
-        1: 0,
-        2: 2,
-        3: 3,
-      };
-
       const article = action.payload;
-
       state.prevContent = [...state.content];
-
-      let updatedContent = [...state.content];
-
-      const arrPriority = state.content.filter(
-        (elem) => elem.priority === article.priority
-      );
-      const lowerPriorityArticle =
-        arrPriority[lastPriorityItem[article.priority.toString()]];
-      const lowerPriorityArticleIndex = state.content.findIndex((elem) => {
-        return elem.key === lowerPriorityArticle?.key;
-      });
-
-      if (article.priority !== 4 && typeof article.priority === "number") {
-        const copyContent = [...state.content];
-        copyContent[lowerPriorityArticleIndex] = {
-          ...copyContent[lowerPriorityArticleIndex],
-          priority: 4,
-        };
-        updatedContent = [...copyContent];
-      }
-
-      updatedContent = [...updatedContent, article];
-
+      const updatedContent = [...state.content, article];
       state.content = updatedContent;
-
       state.articleAdded = true;
     },
     editArticleHandler(state, action) {

@@ -9,8 +9,9 @@
     margin: 0 20px 13px 0;
 
     & .active {
-      font-weight: 600;
-      color: #dadaf0;
+      color: #e2e2f7;
+      opacity: 0.8;
+      text-decoration: underline;
     }
   }
 }

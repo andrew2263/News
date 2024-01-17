@@ -20,11 +20,13 @@ const Select = (props) => {
     hasError,
     hasErrorMessage,
     required = false,
+    isCreatable = false,
   } = props;
 
   const inputRef = useRef(null);
   const selectRef = useRef(null);
 
+  const [inputText, setInputText] = useState(value);
   const [showOptions, setShowOptions] = useState(false);
   const [options, setOptions] = useState(initialOptions);
   const [selectedInex, setSelectedIndex] = useState(-1);
@@ -32,7 +34,9 @@ const Select = (props) => {
   const [filteredOptions, setFilteredOptions] = useState([]);
 
   useOutsideClick(selectRef, () => {
-    setShowOptions(false);
+    if (showOptions) {
+      setShowOptions(false);
+    }
   });
 
   useEffect(() => {
@@ -84,6 +88,7 @@ const Select = (props) => {
         },
       };
 
+      setInputText(event.target.value);
       onChange(event);
     }
     if (isMulti) {
@@ -104,7 +109,15 @@ const Select = (props) => {
 
     if (!isMulti) {
       setOptions(filterOptions(initialOptions, value.toLowerCase()));
-      onChange(event);
+      setInputText(event.target.value);
+      if (value) {
+        onChange({
+          target: {
+            name: event.target.name,
+            value: '',
+          }
+        });
+      }
     }
   };
 
@@ -173,6 +186,18 @@ const Select = (props) => {
     }
   };
 
+  const blurHandler = (event) => {
+    if (!showOptions) {
+      if (isCreatable) {
+        onChange(event);
+      } 
+      else if (!value) {
+        setInputText('');
+      }
+      changeBlur(event);
+    }
+  };
+
   return (
     <div className={styles["select_container"]} ref={selectRef}>
       {hasError && <p className={styles["invalid-info"]}>{hasErrorMessage}</p>}
@@ -193,10 +218,10 @@ const Select = (props) => {
               id={id}
               className={`${className ? className : ""}`}
               onChange={inputChangeHandler}
-              value={value}
+              value={inputText}
               name={name}
               type={inputType}
-              onBlur={changeBlur}
+              onBlur={blurHandler}
               onKeyDown={keyDownHandler}
               onFocus={changeFocus}
               ref={inputRef}

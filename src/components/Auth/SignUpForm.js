@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import Input from "../UI/Input/Input";
 import Select from "../UI/Select/Select";
+import InputDate from "../UI/InputDate/InputDate";
 
 import useForm from "../../hooks/use-form";
 import {
@@ -265,8 +266,7 @@ const SignUpForm = () => {
           hasErrorMessage="Выберите роль"
           required
         />
-        <Input
-          type="date"
+        <InputDate
           id="birthday"
           name="birthday"
           label="Дата рождения"

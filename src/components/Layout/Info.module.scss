@@ -51,28 +51,30 @@
 
     a {
       text-decoration: none;
-      color: #e2e2f7;
+      color: #dadaf0;
       font-size: 18px;
       font-weight: 500;
 
       &:hover,
       &:active {
-        font-weight: 600;
-        color: #dadaf0;
+        opacity: 0.8;
+        text-decoration: underline;
+        color: #e2e2f7;
       }
     }
   }
 
   &__contacts a {
     text-decoration: none;
-    color: #e2e2f7;
+    color: #dadaf0;
     font-size: 18px;
     font-weight: 500;
 
     &:hover,
     &:active {
-      font-weight: 600;
-      color: #dadaf0;
+      opacity: 0.8;
+      text-decoration: underline;
+      color: #e2e2f7;
     }
   }
 }

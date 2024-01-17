@@ -1,0 +1,33 @@
+.date {
+  &_container {
+    box-sizing: border-box;
+    margin: 10px 0;
+  }
+
+  &_wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    input {
+      height: 32px;
+      border-radius: 5px;
+      border: 1px solid #94928b;
+      padding: 5px;
+    }
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px; 
+  }
+}
+
+.invalid-info {
+  color: #f00;
+  font-size: 14px;
+}
+
+.required {
+  color: #f00;
+}

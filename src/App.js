@@ -121,7 +121,7 @@ function App() {
           <Article />
         </Route>
         <Route path="/newArticle">
-          <NewArticle />
+          {isLoggedIn ? <NewArticle /> : <Redirect to="/" />}
         </Route>
         <Route path="/auth">
           {!isLoggedIn ? <AuthPage /> : <Redirect to="/" />}

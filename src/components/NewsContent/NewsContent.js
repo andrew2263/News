@@ -109,6 +109,7 @@ const NewsContent = (props) => {
                 <ul className={styles["first-priority"]}>
                   {content
                     .filter((item) => item.priority === 1)
+                    .slice(0, 1)
                     .map((item) => {
                       return (
                         <FirstPriorityItem
@@ -128,6 +129,7 @@ const NewsContent = (props) => {
                 <ul className={styles["second-priority"]}>
                   {content
                     .filter((item) => item.priority === 2)
+                    .slice(0, 3)
                     .map((item) => {
                       return (
                         <SecondPriorityItem
@@ -147,6 +149,7 @@ const NewsContent = (props) => {
                 <ul className={styles["second-priority"]}>
                   {content
                     .filter((item) => item.priority === 3)
+                    .slice(0, 4)
                     .map((item) => {
                       return (
                         <SecondPriorityItem
