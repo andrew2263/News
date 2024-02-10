@@ -1,6 +1,14 @@
 .auth-container {
   margin: 0 auto;
-  width: 400px;
+  width: 300px;
+  padding: 0 10px;
+  margin-bottom: 25px;
+
+  @media screen and (min-width: 480px) {
+    padding: 0;
+    width: 400px;
+    margin-bottom: 0;
+  }
 }
 
 .login-button {

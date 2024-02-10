@@ -4,17 +4,35 @@ h1 {
 }
 
 .content {
-  padding: 20px 0;
+  padding-bottom: 20px;
   background-color: #f0f0f0;
 
+  @media screen and (min-width: 480px) {
+    padding-top: 20px;
+  }
+
   ul {
-    padding: 0 20px;
+    @media screen and (min-width: 480px) {
+      padding: 0 20px; 
+    }
     background-color: #f0f0f0;
   }
 
   li {
-    padding: 20px;
+    padding: 10px;
     transition: all 0.5s;
+
+    @media screen and (min-width: 768px) {
+      padding: 20px;
+    }
+
+    @media screen and (min-width: 1024px) {
+      padding: 15px;
+    }
+  
+    @media screen and (min-width: 1280px) {
+      padding: 20px;
+    }
 
     a {
       text-decoration: none;
@@ -33,10 +51,48 @@ h1 {
       }
     }
   }
+
+  .second-priority_medium {
+    li {
+      &:nth-child(3) {
+        display: none;
+
+        @media screen and (min-width: 1024px) {
+          display: block;
+        }
+      }
+    }
+  }
+
+  .second-priority_small {
+    flex-wrap: wrap;
+
+    @media screen and (min-width: 1024px) {
+      flex-wrap: nowrap;
+    }
+
+    li {
+      padding: 10px;
+
+      @media screen and (min-width: 768px) {
+        padding: 20px;
+      }
+
+      @media screen and (min-width: 1024px) {
+        padding: 10px;
+      }
+    
+      @media screen and (min-width: 1280px) {
+        padding: 20px;
+      }
+    }
+  }
 }
 
 .priority-content {
-  margin-bottom: 80px;
+  @media screen and (min-width: 480px) {
+    margin-bottom: 80px;
+  }
 }
 
 .first-priority {
@@ -55,10 +111,19 @@ h1 {
 }
 
 .date {
-  margin: 0 40px;
+  margin: 0 10px;
   padding: 20px 0;
   color: #5e5e5e;
-  font-size: 24px;
+  font-size: 18px;
+
+  @media screen and (min-width: 480px) {
+    margin: 0 40px;
+    font-size: 20px;
+  }
+  
+  @media screen and (min-width: 1024px) {
+    font-size: 24px;
+  }
 }
 
 .nonews {

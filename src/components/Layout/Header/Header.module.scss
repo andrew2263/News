@@ -59,6 +59,11 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    flex-wrap: wrap;
+
+    @media screen and (min-width: 1024px) {
+      flex-wrap: nowrap;      
+    }
   }
 
   &__weather {

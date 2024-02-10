@@ -1,6 +1,22 @@
 .article {
   &__img-wrapper img {
-    width: 940px;
+    width: calc(100vw - 40px);
+    min-width: 300px;
+
+    @media screen and (min-width: 480px) {
+      min-width: calc(100vw - 120px);
+      width: calc(100vw - 120px);
+    }
+
+    @media screen and (min-width: 1024px) {
+      min-width: 864px;
+      width: 864px;      
+    }
+
+    @media screen and (min-width: 1280px) {
+      min-width: 940px;
+      width: 940px;
+    }
   }
 
   &__date {

@@ -67,15 +67,25 @@
 body {
   box-sizing: border-box;
   margin: 0;
-  min-width: 1180px;
   font-family: 'Onest', 'Helvetica', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width: 320px;
+}
+
+@media screen and (min-width: 1280px) {
+  body {
+    min-width: 1180px;
+  }
 }
 
 main {
   flex: 1 1;
-  background-color: #ddd;
+  background-color: #f0f0f0;
+
+  @media screen and (min-width: 480px) {
+    background-color: #ddd;    
+  }
 }
 
 #root {
@@ -85,12 +95,26 @@ main {
 }
 
 section {
-  padding: 40px;
+  @media screen and (min-width: 480px) {
+    padding: 40px;
+  }
 }
 
 article {
   background-color: #f0f0f0;
-  padding: 20px 40px;
+  padding: 0 10px;
+
+  @media screen and (min-width: 360px) {
+    padding: 0;
+  }
+
+  @media screen and (min-width: 480px) {
+    padding: 20px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    padding: 20px 40px;
+  }
 }
 
 ul {

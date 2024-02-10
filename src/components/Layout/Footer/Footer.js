@@ -30,10 +30,11 @@ const Footer = () => {
                 element="footer"
               />
               <Social />
-              <p>© Moldova News 2021-2023</p>
+              <p className={styles["footer-copyright_desktop"]}>© Moldova News 2021-2023</p>
             </div>
             <div>
               <Contacts />
+              <p className={styles["footer-copyright_mobile"]}>© Moldova News 2021-2023</p>
             </div>
           </div>
         </Container>
