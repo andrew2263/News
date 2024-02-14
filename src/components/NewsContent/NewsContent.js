@@ -126,7 +126,7 @@ const NewsContent = (props) => {
                       );
                     })}
                 </ul>
-                <ul className={styles["second-priority"]}>
+                <ul className={`${styles["second-priority"]} ${styles["second-priority_medium"]}`}>
                   {content
                     .filter((item) => item.priority === 2)
                     .slice(0, 3)
@@ -146,7 +146,7 @@ const NewsContent = (props) => {
                       );
                     })}
                 </ul>
-                <ul className={styles["second-priority"]}>
+                <ul className={`${styles["second-priority"]} ${styles["second-priority_small"]}`}>
                   {content
                     .filter((item) => item.priority === 3)
                     .slice(0, 4)

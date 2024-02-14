@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { functions, httpsCallable } from "../firebase";
 
 import { authActions } from "../store/auth-slice";
@@ -10,12 +11,16 @@ import { calculateRemainingTime } from "../helpers/authHelper";
 const useAuth = () => {
   const dispatch = useDispatch();
 
+  const history = useHistory();
+
   const getUserByEmailFunction = httpsCallable(functions, "getUserByEmail");
 
   const logoutHandler = useCallback(() => {
     dispatch(authActions.logout());
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");
+
+    history.push("/");
   }, []);
 
   const loginHandler = async (token, expirationTime, email) => {

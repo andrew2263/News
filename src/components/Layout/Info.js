@@ -9,10 +9,12 @@ import styles from "./Info.module.scss";
 const Info = (props) => {
   return (
     <React.Fragment>
-      <button className={styles["info__close"]} onClick={props.onClose}>
-        <span></span>
-        <span></span>
-      </button>
+      <div className={styles["info__close"]}>
+        <button className={styles["info__close-button"]} onClick={props.onClose}>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
       <div className={styles["info__content"]}>
         <div className={styles["info__rubrics"]}>
           <table>

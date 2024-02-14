@@ -20,10 +20,12 @@ const Header = () => {
   const me = useSelector((state) => state.auth.me);
 
   const openInfoHandler = () => {
+    document.body.style.overflow = 'hidden';
     setIsOpen(true);
   };
 
   const closeInfoHandler = () => {
+    document.body.style.removeProperty('overflow');
     setIsOpen(false);
   };
 

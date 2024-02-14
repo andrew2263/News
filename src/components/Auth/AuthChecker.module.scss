@@ -1,6 +1,11 @@
 .auth-checker {
   display: flex;
   gap: 30px;
+  justify-content: flex-end;
+
+  @media screen and (min-width: 768px) {
+    justify-content: flex-start;
+  }
 
   button {
     border: none;

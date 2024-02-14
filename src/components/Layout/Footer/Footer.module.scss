@@ -5,8 +5,13 @@
 
   &-wrap {
     display: flex;
-    font-display: row;
+    flex-direction: column;
     justify-content: space-between;
+
+    @media screen and (min-width: 768px) {
+      flex-direction: row;
+    }
+
     a {
       text-decoration: none;
       color: #c9bbf8;
@@ -23,5 +28,23 @@
 
   &-logo {
     margin-bottom: 20px;
+  }
+
+  &-copyright {
+    &_desktop {
+      display: none;
+
+      @media screen and (min-width: 768px) {
+        display: block;
+      }
+    }
+
+    &_mobile {
+      display: block;
+
+      @media screen and (min-width: 768px) {
+        display: none;
+      }
+    }
   }
 }

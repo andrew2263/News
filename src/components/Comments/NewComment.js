@@ -112,7 +112,7 @@ const NewComment = (props) => {
             className={styles.text}
             placeholder="Ведите комментарий"
           />
-        <div>
+        <div className={styles.buttons}>
           <button
             type="submit"
             className={styles.submit}

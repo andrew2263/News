@@ -10,7 +10,10 @@ const SecondPriorityItem = (props) => {
   const image = props.images[0];
 
   return (
-    <li className={styles["news__content-item"]} key={props.id}>
+    <li
+      className={styles["news__content-item"]}
+      key={props.id}
+    >
       <div
         className={
           props.priority === 2

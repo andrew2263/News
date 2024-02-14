@@ -1,9 +1,24 @@
 .contacts {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
+  column-gap: 15px;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    column-gap: 0;
+  }
+
+  @media screen and (min-width: 1024px) {
+    flex-direction: row;
+  }
 
   &__item {
-    margin-right: 40px;
+
+    @media screen and (min-width: 1024px) {
+      margin-right: 40px;
+    }
   }
 }

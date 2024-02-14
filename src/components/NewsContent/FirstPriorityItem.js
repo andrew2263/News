@@ -14,7 +14,7 @@ const FirstPriorityItem = (props) => {
       <div className={styles["news__content-info"]}>
         <div className={styles["news__img-wrapper"]}>
           <Link to={`/${props.category}/${props.id}`} onClick={props.scroll}>
-          <NewsImage src={image.href} alt={image.text} />
+            <NewsImage src={image.href} alt={image.text} />
           </Link>
         </div>
         <div className={styles["news__info"]}>

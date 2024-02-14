@@ -1,36 +1,46 @@
 .info {
   &__close {
-    width: 30px;
-    height: 30px;
-    margin-bottom: 50px;
-    padding: 0;
-    position: relative;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
 
-    span {
-      display: block;
-      width: 42px;
-      height: 2px;
-      position: absolute;
-      top: 50%;
-      left: -15%;
-      background-color: #e2e2f7;
-      transition: all 0.5s;
-
-      &:first-child {
-        transform: rotate(45deg);
-      }
-
-      &:last-child {
-        transform: rotate(-45deg);
-      }
+    @media screen and (min-width: 768px) {
+      justify-content: flex-start;
+      margin-bottom: 50px;
     }
 
-    &:hover span {
-      height: 4px;
-      transition: all 0.5s;
+    &-button {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      position: relative;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+
+      span {
+        display: block;
+        width: 42px;
+        height: 2px;
+        position: absolute;
+        top: 50%;
+        left: -15%;
+        background-color: #e2e2f7;
+        transition: all 0.5s;
+
+        &:first-child {
+          transform: rotate(45deg);
+        }
+
+        &:last-child {
+          transform: rotate(-45deg);
+        }
+      }
+
+      &:hover span {
+        height: 4px;
+        transition: all 0.5s;
+      }
     }
   }
 
@@ -64,17 +74,25 @@
     }
   }
 
-  &__contacts a {
-    text-decoration: none;
-    color: #dadaf0;
-    font-size: 18px;
-    font-weight: 500;
+  &__contacts {
+    display: none;
 
-    &:hover,
-    &:active {
-      opacity: 0.8;
-      text-decoration: underline;
-      color: #e2e2f7;
+    @media screen and (min-width: 1024px) {
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: #dadaf0;
+      font-size: 18px;
+      font-weight: 500;
+  
+      &:hover,
+      &:active {
+        opacity: 0.8;
+        text-decoration: underline;
+        color: #e2e2f7;
+      }
     }
   }
 }
