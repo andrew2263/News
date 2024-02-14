@@ -90,7 +90,10 @@ h1 {
 }
 
 .priority-content {
+  padding-top: 20px;
+
   @media screen and (min-width: 480px) {
+    padding-top: 0;
     margin-bottom: 80px;
   }
 }
